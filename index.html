@@ -1,0 +1,1913 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>ML Тренажёр</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ML Тренажёр">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#2a6fd6">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{
+  --bg:#f4f6f9;--card:#ffffff;--ink:#141a26;--ink2:#566074;--line:#e2e6ee;
+  --acc:#2a6fd6;--acc-ink:#ffffff;--acc2:#e8f0fc;
+  --ok:#16825a;--okbg:#e5f6ee;--bad:#c93a3a;--badbg:#fcebeb;--warn:#a96b00;--warnbg:#fff4dc;
+  --code:#f1f4f9;--shadow:0 1px 2px rgba(20,26,38,.06),0 6px 18px rgba(20,26,38,.05);
+  --c-algo:#2a6fd6;--c-py:#14946a;--c-math:#6a4fc4;--c-ml:#d9622b;--c-dl:#c2467f;--c-code:#2f8f2f;--c-sd:#a87800;
+  --tk-kw:#cf222e;--tk-str:#0a3069;--tk-com:#6e7781;--tk-num:#0550ae;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0e1118;--card:#171b25;--ink:#e9edf5;--ink2:#9aa4b8;--line:#2a3142;
+    --acc:#6aa8f5;--acc-ink:#0b1220;--acc2:#1b2a44;
+    --ok:#4cc38f;--okbg:#10291f;--bad:#f07070;--badbg:#301618;--warn:#e0a63a;--warnbg:#2d2410;
+    --code:#0f131b;--shadow:0 1px 2px rgba(0,0,0,.4);
+    --c-algo:#6aa8f5;--c-py:#3fc79a;--c-math:#9b87f0;--c-ml:#f0905a;--c-dl:#ea78ac;--c-code:#62c562;--c-sd:#dfae3b;
+    --tk-kw:#ff7b72;--tk-str:#a5d6ff;--tk-com:#8b949e;--tk-num:#79c0ff;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1118;--card:#171b25;--ink:#e9edf5;--ink2:#9aa4b8;--line:#2a3142;
+  --acc:#6aa8f5;--acc-ink:#0b1220;--acc2:#1b2a44;
+  --ok:#4cc38f;--okbg:#10291f;--bad:#f07070;--badbg:#301618;--warn:#e0a63a;--warnbg:#2d2410;
+  --code:#0f131b;--shadow:0 1px 2px rgba(0,0,0,.4);
+  --c-algo:#6aa8f5;--c-py:#3fc79a;--c-math:#9b87f0;--c-ml:#f0905a;--c-dl:#ea78ac;--c-code:#62c562;--c-sd:#dfae3b;
+  --tk-kw:#ff7b72;--tk-str:#a5d6ff;--tk-com:#8b949e;--tk-num:#79c0ff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow-wrap:anywhere}
+.wrap{max-width:780px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right)) 56px max(16px,env(safe-area-inset-left))}
+h1{font-size:26px;line-height:1.2;margin:0}
+h2{font-size:19px;margin:26px 0 10px}
+h3{font-size:16px;margin:0}
+p{margin:0 0 10px}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--acc)}
+.muted{color:var(--ink2)}
+.small{font-size:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grow{flex:1}
+.hdr{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px}
+.hdr .sub{color:var(--ink2);font-size:14px;margin-top:4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-weight:600;text-align:center;line-height:1.25}
+.btn:hover{border-color:var(--acc)}
+.btn.primary{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:transparent}
+.btn.sm{min-height:36px;padding:6px 12px;font-size:14px;border-radius:10px}
+.btn.block{display:flex;width:100%}
+.btn:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--acc) 55%,transparent);outline-offset:2px}
+.icon-btn{width:40px;height:40px;min-height:40px;padding:0;border-radius:12px;font-size:18px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.tcard{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--tc,var(--acc));border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+.tcard:hover{border-color:var(--tc,var(--acc))}
+.tcard .tt{display:flex;gap:10px;align-items:flex-start;font-weight:700}
+.tcard .em{font-size:22px;line-height:1.1}
+.tcard .meta{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin:8px 0 6px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;display:flex}
+.bar>i{display:block;height:100%}
+.bar .g{background:var(--ok)}.bar .r{background:var(--bad)}.bar .b{background:var(--acc)}
+.t-algo{--tc:var(--c-algo)}.t-py{--tc:var(--c-py)}.t-math{--tc:var(--c-math)}.t-ml{--tc:var(--c-ml)}.t-dl{--tc:var(--c-dl)}.t-code{--tc:var(--c-code)}.t-sd{--tc:var(--c-sd)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:99px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--ink2);min-height:28px}
+.chip.t{color:var(--tc);border-color:color-mix(in srgb,var(--tc) 40%,var(--line));background:color-mix(in srgb,var(--tc) 10%,var(--card))}
+button.chip{cursor:pointer;min-height:36px;padding:4px 14px}
+button.chip.on{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--bg);border-radius:12px;padding:10px 12px;text-align:center}
+.stat b{display:block;font-size:22px;line-height:1.2}
+.stat span{font-size:12px;color:var(--ink2)}
+.warnbox{background:var(--warnbg);color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:12px}
+.topbar{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+.topbar .count{font-weight:700;font-variant-numeric:tabular-nums}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink2)}
+.timer.low{color:var(--bad)}
+.q-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.qtext{font-size:18px;font-weight:600;line-height:1.45;margin:0 0 12px;white-space:pre-line}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+:not(pre)>code{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.88em}
+pre.code{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 14px;overflow-x:auto;font-size:13.5px;line-height:1.5;white-space:pre;tab-size:4;-webkit-overflow-scrolling:touch}
+pre.code code{background:none;border:0;padding:0;font-size:inherit}
+.tk-kw{color:var(--tk-kw)}.tk-str{color:var(--tk-str)}.tk-com{color:var(--tk-com);font-style:italic}.tk-num{color:var(--tk-num)}
+.opts{display:grid;gap:10px;margin-bottom:12px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);min-height:52px}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt .key{flex:none;width:26px;height:26px;border-radius:8px;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--ink2);margin-top:1px}
+.opt .otxt{flex:1;line-height:1.45}
+.opt.sel{border-color:var(--acc);background:var(--acc2)}
+.opt.sel .key{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.ok .key{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.opt.bad .key{background:var(--bad);color:#fff;border-color:var(--bad)}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default;color:inherit}
+.inp,.ta{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.inp:focus,.ta:focus{outline:none;border-color:var(--acc)}
+.ta{min-height:130px;resize:vertical;line-height:1.5}
+.fb{border-radius:12px;padding:10px 14px;font-weight:700;margin:4px 0 10px}
+.fb.ok{background:var(--okbg);color:var(--ok)}
+.fb.bad{background:var(--badbg);color:var(--bad)}
+.fb .ans{display:block;font-weight:500;color:var(--ink);margin-top:4px}
+.explain{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px;white-space:pre-line}
+.explain .ex-t{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:4px}
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.kw .chip.hit{color:var(--ok);border-color:var(--ok);background:var(--okbg)}
+.kw .chip.miss{color:var(--ink2)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.actions .btn{flex:1 1 150px}
+.score{text-align:center;padding:10px 0 4px}
+.score .big{font-size:52px;font-weight:800;line-height:1.1}
+.score .lbl{color:var(--ink2)}
+.rt{width:100%;border-collapse:collapse;font-size:14px}
+.rt td,.rt th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.rt th{font-size:12px;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em}
+.rt .bar{min-width:70px}
+.mistake{border-left:4px solid var(--bad)}
+.flash{min-height:260px;display:flex;flex-direction:column;justify-content:center;cursor:pointer}
+.flash .face{flex:1}
+.flash .hint{color:var(--ink2);font-size:13px;text-align:center;margin-top:10px}
+details.sec{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+details.sec>summary{cursor:pointer;padding:14px 16px;font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::before{content:"▸";color:var(--ink2);transition:transform .15s}
+details.sec[open]>summary::before{transform:rotate(90deg)}
+details.sec .body{padding:0 16px 14px}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+.ct{width:100%;border-collapse:collapse;font-size:14px}
+.ct th,.ct td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:normal;word-break:normal}
+.ct th{font-size:12px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+ul.cl{margin:0;padding-left:20px}
+ul.cl li{margin:5px 0}
+.search{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:14px}
+.search:focus{outline:none;border-color:var(--acc)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:14px;z-index:20;max-width:90vw;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+.modal{position:fixed;inset:0;background:rgba(10,14,22,.55);display:grid;place-items:center;padding:20px;z-index:30}
+.modal-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;max-width:420px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.foot{margin-top:28px;text-align:center;color:var(--ink2);font-size:13px}
+.hide{display:none!important}
+@media (max-width:420px){
+  h1{font-size:23px}
+  .qtext{font-size:17px}
+  .stat b{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<noscript><div class="wrap"><p>Для работы тренажёра нужен JavaScript. Откройте файл в обычном браузере (Safari, Chrome).</p></div></noscript>
+<script>
+'use strict';
+// ===== Хелперы для банка вопросов =====
+// C — выбор ответа: C(тема, вопрос, [варианты], индексПравильного, разбор, {code, run})
+// N — число:        N(тема, вопрос, значение, допуск, разбор, {code})
+// I — короткий текст: I(тема, вопрос, [допустимые ответы], разбор, {code})
+// O — развёрнутый:  O(тема, вопрос, эталон, [[метка, подстрока1, подстрока2…]], совет, {code})
+const QS = [];
+const CHEAT = [];
+function C(t, q, o, a, e, x) { QS.push(Object.assign({ t: t, k: 'c', q: q, o: o, a: a, e: e || '' }, x || {})); }
+function N(t, q, v, tol, e, x) { QS.push(Object.assign({ t: t, k: 'n', q: q, v: v, tol: tol, e: e || '' }, x || {})); }
+function I(t, q, acc, e, x) { QS.push(Object.assign({ t: t, k: 'i', q: q, acc: acc, e: e || '' }, x || {})); }
+function O(t, q, ref, kw, e, x) { QS.push(Object.assign({ t: t, k: 'o', q: q, ref: ref, kw: kw, e: e || '' }, x || {})); }
+
+// ===== Алгоритмы и структуры данных (глава 1) =====
+C("algo","Какова сложность операции `x in lst` для списка из n элементов (худший случай)?",["O(1)","O(log n)","O(n)","O(n log n)"],2,"Список — это массив, поиск идёт перебором. Если нужна проверка принадлежности за O(1) в среднем, используйте `set` или `dict`.");
+
+C("algo","Почему `list.append` называют операцией O(1) амортизированно?",["Список хранит элементы в хеш-таблице","При нехватке места ёмкость растёт геометрически, поэтому редкие копирования O(n) «размазываются» по многим вставкам","append всегда пишет в заранее выделенную ячейку и никогда не копирует память","Элементы добавляются в двусвязный список"],1,"CPython выделяет память с запасом. Копирование всего массива случается редко (после 1, 2, 4, 8… элементов), и в среднем на одну вставку приходится O(1).");
+
+C("algo","Решение Two Sum через словарь «значение → индекс»: какая сложность?",["O(n) по времени и O(n) по памяти","O(n log n) по времени и O(1) по памяти","O(n²) по времени и O(n) по памяти","O(n) по времени и O(1) по памяти"],0,"Один проход по массиву, словарь хранит до n элементов. Вариант O(n log n) / O(1) — сортировка и два указателя, но тогда теряются исходные индексы. Важно: сначала проверяем наличие дополнения, потом добавляем текущий элемент.");
+
+C("algo","В массиве есть отрицательные числа. Нужно посчитать подмассивы с суммой k. Почему не подходит скользящее окно?",["При отрицательных числах расширение окна может уменьшить сумму: нет монотонности. Нужны префиксные суммы и хеш-таблица","Скользящее окно не работает с целыми числами","Окно нельзя сдвигать влево","Сумма может не поместиться в int"],0,"Окно работает, когда расширение окна только увеличивает сумму, а сжатие только уменьшает. С отрицательными числами это не так. Подмассив (j, i] имеет сумму k, если p[i] − p[j] = k, то есть p[j] = p[i] − k: ищем это в словаре частот префиксов.");
+
+C("algo","В решении «число подмассивов с суммой k» перед циклом кладут `count[0] = 1`. Зачем?",["Чтобы учесть подмассивы, начинающиеся с индекса 0 (пустой префикс с суммой 0)","Чтобы избежать KeyError","Чтобы обнулить счётчик","Это необязательная оптимизация"],0,"Если весь префикс p[i] равен k, то нужно найти «пустой префикс» p[j] = 0 при j = 0. Без `count[0] = 1` такие подмассивы не будут посчитаны.");
+
+C("algo","Бинарный поиск первого индекса, где `a[i] >= x`, цикл `while lo < hi`. Что делать при `a[mid] >= x`?",["hi = mid (mid может быть ответом)","hi = mid - 1","lo = mid + 1","lo = mid"],0,"Инвариант: ответ лежит в [lo, hi]. Если предикат истинен, ответ — mid или левее, значит hi = mid. Если ложен — строго правее: lo = mid + 1. Цикл заканчивается, когда отрезок схлопнулся в точку.");
+
+C("algo","Что должно выполняться, чтобы применить бинарный поиск по ответу (например, минимальная скорость в задаче Koko Eating Bananas)?",["Предикат «значение x подходит» монотонен: если подходит x, то подходит и любое большее (или наоборот)","Входной массив должен быть отсортирован","Ответ должен быть простым числом","Размер входа должен быть степенью двойки"],0,"Монотонность предиката — единственное требование. Тогда мы ищем границу между «не подходит» и «подходит» за O(log диапазона) проверок.");
+
+C("algo","Koko Eating Bananas: n кучек, ответ ищем бинпоиском на отрезке [1, max(piles)]. Итоговая сложность?",["O(n · log(max(piles)))","O(n²)","O(n)","O(log n)"],0,"Одна проверка скорости (сумма ceil(p/k)) стоит O(n), а проверок — O(log max).");
+
+C("algo","Почему Daily Temperatures на монотонном стеке работает за O(n), несмотря на вложенный `while`?",["Каждый индекс кладётся в стек и снимается не более одного раза","Внутренний while выполняется не более двух раз за итерацию","Стек всегда содержит не более log n элементов","На самом деле он работает за O(n²)"],0,"Суммарное число снятий со стека не превышает числа добавлений, то есть n. Это амортизированный анализ.");
+
+C("algo","Как найти k самых частых элементов за O(n log k)?",["Counter и min-куча размера k: при переполнении выбрасываем самый редкий","Отсортировать массив и взять последние k","Построить max-кучу из n элементов и k раз достать максимум за O(n log n)","Бинарный поиск по значению частоты"],0,"Куча размера k стоит O(log k) на операцию, операций — по числу уникальных элементов. Альтернатива: bucket sort по частотам за O(n).");
+
+C("algo","`heapq` в Python реализует min-кучу. Как получить max-кучу для чисел?",["Класть в кучу отрицательные значения (или кортежи `(-priority, item)`)","Вызвать `heapq.heapify(a, reverse=True)`","Использовать `heapq.maxheap`","Всегда сортировать список по убыванию"],0,"В `heapq` нет параметра reverse. Стандартный приём — менять знак приоритета.");
+
+C("algo","Как поддерживать медиану потока чисел?",["Max-куча для меньшей половины и min-куча для большей; размеры отличаются не более чем на 1","Одна отсортированная структура, в которую вставляем за O(1)","Две min-кучи","Хранить все числа и каждый раз сортировать"],0,"Вершина max-кучи — верхняя граница меньшей половины, вершина min-кучи — нижняя граница большей. Медиана — одна из вершин или их среднее. Добавление O(log n), чтение медианы O(1).");
+
+C("algo","Первый шаг в задаче «объединить пересекающиеся интервалы»:",["Отсортировать интервалы по началу","Построить граф интервалов","Отсортировать по длине","Положить все концы в множество"],0,"После сортировки по началу достаточно сравнивать каждый интервал с последним в результате: если start ≤ end последнего, то расширяем его, иначе начинаем новый.");
+
+C("algo","Meeting Rooms II через события (+1 в начале, −1 в конце). Как сортировать события с одинаковым временем?",["Сначала концы (−1), затем начала (+1)","Сначала начала (+1), затем концы (−1)","Порядок не важен","По длине встречи"],0,"Встречи [1, 5] и [5, 8] могут идти в одной комнате: комната освобождается в момент 5 до того, как её займёт вторая встреча.");
+
+C("algo","Алгоритм «черепаха и заяц» (Флойд) для цикла в связном списке использует...",["Два указателя с разной скоростью: O(n) времени и O(1) памяти","Множество посещённых узлов: O(n) памяти","Рекурсию с мемоизацией","Разворот списка и сравнение голов"],0,"Внутри цикла расстояние между зайцем (2 шага) и черепахой (1 шаг) уменьшается на 1 за шаг, поэтому они обязательно встретятся.");
+
+C("algo","Чем «наивная» проверка BST (каждый узел больше левого ребёнка и меньше правого) может ввести в заблуждение?",["Нужны границы (lo, hi) от предков: узел в правом поддереве корня не может быть меньше корня","Она слишком медленная","Она не работает для пустого дерева","В BST допустимы только уникальные значения"],0,"Пример: 5 → (4, 6 → (3, 7)). Для каждого узла локально всё в порядке, но 3 лежит в правом поддереве пятёрки. Передавайте вниз границы или проверяйте, что inorder строго возрастает.");
+
+C("algo","BFS по сетке: когда помечать клетку посещённой?",["При добавлении в очередь","При извлечении из очереди","После обработки всех соседей","Не нужно помечать"],0,"Если помечать при извлечении, одна клетка может попасть в очередь много раз от разных соседей: ответ верный, но время и память растут.");
+
+C("algo","Как в алгоритме Кана (топологическая сортировка) обнаружить цикл?",["Обработано меньше вершин, чем n","Очередь стала пустой в начале","Появилась вершина со степенью 0","Нужен отдельный DFS"],0,"Вершины в цикле никогда не получают нулевую входящую степень и не попадают в очередь. Если `len(order) < n`, цикл есть.");
+
+C("algo","Почему Дейкстра не работает с отрицательными рёбрами?",["Вершина считается окончательной при извлечении из кучи, а отрицательное ребро может позже улучшить уже «закрытый» путь","Потому что куча не хранит отрицательные числа","Потому что граф становится ориентированным","Алгоритм работает, просто медленнее"],0,"Для отрицательных весов используют Беллмана–Форда (O(V·E)). Для весов только 0 и 1 есть 0-1 BFS.");
+
+C("algo","Сложность Дейкстры с двоичной кучей?",["O((V + E) log V)","O(V · E)","O(V²) всегда","O(E)"],0,"Каждое ребро может добавить запись в кучу (O(log V)); устаревшие записи пропускаются.");
+
+C("algo","LIS за O(n log n): что хранит массив `tails`?",["tails[k] — минимальный возможный последний элемент возрастающей подпоследовательности длины k+1","Саму наибольшую подпоследовательность","Индексы элементов подпоследовательности","Длины всех подпоследовательностей, заканчивающихся в i"],0,"Массив `tails` всегда отсортирован, поэтому позицию нового элемента ищем `bisect_left`. Длина `tails` в конце и есть длина LIS (но не сама подпоследовательность!).");
+
+C("algo","Редакционное расстояние: чему равна база `dp[i][0]`?",["i (нужно удалить i символов)","0","1","Бесконечности"],0,"Превращение префикса длины i в пустую строку — i удалений. Аналогично `dp[0][j] = j` (j вставок).");
+
+C("algo","В backtracking при сохранении результата пишут `res.append(path[:])`, а не `res.append(path)`. Почему?",["Иначе в res окажется одна и та же ссылка на изменяемый список, который потом очистится","Для ускорения работы","Так требует синтаксис Python","Чтобы отсортировать путь"],0,"`path` меняется на протяжении всего перебора. Без копии все элементы res будут одним и тем же списком, в конце перебора пустым.");
+
+C("algo","Какова сложность операций Union-Find со сжатием путей и объединением по размеру?",["≈ O(α(n)) на операцию (практически константа)","O(log n)","O(n)","O(n²)"],0,"α(n) — обратная функция Аккермана, не превышает 4–5 для любых реальных n.");
+
+C("algo","Сложность наивной рекурсии `fib(n) = fib(n-1) + fib(n-2)`?",["O(2ⁿ) (экспоненциальная)","O(n)","O(n²)","O(log n)"],0,"Дерево вызовов содержит порядка 2ⁿ узлов (точнее φⁿ). С мемоизацией каждая подзадача считается один раз: O(n).");
+
+C("algo","n = 10⁵. Какая сложность решения ещё допустима для Python за секунды?",["O(n log n)","O(n²)","O(2ⁿ)","O(n³)"],0,"n² = 10¹⁰ операций — слишком много даже для C++ за секунду. Для 10⁵ нужны O(n log n) или O(n).");
+
+C("algo","Как искать элемент в циклически сдвинутом отсортированном массиве за O(log n)?",["Определить, какая половина отсортирована, и проверить, лежит ли в ней target","Сначала отсортировать массив","Найти точку разрыва линейным проходом","Использовать два указателя с концов"],0,"На каждом шаге хотя бы одна из половин [lo, mid] или [mid, hi] отсортирована; по её границам понятно, идти туда или в другую половину.");
+
+C("algo","Что верно про `sorted()` и `list.sort()` в Python?",["Timsort: O(n log n) в худшем случае, стабильная сортировка","Quicksort: O(n²) в худшем случае, нестабильная","Merge sort с O(1) доп. памяти","Heap sort, нестабильная"],0,"Стабильность позволяет сортировать по нескольким ключам последовательно. На почти отсортированных данных Timsort работает за O(n).");
+
+C("algo","Какие структуры нужны для LRU-кеша с O(1) на get и put?",["Хеш-таблица и двусвязный список (или OrderedDict)","Куча и массив","Бинарное дерево поиска","Два стека"],0,"Хеш-таблица даёт доступ по ключу, а двусвязный список — перемещение узла в «свежий» конец и удаление самого старого за O(1).");
+
+C("algo","Longest Consecutive Sequence за O(n): что делает решение линейным?",["Кладём числа в set и запускаем рост цепочки только от чисел x, для которых x−1 нет в set","Сортируем массив","Используем двоичную кучу","Применяем динамическое программирование по значениям"],0,"Каждая цепочка просматривается один раз — от своего начала. Если запускать рост от каждого элемента, получим O(n²) на входах вроде [1]·n + range(n).");
+
+C("algo","3Sum: как избежать дубликатов в ответе?",["Отсортировать массив и пропускать повторяющиеся значения для первого элемента и при сдвиге указателей","Хранить все тройки в set кортежей и не оптимизировать","Использовать хеш-таблицу «значение → индекс»","Дубликаты невозможны"],0,"Сортировка делает одинаковые значения соседними: достаточно проверить `a[i] == a[i-1]`. Сложность O(n²).");
+
+C("algo","Minimum Window Substring: когда мы сдвигаем левую границу окна вправо?",["Пока окно остаётся валидным (содержит все нужные символы) — так ищем минимум","Всегда после каждого шага правой границы","Только когда окно содержит повторы","Только в конце алгоритма"],0,"Расширяем правой границей до валидности, затем сжимаем слева, обновляя ответ, пока окно валидно.");
+
+C("algo","Какой шаг в решении задачи на динамическое программирование первый и самый важный?",["Чётко определить, что означает `dp[i]` (состояние)","Написать рекурсию без определения состояния","Подобрать формулу перехода пробами","Заполнить таблицу случайными числами"],0,"Остальные шаги: переход, база, порядок вычисления, где лежит ответ. Если состояние определено неверно, переход не найти.");
+
+C("algo","Рекурсивный DFS по дереву из 10⁵ узлов, вырожденному в цепочку, в Python:",["Упадёт с RecursionError (лимит ≈ 1000): нужен итеративный обход со стеком","Отработает за O(log n)","Отработает, Python оптимизирует хвостовую рекурсию","Упадёт с MemoryError"],0,"В CPython нет оптимизации хвостовой рекурсии. Для глубоких структур используйте явный стек.");
+
+C("algo","Для каких задач удобен бор (trie)?",["Поиск по префиксам, автодополнение","Кратчайший путь во взвешенном графе","Сортировка чисел","Подсчёт компонент связности"],0,"Бор хранит строки по символам; запрос «все слова с префиксом p» стоит O(|p|) плюс размер ответа.");
+
+C("algo","Reservoir sampling (алгоритм R) выбирает k элементов из потока неизвестной длины. С какой вероятностью i-й элемент (i > k) заменяет случайный элемент резервуара?",["k / i","1 / i","1 / k","k / n, где n — длина потока"],0,"Элемент i попадает в резервуар с вероятностью k/i и затем выживает на каждом следующем шаге j с вероятностью (j−1)/j. Произведение даёт ровно k/n для всех элементов.");
+
+C("algo","Пересечение двух файлов с ID по 10⁹ записей, не помещающихся в память. Что сработает?",["Хеш-партиционирование: разложить ID по P файлам по hash(id) % P и пересекать пары корзин в памяти","Загрузить всё в set","Использовать list и оператор in","Отсортировать в памяти через sorted()"],0,"Одинаковые ID всегда попадают в корзины с одним номером. Другие варианты: внешняя сортировка со слиянием, фильтр Блума по меньшему множеству, распределённый JOIN.");
+
+C("algo","Фильтр Блума, проверка «элемент в множестве?». Какие ошибки возможны?",["Только ложноположительные (может сказать «есть», когда нет)","Только ложноотрицательные","Оба типа","Никаких"],0,"Если фильтр говорит «нет», элемента точно нет. «Да» нужно перепроверить точно. Память фиксирована и намного меньше, чем у set.");
+
+I("algo","Какова сложность построения кучи `heapq.heapify` из n элементов? (формула)",["O(n)"],"Это O(n), а не O(n log n): большинство узлов находятся близко к листьям, и их просеивание стоит почти ничего. А вот n последовательных `heappush` — уже O(n log n).");
+
+I("algo","Сложность обхода графа в ширину (BFS), V — вершины, E — рёбра? (формула)",["O(V+E)","o(e+v)"],"Каждая вершина и каждое ребро обрабатываются по одному разу.");
+
+N("algo","Минимальное число монет для суммы 6 при номиналах [1, 3, 4]? (жадный алгоритм даёт 3)",2,0,"Оптимум 3 + 3 = 2 монеты, а жадный выбор 4 + 1 + 1 даёт 3. Жадность корректна только для «канонических» систем номиналов (1, 2, 5, 10…). Поэтому берём DP: dp[s] = 1 + min(dp[s − c]).");
+
+I("algo","Сколько подмножеств у множества из n элементов? (формула)",["2^n","2**n","2ⁿ"],"Каждый элемент либо входит, либо нет: 2ⁿ вариантов. Backtracking по подмножествам стоит O(n · 2ⁿ) с учётом копирования.");
+
+N("algo","Сколько существует перестановок 5 различных элементов?",120,0,"5! = 120. Для перебора перестановок допустимо n ≤ 10–12.");
+
+I("algo","Сложность поиска в сбалансированном бинарном дереве поиска? (формула)",["O(log n)","o(log(n))","o(log2n)"],"Высота сбалансированного дерева — O(log n). В вырожденном (несбалансированном) дереве — O(n).");
+
+I("algo","Как называется приём «рекурсия плюс кеш результатов подзадач» (DP сверху вниз)?",["мемоизация","мемоизацией","memoization","мемоизация(сверхувниз)"],"В Python: `@functools.lru_cache(None)` / `@functools.cache`. Аргументы функции должны быть хешируемыми.");
+
+O("algo","Объясните, почему метод двух указателей находит пару с суммой target в отсортированном массиве за O(n). Почему мы не пропускаем ответ?",
+"Ставим l = 0, r = n − 1. Если a[l] + a[r] < target, то a[l] не может войти в ответ ни с одним элементом левее r (они ещё меньше), значит l можно отбросить: l += 1. Если сумма больше target, то a[r] нельзя соединить ни с одним элементом правее l (они ещё больше), значит r −= 1. Каждый шаг отбрасывает один элемент, поэтому шагов не больше n. Память O(1).",
+[["Отсортированность","отсортирован"],["Отбрасываем элемент (l или r) без потери ответа","отбрас","не мож","исключ"],["Каждый шаг двигает один указатель → O(n)","o(n)","n шаг","линейн","за n"],["Память O(1)","o(1)","память"]],
+"Ключевая мысль — инвариант: «если ответ существует, он лежит в пределах [l, r]».");
+
+O("algo","Опишите решение задачи Longest Substring Without Repeating Characters: идея, структура данных, сложность, неочевидный тест.",
+"Скользящее окно [left, right], в котором нет повторов. Храним последнюю позицию каждого символа в словаре. Двигаем right; если символ уже встречался внутри окна (last[ch] >= left), прыгаем left на last[ch] + 1. Ответ — максимум right − left + 1. Время O(n), память O(k), где k — размер алфавита. Неочевидный тест — «abba»: без проверки last[ch] >= left левая граница прыгнет назад.",
+[["Скользящее окно / два указателя","окно","скольз","два указ"],["Словарь последних позиций","словар","dict","хеш","last"],["Условие last[ch] >= left","left","внутри окн","в окне"],["Сложность O(n)","o(n)","линейн"],["Тест abba","abba"]],
+"На интервью сначала назовите наивное решение за O(n²), потом оптимизируйте и обязательно прогоните «abba», «» и «bbbb».");
+
+O("algo","Как вы действуете, если на алгоритмической секции застряли на задаче?",
+"Не молчать. Вслух сказать, что именно не получается («понимаю, как посчитать для фиксированного левого конца, но не вижу, как избежать пересчёта»). Вернуться к примерам и разобрать их руками. Предложить наивное решение и оценить сложность, найти в нём повторяющуюся работу. Перебрать паттерны: хеш-таблица, сортировка, два указателя, окно, префиксы, бинпоиск, куча. Принять подсказку интервьюера: это оценивается положительно. Молчание дольше минуты — худшая стратегия.",
+[["Проговаривать вслух","вслух","говор","озвуч"],["Разобрать пример руками","пример"],["Наивное решение и его сложность","наивн","перебор","brute"],["Перебрать паттерны","паттерн","хеш","сортир","указател"],["Принять подсказку","подсказ"]],
+"На интервью оценивается и процесс мышления, а не только итоговый код.");
+
+O("algo","Задача: 100 ГБ лога поисковых запросов, найти 10 самых частых. Как решать?",
+"Если число уникальных запросов помещается в память: один проход генератором по файлу, словарь-счётчик (Counter), затем куча размера 10 (heapq.nlargest) за O(U log k). Если не помещается: map-reduce — разложить запросы по P корзинам по hash(q) % P (одинаковые запросы в одной корзине), в каждой посчитать частоты и локальный топ-10, затем слить P топов. Приближённо и в фиксированной памяти: Count-Min Sketch, алгоритмы Space-Saving / Misra–Gries для «тяжёлых хиттеров».",
+[["Потоковое чтение, Counter","поток","построчн","генератор","counter","счётчик"],["Куча размера k","куч","heap"],["Хеш-партиционирование / map-reduce","партиц","map","hash","корзин","шард"],["Приближённые структуры","count-min","count min","space-saving","misra","sketch"]],
+"Корректность разбиения: каждый запрос целиком живёт в одной корзине, поэтому локальные частоты точные.");
+
+O("algo","Как понять, что задачу нужно решать динамическим программированием? Назовите шаги решения.",
+"Сигналы: «количество способов», «минимальная/максимальная стоимость», «можно ли», «самая длинная…», перекрывающиеся подзадачи и оптимальная подструктура. Шаги: 1) определить состояние dp[i] (или dp[i][j]); 2) вывести формулу перехода; 3) задать базу; 4) выбрать порядок вычисления (или рекурсия с мемоизацией); 5) определить, где лежит ответ. Затем оптимизировать память (хранить только нужные предыдущие строки).",
+[["Сигналы: способы, минимум/максимум, можно ли","способ","минимум","максимум","можно ли","количеств"],["Состояние","состоян"],["Переход","переход","формул"],["База","баз"],["Порядок / мемоизация / ответ","порядок","мемоиз","ответ"]],
+"Пример: House Robber — dp[i] = max(dp[i−1], dp[i−2] + a[i−1]), память O(1) за счёт двух переменных.");
+
+// ===== Python: тонкости языка (глава 2) =====
+// Вопросы с run:1 проверяются автоматически: правильный вариант должен совпасть с реальным выводом программы.
+
+C("py","Что выведет код?",["[2]","[1, 2]","[1]","[[1], [2]]"],1,"Значение по умолчанию вычисляется один раз при определении функции и хранится в `f.__defaults__`. Изменяемый список разделяется между вызовами. Правильно: `acc=None` и `if acc is None: acc = []`.",{code:String.raw`def f(x, acc=[]):
+    acc.append(x)
+    return acc
+
+f(1)
+print(f(2))`,run:1});
+
+C("py","Что выведет код?",["[[1, 0, 0], [0, 0, 0], [0, 0, 0]]","[[1, 0, 0], [1, 0, 0], [1, 0, 0]]","[[1, 1, 1], [0, 0, 0], [0, 0, 0]]","[[0, 0, 0], [0, 0, 0], [0, 0, 0]]"],1,"`[[0]*3]*3` копирует ссылку на один и тот же внутренний список три раза. Правильно: `[[0]*3 for _ in range(3)]`.",{code:String.raw`a = [[0] * 3] * 3
+a[0][0] = 1
+print(a)`,run:1});
+
+C("py","Что выведет код?",["[0, 1, 2]","[2, 2, 2]","[0, 0, 0]","[3, 3, 3]"],1,"Позднее связывание: лямбда читает `i` в момент вызова, а к этому моменту `i == 2`. Исправление: `lambda i=i: i` или `functools.partial`.",{code:String.raw`funcs = [lambda: i for i in range(3)]
+print([f() for f in funcs])`,run:1});
+
+C("py","Что выведет код?",["(1, [2, 3])","(1, [2, 3, 4])","(1, [2, 3, [4]])","(1, [4])"],1,"`t[1] += [4]` сначала вызывает `__iadd__` у списка (меняет его на месте), а затем пытается присвоить результат элементу кортежа — это TypeError. Но список уже изменён.",{code:String.raw`t = (1, [2, 3])
+try:
+    t[1] += [4]
+except TypeError:
+    pass
+print(t)`,run:1});
+
+C("py","Что выведет код?",["3 4","2 4","2 3","3 3"],1,"`round` использует банковское округление: .5 округляется к ближайшему чётному. Поэтому 2.5 → 2, а 3.5 → 4.",{code:String.raw`print(round(2.5), round(3.5))`,run:1});
+
+C("py","Что выведет код?",["-3 -1","-4 1","-3 1","-4 -1"],1,"`//` округляет вниз (к −∞), а остаток от деления имеет знак делителя: −7 = 2·(−4) + 1. `int(-7 / 2)` дало бы −3: оно округляет к нулю.",{code:String.raw`print(-7 // 2, -7 % 2)`,run:1});
+
+C("py","Что выведет код?",["[0, 1, 4] [0, 1, 4]","[0, 1, 4] []","[] []","[0, 1, 4] [1, 4]"],1,"Генератор — одноразовый итератор: после первого прохода он исчерпан, второй `list(g)` вернёт пустой список без ошибки.",{code:String.raw`g = (x * x for x in range(3))
+print(list(g), list(g))`,run:1});
+
+C("py","Что выведет код?",["{1: 'int', 1.0: 'float', True: 'bool'}","{1: 'bool'}","{1: 'int'}","TypeError"],1,"`1 == 1.0 == True` и хеши у них равны, значит это один ключ. Ключ остался от первой вставки (`1`), а значение перезаписывалось дважды.",{code:String.raw`d = {1: "int", 1.0: "float", True: "bool"}
+print(d)`,run:1});
+
+C("py","Что выведет код?",["[1, 2, 3]","[1, 2, 3, 4]","[4]","[1, 2, 3, [4]]"],1,"`a += [4]` для списка — это `a.extend` на месте (`__iadd__`), поэтому `b`, ссылающийся на тот же список, тоже видит изменение.",{code:String.raw`a = [1, 2, 3]
+b = a
+a += [4]
+print(b)`,run:1});
+
+C("py","Что выведет код (обратите внимание на отличие от предыдущего варианта)?",["[1, 2, 3]","[1, 2, 3, 4]","[4]","[1, 2, 3, [4]]"],0,"`a = a + [4]` создаёт новый список и перепривязывает имя `a`. Список, на который ссылается `b`, не меняется.",{code:String.raw`a = [1, 2, 3]
+b = a
+a = a + [4]
+print(b)`,run:1});
+
+C("py","Что выведет код?",["4 4","3 4","3 2","2 4"],1,"`A.x = 2` меняет атрибут класса, `a.x = 3` создаёт атрибут экземпляра (он затеняет атрибут класса), `A.x = 4` снова меняет класс. Итог: `a.x == 3`, `A.x == 4`.",{code:String.raw`class A:
+    x = 1
+
+a = A()
+A.x = 2
+a.x = 3
+A.x = 4
+print(a.x, A.x)`,run:1});
+
+C("py","Что выведет код?",["1","2","3","UnboundLocalError"],2,"`nonlocal` позволяет менять переменную объемлющей функции. Состояние сохраняется между вызовами замыкания: 1, 2, 3.",{code:String.raw`def counter():
+    n = 0
+    def inc():
+        nonlocal n
+        n += 1
+        return n
+    return inc
+
+c = counter()
+c(); c()
+print(c())`,run:1});
+
+C("py","Что выведет код?",["['D', 'B', 'A']","['D', 'B', 'C', 'A']","['D', 'B', 'A', 'C', 'A']","['D', 'C', 'B', 'A']"],1,"MRO у D: D → B → C → A → object (C3-линеаризация). `super()` в B вызывает следующий класс в MRO объекта, то есть C, а не A.",{code:String.raw`class A:
+    def hello(self): return ["A"]
+class B(A):
+    def hello(self): return ["B"] + super().hello()
+class C(A):
+    def hello(self): return ["C"] + super().hello()
+class D(B, C):
+    def hello(self): return ["D"] + super().hello()
+
+print(D().hello())`,run:1});
+
+C("py","Что выведет код?",["2","12","10","SyntaxError"],1,"Ветка `else` у цикла выполняется, если цикл завершился без `break`. Переменная цикла после выхода хранит последнее значение (2), поэтому `i += 10` даёт 12.",{code:String.raw`for i in range(3):
+    pass
+else:
+    i += 10
+print(i)`,run:1});
+
+C("py","Что выведет код?",["False False","False True","True True","True False"],1,"`sorted()` возвращает новый список (не None), а `list.sort()` сортирует на месте и возвращает `None`.",{code:String.raw`print(sorted([3, 1, 2]) is None, [3, 1, 2].sort() is None)`,run:1});
+
+C("py","Что выведет код?",["True a","2 b","2 a","1 b"],1,"`bool` — подкласс `int`: `True == 1`. Поэтому `True + True == 2`, а `['a', 'b'][True]` — это индекс 1.",{code:String.raw`print(True + True, ["a", "b"][True])`,run:1});
+
+C("py","Что выведет код?",["[0, 1, 2]","[0, 10, 20]","[10, 10, 10]","[0, 1, 4]"],1,"Выражение генератора вычисляется лениво, и `x` читается во время итерации, когда он уже равен 10. Только самый левый `range(3)` вычисляется сразу.",{code:String.raw`x = 1
+g = (x * i for i in range(3))
+x = 10
+print(list(g))`,run:1});
+
+C("py","Что выведет код?",["True True","True False","False False","False True"],1,"Цепочка `a < b < c` — это `a < b and b < c`. Поэтому `3 > 2 > 2` ложно (2 > 2 — ложь).",{code:String.raw`print(1 < 2 < 3, 3 > 2 > 2)`,run:1});
+
+C("py","Что выведет код?",["try","finally","None","try finally"],1,"`return` внутри `finally` перекрывает возвращаемое значение из `try` (и глотает исключения). Начиная с Python 3.14 это даёт SyntaxWarning.",{code:String.raw`def g():
+    try:
+        return "try"
+    finally:
+        return "finally"
+
+print(g())`,run:1});
+
+C("py","Что выведет код?",["10","20","NameError","UnboundLocalError"],3,"Раз в теле функции есть присваивание `x = 20`, имя `x` локальное во всей функции (решается на этапе компиляции). `print(x)` обращается к локальной, ещё не определённой переменной.",{code:String.raw`x = 10
+def f():
+    print(x)
+    x = 20
+
+try:
+    f()
+except Exception as e:
+    print(type(e).__name__)`,run:1});
+
+C("py","Что выведет код?",["[2, 3, 4, 5]","[2, 3, 4]","(2, 3, 4)","[1, 2, 3, 4]"],1,"Звёздочка в распаковке собирает «всё остальное» в **список**, даже если исходное значение — кортеж.",{code:String.raw`a, *b, c = [1, 2, 3, 4, 5]
+print(b)`,run:1});
+
+C("py","Что выведет код?",["True True","False False","True False","False True"],1,"NaN не равен даже самому себе, а `0.1 + 0.2` в двоичной арифметике не равно `0.3` точно. Для сравнения используйте `math.isclose` или `np.isclose`.",{code:String.raw`print(float("nan") == float("nan"), 0.1 + 0.2 == 0.3)`,run:1});
+
+C("py","Что выведет код?",["1","2","3","TypeError"],1,"Кортежи хешируемы и сравниваются по значению: `(1, 2)` повторяется, `(2, 1)` — другой кортеж. В множестве 2 элемента.",{code:String.raw`print(len({(1, 2), (1, 2), (2, 1)}))`,run:1});
+
+C("py","Что выведет код?",["[400]","[144]","[255]","OverflowError"],1,"В NumPy нет автоматического расширения типа: 200 + 200 = 400 не помещается в uint8 и тихо превращается в 400 mod 256 = 144. Для пикселей изображений приводите к float32 перед арифметикой.",{code:String.raw`import numpy as np
+a = np.array([200], dtype=np.uint8)
+print(a + a)`,run:1});
+
+C("py","Что выведет код?",["[0 1 2 3 4]","[ 0 99  2  3  4]","[99  1  2  3  4]","[ 0 99 99  3  4]"],1,"Срез NumPy — это view: общая память с исходным массивом. Изменение `s[0]` меняет `a[1]`.",{code:String.raw`import numpy as np
+a = np.arange(5)
+s = a[1:3]
+s[0] = 99
+print(a)`,run:1});
+
+C("py","Что выведет код?",["[0 1 2 3 4]","[ 0 99  2  3  4]","[ 0 99 99  3  4]","[99  1  2  3  4]"],0,"Fancy indexing (индексация списком или маской) возвращает **копию**, поэтому изменение `f` не затрагивает `a`.",{code:String.raw`import numpy as np
+a = np.arange(5)
+f = a[[1, 2]]
+f[0] = 99
+print(a)`,run:1});
+
+C("py","Что выведет код?",["1","2","3","TypeError"],0,"`1 == 1.0 == True` и хеши совпадают, поэтому в множестве всего один элемент.",{code:String.raw`print(len({1, 1.0, True}))`,run:1});
+
+C("py","Что выведет код (удаление во время итерации)?",["[]","[4, 8]","[2, 6]","RuntimeError"],1,"После удаления элемента остальные сдвигаются влево, а итератор идёт по индексам и «перепрыгивает» следующий элемент. Не меняйте коллекцию во время итерации по ней: итерируйтесь по копии или стройте новую.",{code:String.raw`nums = [2, 4, 6, 8]
+for x in nums:
+    nums.remove(x)
+print(nums)`,run:1});
+
+C("py","Что выведет код?",["1 computed b","computed a computed b","AttributeError","1 None"],0,"`__getattr__` вызывается только если обычный поиск атрибута не нашёл имя. `__getattribute__` вызывается при любом доступе.",{code:String.raw`class Lazy:
+    def __init__(self):
+        self.a = 1
+    def __getattr__(self, name):
+        return "computed " + name
+
+o = Lazy()
+print(o.a, o.b)`,run:1});
+
+C("py","Что выведет код?",["[0, 2, 5]","[0, 2]","[2]","[0]"],1,"`any` с выражением-генератором останавливается на первом истинном значении (короткое замыкание), и элемент 5 не проверяется. Со списком `[... for ...]` вычислились бы все элементы.",{code:String.raw`calls = []
+def check(x):
+    calls.append(x)
+    return x > 1
+
+any(check(x) for x in [0, 2, 5])
+print(calls)`,run:1});
+
+C("py","Что такое GIL и на что он влияет?",["Блокировка интерпретатора CPython: одновременно байт-код исполняет только один поток, поэтому потоки не ускоряют CPU-bound код на чистом Python","Блокировка, запрещающая многопоточность в Python","Сборщик мусора для циклических ссылок","Механизм, делающий любой код потокобезопасным"],0,"GIL отпускается на ожидании I/O и в C-расширениях (NumPy, PyTorch). Он не делает ваш код потокобезопасным: `x += 1` состоит из нескольких байт-кодов. Начиная с 3.13 есть экспериментальная сборка без GIL.");
+
+C("py","Какой инструмент подходит для CPU-bound задачи на чистом Python (тяжёлые вычисления в цикле)?",["multiprocessing / ProcessPoolExecutor","threading","asyncio","Любой, разницы нет"],0,"Процессы имеют отдельные GIL и работают параллельно (цена: сериализация данных). Потоки и asyncio подходят для I/O-bound задач. Альтернатива: вынести вычисления в NumPy/Numba/Cython.");
+
+C("py","`DataLoader(num_workers=4)` в PyTorch ускоряет загрузку данных за счёт...",["процессов (обход GIL)","потоков внутри одного процесса","асинхронных корутин","GPU"],0,"Загрузка и аугментации — это Python-код, поэтому используются отдельные процессы.");
+
+C("py","Что произойдёт с `__hash__`, если в классе определить `__eq__` и не определить `__hash__`?",["Python установит `__hash__ = None`: объекты станут нехешируемыми","Хеш останется равным `id(obj)`","Хеш будет считаться по всем полям автоматически","Возникнет ошибка при определении класса"],0,"Равные объекты обязаны иметь равные хеши, поэтому Python отключает хеширование. Определите `__hash__` по неизменяемым полям или используйте `@dataclass(frozen=True)`.");
+
+C("py","Почему список нельзя использовать как ключ словаря?",["Он изменяем: хеш по содержимому поменялся бы после изменения и ключ «потерялся» бы в таблице","Потому что список слишком большой","Потому что в списке могут быть дубликаты","Потому что список упорядочен"],0,"У `list` нет `__hash__`. Кортеж можно использовать, если все его элементы хешируемы: `hash((1, [2]))` — TypeError.");
+
+C("py","Зачем нужен `@functools.wraps(func)` внутри декоратора?",["Копирует `__name__`, `__doc__` и другие метаданные исходной функции в обёртку","Ускоряет вызов функции","Делает декоратор потокобезопасным","Добавляет кеширование"],0,"Без него отладка, документация и интроспекция покажут имя `wrapper` вместо имени исходной функции.");
+
+C("py","Порядок применения декораторов: `@a` над `@b` над `def f`. Что получится?",["f = a(b(f))","f = b(a(f))","Оба применяются независимо к исходной f","Ошибка: нельзя применять два декоратора"],0,"Декораторы применяются снизу вверх: сначала `b`, затем `a`.");
+
+C("py","Для чего используют `__slots__`?",["Запрещает `__dict__` у экземпляров: экономит память и немного ускоряет доступ, но нельзя добавлять новые атрибуты","Ускоряет вызовы методов","Включает потокобезопасность","Делает атрибуты приватными"],0,"Полезно, когда создаются миллионы маленьких объектов. В dataclass: `@dataclass(slots=True)` (Python 3.10+).");
+
+C("py","Чем `copy.copy` отличается от `copy.deepcopy`?",["copy копирует контейнер верхнего уровня, вложенные объекты общие; deepcopy копирует рекурсивно всё дерево объектов","copy работает только со списками","deepcopy копирует только числа","Разницы нет для вложенных списков"],0,"`deepcopy` использует словарь `memo`, чтобы корректно обработать циклические ссылки и общие объекты.");
+
+C("py","Как в CPython освобождается память?",["Подсчёт ссылок (немедленно при нуле) плюс поколенческий сборщик для циклических ссылок","Только сборщик мусора по расписанию","Только вручную через `del`","Только при завершении программы"],0,"`del x` лишь удаляет имя и уменьшает счётчик. Циклы (`a.x = b; b.x = a`) освобождает модуль `gc`.");
+
+C("py","Какой параметр `@dataclass` решает проблему изменяемого значения по умолчанию (`tags: list = []`)?",["`field(default_factory=list)`","`frozen=True`","`slots=True`","`order=True`"],0,"Dataclass запрещает изменяемые значения по умолчанию (ValueError), а `default_factory` вызывается заново для каждого экземпляра.");
+
+C("py","Что делает `yield from gen`?",["Делегирует итерацию вложенному генератору (и пробрасывает send/throw), результат `return` попадает в значение выражения","Возвращает все значения списком","Завершает генератор","Превращает функцию в корутину asyncio"],0,"Удобен для рекурсивных генераторов, например, разворачивание вложенных списков.");
+
+C("py","В чём преимущество генератора перед списком для обработки большого файла?",["Данные вычисляются лениво по одному: память O(1), а не O(n)","Генератор быстрее индексируется","Генератор можно обойти многократно","Генератор хранит данные на диске"],0,"Минусы: один проход, нет `len()` и индексации. Типичные применения: построчное чтение, батчирование датасета.");
+
+C("py","Что верно про порядок элементов в `dict`?",["С Python 3.7 порядок вставки гарантирован языком","Порядок всегда по возрастанию ключей","Порядок случайный и меняется между запусками","Порядок гарантирован только для OrderedDict"],0,"Компактное устройство `dict` (массив индексов + плотный массив записей) сохраняет порядок вставки. А вот `set` порядок не гарантирует.");
+
+C("py","Что происходит в PyTorch при вызове `optimizer.zero_grad()` и зачем он нужен?",["Обнуляет накопленные градиенты: `backward()` суммирует градиенты в `.grad`, поэтому без обнуления они копятся между шагами","Обнуляет веса модели","Отключает градиенты у модели","Сбрасывает learning rate"],0,"Накопление градиентов удобно для gradient accumulation, но по умолчанию его нужно сбрасывать на каждом шаге.");
+
+C("py","Что делает `model.eval()` в PyTorch?",["Переключает слои в режим инференса: выключает dropout, а BatchNorm использует накопленные статистики. Градиенты не отключает","Отключает вычисление градиентов","Переводит модель на CPU","Замораживает все веса"],0,"Для экономии памяти на инференсе дополнительно используйте `torch.no_grad()` или `torch.inference_mode()`.");
+
+C("py","Какие данные ожидает `nn.CrossEntropyLoss` в PyTorch?",["Сырые логиты (без softmax) и индексы классов","Вероятности после softmax","Логарифмы вероятностей","One-hot метки и вероятности"],0,"Внутри уже есть `log_softmax`; лишний softmax перед лоссом портит обучение. Для бинарного случая используйте `BCEWithLogitsLoss` на логитах.");
+
+C("py","Что не так с кодом `total_loss += loss` в цикле обучения PyTorch?",["`loss` хранит граф вычислений: графы всех итераций остаются в памяти. Нужно `loss.item()` или `loss.detach()`","Ничего, это корректно","Лосс нельзя складывать","Код вызовет синтаксическую ошибку"],0,"Типичная причина «утечки памяти» в цикле обучения.");
+
+C("py","`X - X.mean(axis=1, keepdims=True)` — зачем нужен `keepdims=True`?",["Чтобы получить форму (n, 1) и вычесть среднее по строкам через broadcasting; без этого форма (n,) выровняется со столбцами","Для ускорения вычислений","Чтобы сохранить тип данных","Чтобы вернуть массив, а не число"],0,"Для квадратной матрицы без `keepdims` вы получите не ошибку, а тихий неверный результат (вычитание по столбцам).");
+
+C("py","В pandas записано `df[df.x > 0]['y'] = 1`. В чём проблема?",["Цепочечное присваивание может изменить временную копию, а не исходный DataFrame. Правильно: `df.loc[df.x > 0, 'y'] = 1`","Ошибки нет","Нельзя использовать булевы маски","Столбец y должен быть создан заранее через insert"],0,"В pandas 3.0 Copy-on-Write включён по умолчанию, и цепочечное присваивание гарантированно не меняет исходник.");
+
+C("py","Чем `groupby(...).count()` отличается от `.size()` в pandas?",["`count` не учитывает NaN, `size` считает все строки группы","Ничем","`size` возвращает DataFrame, `count` — число","`count` считает уникальные значения"],0,"Это классический «подвох»: группа из NaN-значений даёт count = 0, но size = число строк.");
+
+C("py","Что может произойти при `df.merge(other, on='key')`, если ключ неуникален в одной из таблиц?",["Строки размножатся (по числу совпадений), и суммы «раздуются»","Pandas выбросит ошибку о неуникальном ключе","Останется только первая строка для каждого ключа","Строки с неуникальным ключом будут удалены"],0,"Проверяйте уникальность: `validate='one_to_one'` или `'many_to_one'` — тогда pandas сообщит об ошибке сам.");
+
+C("py","Как в Python называется алгоритм построения порядка разрешения методов при множественном наследовании?",["C3-линеаризация","Алгоритм Дейкстры","Топологическая сортировка DFS","Порядок объявления методов"],0,"Правила C3: потомок раньше предков, порядок баз сохраняется, каждый класс встречается один раз. Посмотреть: `Class.__mro__`.");
+
+I("py","Как называется метод, который нужно определить в классе, чтобы объект можно было вызывать как функцию `obj()`?",["__call__","call"],"Так устроен `nn.Module`: `model(x)` вызывает `__call__`, который запускает хуки и затем `forward`.");
+
+I("py","Какой модуль стандартной библиотеки содержит `lru_cache`, `partial` и `wraps`?",["functools","import functools"],"Также в нём `reduce`, `total_ordering`, `cache`, `singledispatch`.");
+
+I("py","Что вернёт `bool([])`? (True/False)",["False","ложь"],"Пустые коллекции, `0`, `None`, пустая строка — ложные значения (falsy).");
+
+I("py","Каким оператором сравнивают объект с `None` (по правилам PEP 8)?",["is","is none","x is none"],"`is` проверяет идентичность объекта. Он нужен для синглтонов (`None`, `True`, `False`), но не для чисел и строк.");
+
+O("py","Объясните, что такое GIL, к чему он приводит и как работать в многопоточных/CPU-bound задачах.",
+"GIL (Global Interpreter Lock) — мьютекс в CPython: в каждый момент байт-код исполняет только один поток. Он упрощает подсчёт ссылок и написание C-расширений. Следствие: потоки не ускоряют CPU-bound код на чистом Python, но подходят для I/O-bound задач (GIL отпускается при ожидании). Для CPU-bound: multiprocessing, вынос вычислений в NumPy/PyTorch/Numba/Cython (они отпускают GIL), либо free-threaded сборка Python 3.13+ (PEP 703). GIL не делает код потокобезопасным: нужны Lock/Queue.",
+[["Один поток исполняет байт-код","один поток","мьютекс","блокировк"],["I/O-bound: потоки / asyncio","i/o","io-bound","ввод","сеть","asyncio"],["CPU-bound: multiprocessing","multiprocessing","процесс"],["NumPy/C-расширения отпускают GIL","numpy","c-расширен","cython"],["Free-threaded 3.13+","3.13","без gil","free"]],
+"Хороший финал ответа: «в PyTorch DataLoader для обхода GIL использует процессы».");
+
+O("py","Что такое декоратор? Как устроен декоратор с параметрами, например `@retry(times=3)`?",
+"Декоратор — функция, принимающая функцию и возвращающая новую (обычно обёртку): `@d` над `def f` эквивалентно `f = d(f)`. Обёртка принимает `*args, **kwargs`, вызывает исходную функцию и добавляет поведение до или после. `@functools.wraps` сохраняет метаданные. Декоратор с параметрами — это фабрика декораторов, три уровня вложенности: `retry(times)` возвращает `decorator(func)`, который возвращает `wrapper(*args, **kwargs)`. Применения: логирование, замер времени, кеширование (`lru_cache`), повторы, проверка прав.",
+[["Функция принимает функцию и возвращает функцию","принимает функцию","возвращает","обёртк"],["f = d(f)","d(f)","@"],["*args, **kwargs","args","kwargs"],["functools.wraps","wraps"],["Три уровня вложенности для параметров","три","фабрик","уровн"]],
+"Если просят написать: сначала декоратор timer без параметров, затем добавьте внешний уровень для параметров.");
+
+O("py","В чём разница между итератором, итерируемым объектом и генератором? Где генераторы полезны в ML?",
+"Итерируемый объект (iterable) умеет выдавать итератор через `__iter__` (список, строка, файл). Итератор имеет `__next__` и бросает `StopIteration` в конце; он одноразовый. Генератор — функция с `yield`, которая при вызове возвращает итератор и лениво выполняет тело по шагам, сохраняя состояние. Преимущество — память O(1) и ленивость. В ML: построчное чтение огромных файлов, батчирование датасета, бесконечные потоки аугментаций, стриминговая обработка логов.",
+[["Итерируемый: __iter__","__iter__","итерируем"],["Итератор: __next__, StopIteration","__next__","stopiteration","итератор"],["Генератор: yield, ленивость","yield","ленив","генератор"],["Память O(1)","память","o(1)"],["Применение: батчи, файлы, потоки","батч","файл","поток","строк"]],
+"Подвох: итератор можно пройти один раз, повторный проход молча даст пустой результат.");
+
+O("py","Как устроены `dict` и `list` в CPython? Почему поиск в dict в среднем O(1), а вставка в начало списка O(n)?",
+"`list` — динамический массив указателей на объекты. Вставка в начало сдвигает все элементы: O(n). `append` амортизированно O(1) за счёт геометрического роста ёмкости. `dict` — хеш-таблица с открытой адресацией: по `hash(key)` выбирается слот, коллизии разрешаются пробированием; при заполнении примерно на 2/3 таблица расширяется. С Python 3.6 используется компактная раскладка (разреженный массив индексов и плотный массив записей), поэтому порядок вставки сохраняется. Поиск O(1) в среднем, O(n) в худшем при массовых коллизиях.",
+[["list — динамический массив","массив","динамическ"],["Вставка в начало сдвигает элементы O(n)","сдвиг","o(n)"],["dict — хеш-таблица","хеш"],["Коллизии, расширение таблицы","коллиз","расшир","2/3"],["Порядок вставки с 3.7","порядок","вставк"]],
+"Для очереди используйте `collections.deque`: `popleft` за O(1).");
+
+O("py","Назовите самые частые ошибки в PyTorch-коде обучения модели.",
+"Забыт `optimizer.zero_grad()` (градиенты накапливаются). Забыт `model.eval()` и `torch.no_grad()` на валидации (dropout и BatchNorm ведут себя как на обучении, лишняя память). Softmax перед `CrossEntropyLoss` (лосс ожидает логиты). `total += loss` вместо `loss.item()` (утечка графа). Тензоры и модель на разных устройствах. In-place операции на тензорах графа. `best_state = model.state_dict()` без `copy.deepcopy` (ссылка на живые веса). `shuffle=True` не на train. Неверная форма меток для лосса.",
+[["zero_grad","zero_grad"],["eval и no_grad","eval","no_grad"],["Логиты в CrossEntropyLoss","логит","softmax","crossentropy"],["loss.item()","item","detach"],["Устройства / deepcopy / in-place","device","устройств","deepcopy","in-place"]],
+"Про любую ошибку полезно объяснить симптом: «лосс не падает», «NaN», «память растёт каждую эпоху».");
+
+// ===== Математика, вероятность, статистика (глава 3) =====
+C("math","Если векторы нормированы на единичную длину, то косинусная близость равна...",["скалярному произведению","евклидову расстоянию","квадрату нормы разности","нулю"],0,"cos(x, y) = ⟨x, y⟩ / (‖x‖·‖y‖); при ‖x‖ = ‖y‖ = 1 знаменатель равен 1. Также ‖x − y‖² = 2 − 2·cos, поэтому поиск ближайших соседей по косинусу и по евклиду на нормированных векторах эквивалентен.");
+
+C("math","Собственные векторы матрицы XᵀX — это...",["правые сингулярные векторы X (столбцы V); собственные значения равны σ²","левые сингулярные векторы U","строки матрицы X","всегда единичные векторы базиса"],0,"Из SVD: X = UΣVᵀ ⇒ XᵀX = V Σ² Vᵀ. На этом построен PCA: главные компоненты — это столбцы V.");
+
+C("math","Что необходимо сделать перед PCA?",["Центрировать данные; при разных единицах измерения ещё и стандартизировать","Применить one-hot к числовым признакам","Удалить половину признаков","Умножить данные на случайную матрицу"],0,"Без центрирования первая компонента «направится» на среднее значение. Без стандартизации побеждают признаки с большим масштабом (зарплата в рублях против возраста).");
+
+C("math","Учитывает ли PCA целевую переменную?",["Нет: метод без учителя, а направление с малой дисперсией может быть самым важным для предсказания","Да, он выбирает направления с максимальной корреляцией с таргетом","Да, но только в задачах регрессии","Только при `supervised=True`"],0,"Для задач с учителем есть PLS и LDA. PCA — это про дисперсию признаков, а не про таргет.");
+
+C("math","Почему матрица XᵀX + λI обратима при λ > 0 даже при мультиколлинеарности?",["XᵀX положительно полуопределена; добавление λI сдвигает все собственные значения на λ > 0","Потому что λI диагональна","Потому что мы делим на λ","Это неверно: она может быть вырожденной"],0,"Поэтому решение Ridge `w = (XᵀX + λI)⁻¹Xᵀy` существует всегда и численно устойчиво.");
+
+C("math","Градиент функции ‖Xw − y‖² по w равен...",["2Xᵀ(Xw − y)","2X(Xw − y)","(Xw − y)ᵀX","2(Xw − y)"],0,"Приравняв к нулю, получаем нормальное уравнение XᵀXw = Xᵀy и w = (XᵀX)⁻¹Xᵀy.");
+
+C("math","Градиент кросс-энтропии вместе с softmax по логитам z равен...",["softmax(z) − y (y — one-hot)","softmax(z) · y","−y / softmax(z)","y − 1"],0,"Это же даёт ∇L = Xᵀ(p − y)/n для логистической регрессии: «ошибка × признак». Множители σ'(z) сокращаются.");
+
+N("math","Чему равна максимальная производная сигмоиды σ'(z) = σ(z)(1 − σ(z))?",0.25,0.001,"Максимум при z = 0: 0.5 · 0.5 = 0.25. Поэтому при backprop через много сигмоид градиент затухает (≤ 0.25 на слой).");
+
+C("math","X ~ N(0, 1), Y = X². Что верно?",["Cov(X, Y) = 0, но X и Y зависимы","X и Y независимы","Корреляция равна 1","Cov(X, Y) = 1"],0,"Cov(X, X²) = E[X³] − E[X]·E[X²] = 0 для симметричного распределения. Некоррелированность не означает независимость (исключение — совместно гауссовские величины).");
+
+C("math","Почему в несмещённой оценке дисперсии делят на n − 1?",["Отклонения считаются от выборочного среднего, которое «подстроено» под данные; одна степень свободы потрачена на его оценку","Чтобы избежать деления на ноль","Так проще считать","Это соглашение без математического смысла"],0,"E[Σ(xᵢ − x̄)²] = (n − 1)σ². Деление на n − 1 даёт несмещённую оценку (поправка Бесселя).");
+
+C("math","Что означает p-value = 0.03?",["При верной H₀ данные не менее экстремальные, чем наблюдаемые, получаются с вероятностью 3%","H₀ верна с вероятностью 3%","Эффект существует с вероятностью 97%","Результат случаен с вероятностью 3%"],0,"p-value — это P(данные | H₀), а не P(H₀ | данные). Оно не говорит о размере и важности эффекта.");
+
+C("math","Гауссов шум в модели y = wᵀx + ε и метод максимального правдоподобия соответствуют...",["минимизации MSE","минимизации MAE","минимизации log-loss","максимизации accuracy"],0,"Лог-правдоподобие равно константе минус Σ(y − wᵀx)²/(2σ²). Для шума Лапласа получилась бы MAE.");
+
+C("math","Гауссовское априорное распределение весов (MAP) эквивалентно...",["L2-регуляризации (Ridge)","L1-регуляризации (Lasso)","Dropout","Early stopping"],0,"MSE + λ‖w‖², где λ = σ²/τ² (τ² — дисперсия априорного распределения).");
+
+C("math","Априорное распределение Лапласа на веса (MAP) эквивалентно...",["L1-регуляризации (Lasso)","L2-регуляризации","Weight decay в AdamW","Label smoothing"],0,"Лапласовское априорное имеет острый пик в нуле, поэтому сильнее «тянет» веса в ноль: получается разреженность.");
+
+C("math","Что верно про KL-дивергенцию KL(p ‖ q)?",["Неотрицательна, равна 0 только при p = q, несимметрична","Симметрична и может быть отрицательной","Всегда меньше 1","Является метрикой (расстоянием)"],0,"KL(p‖q) = H(p, q) − H(p) ≥ 0. Поскольку H(p) не зависит от модели, минимизация кросс-энтропии то же самое, что минимизация KL.");
+
+C("math","Для какого распределения энтропия при фиксированном числе исходов максимальна?",["Равномерного","Вырожденного (один исход с вероятностью 1)","Нормального","Экспоненциального"],0,"Равномерное распределение — наибольшая неопределённость: log₂(K) бит для K исходов.");
+
+N("math","Во сколько раз нужно увеличить выборку, чтобы стандартная ошибка среднего σ/√n уменьшилась вдвое?",4,0,"SE ∝ 1/√n. Чтобы уменьшить в 2 раза, нужно n·4. Поэтому «ещё чуть-чуть точности» стоит очень дорого.");
+
+C("math","MDE (минимальный детектируемый эффект) в A/B-тесте уменьшили вдвое при тех же α и мощности. Как изменится нужный размер выборки?",["Вырастет в 4 раза","Вырастет в 2 раза","Уменьшится вдвое","Не изменится"],0,"n ≈ 2(z₁₋α/₂ + z₁₋β)²σ²/δ²: размер выборки обратно пропорционален δ².");
+
+C("math","Что такое «подглядывание» (peeking) в A/B-тесте и чем оно опасно?",["Многократная проверка p-value с остановкой при p < 0.05: реальная ошибка I рода вырастает в разы","Просмотр данных до начала эксперимента","Анализ метрик по сегментам","Использование предэкспериментальных данных"],0,"Решения: фиксировать длительность заранее или использовать последовательные тесты (mSPRT, alpha spending).");
+
+N("math","Сколько в среднем «значимых» метрик (при α = 0.05) вы получите из 20 независимых метрик, если эффекта нет вообще?",1,0,"20 × 0.05 = 1. Поправки на множественные сравнения: Бонферрони, Холм, Бенджамини–Хохберг.");
+
+C("math","Планировали разбиение 50/50, а получили 50.8/49.2 на миллионе пользователей. Что это?",["SRM (Sample Ratio Mismatch): сплитование сломано, результаты теста использовать нельзя","Нормальный разброс, всё в порядке","Эффект новизны","Ошибка II рода"],0,"Проверяется χ²-тестом. Причины: баги в рандомизации, боты, разные условия фильтрации по группам.");
+
+C("math","Как CUPED снижает дисперсию метрики в A/B-тесте?",["Использует предэкспериментальное значение метрики как ковариату: Y − θ(X − mean(X)); дисперсия падает в 1/(1 − ρ²) раз","Увеличивает выборку","Удаляет выбросы","Меняет уровень значимости"],0,"Чем сильнее корреляция ρ между метрикой до и во время эксперимента, тем сильнее выигрыш при том же размере выборки.");
+
+C("math","Как работает бутстрап?",["Многократный пересэмплинг данных с возвращением и расчёт статистики по каждой выборке","Разбиение данных на фолды без пересечений","Добавление шума в данные","Удаление выбросов и пересчёт среднего"],0,"Распределение статистики по бутстрап-выборкам даёт доверительный интервал для любой метрики (медиана, AUC, разность квантилей) без предположений о распределении.");
+
+C("math","Что верно для распределения Пуассона Poisson(λ)?",["Среднее равно дисперсии и равно λ","Среднее вдвое больше дисперсии","Дисперсия равна λ²","Дисперсия равна нулю"],0,"Применяется для счётных событий за интервал. Если дисперсия данных заметно больше среднего (overdispersion), используют отрицательное биномиальное.");
+
+C("math","Что значит «отсутствие памяти» у экспоненциального распределения?",["P(X > s + t | X > s) = P(X > t): прошедшее время ожидания не влияет на оставшееся","Распределение не зависит от параметра","Выборки независимы между собой","Среднее равно нулю"],0,"Единственное непрерывное распределение с этим свойством. Его дискретный аналог — геометрическое.");
+
+C("math","Какая из задач оптимизации выпуклая?",["Логистическая регрессия (log-loss)","Обучение глубокой нейросети","k-means","Обучение GAN"],0,"Log-loss в линейной модели выпукла, и любой локальный минимум глобальный. Остальные задачи невыпуклые.");
+
+C("math","Что показывает число обусловленности матрицы κ = σ_max / σ_min?",["Насколько ошибки во входе усиливаются при решении системы; большое κ — плохая обусловленность","Ранг матрицы","Определитель матрицы","Число нулевых собственных значений"],0,"Большое κ — мультиколлинеарность в регрессии, «овражные» функции потерь, медленная сходимость градиентного спуска.");
+
+C("math","Сложность решения линейной регрессии нормальным уравнением (n объектов, d признаков)?",["O(n·d² + d³)","O(n²)","O(n·d)","O(d)"],0,"Построение XᵀX стоит O(n·d²), решение системы — O(d³). Поэтому при больших d используют градиентные методы.");
+
+C("math","Верно ли, что E[X + Y] = E[X] + E[Y] для зависимых величин?",["Да, всегда (линейность матожидания)","Только для независимых","Только для нормальных","Только если Cov(X, Y) = 0"],0,"Это главный приём в задачах «ожидаемое количество»: индикаторы можно складывать, даже если они зависимы.");
+
+C("math","Зачем в Adam нужна поправка смещения m̂ = m/(1 − β₁ᵗ)?",["В начале обучения m и v инициализированы нулями и занижены; поправка компенсирует это","Чтобы ускорить вычисления","Чтобы регуляризовать веса","Чтобы предотвратить переобучение"],0,"Без поправки первые шаги были бы слишком маленькими, особенно по v (β₂ = 0.999).");
+
+N("math","Болезнью болеет 1% людей. Тест даёт положительный результат у 99% больных и у 5% здоровых. Тест положительный. Вероятность болезни в %? (округлите до целого)",17,0.6,"P(+) = 0.99·0.01 + 0.05·0.99 = 0.0594; P(Б|+) = 0.0099/0.0594 ≈ 16.7%. Здоровых в 99 раз больше, поэтому даже 5% ложных срабатываний дают в 5 раз больше ложных тревог, чем истинных.");
+
+N("math","Сколько в среднем бросков монеты нужно до первого появления двух орлов подряд (ОО)?",6,0,"E₀ = 1 + ½E₁ + ½E₀, E₁ = 1 + ½·0 + ½E₀ ⇒ E₀ = 6. Для ОР ответ 4: после неудачи мы не теряем весь прогресс.");
+
+N("math","Сколько в среднем бросков кубика нужно, чтобы выпали все 6 граней? (округлите до десятых)",14.7,0.11,"Собиратель купонов: E = 6·(1/6 + 1/5 + 1/4 + 1/3 + 1/2 + 1) = 6·H₆ = 14.7. В общем случае n·Hₙ ≈ n ln n.");
+
+N("math","Палку ломают в двух случайных точках. Вероятность, что из трёх кусков можно сложить треугольник? (десятичная дробь)",0.25,0.005,"Нужно, чтобы каждый кусок был короче половины палки. На единичном квадрате (x, y) это два треугольника суммарной площадью 1/4.");
+
+N("math","В семье двое детей, известно, что хотя бы один — мальчик. Вероятность, что оба мальчики? (десятичная дробь или a/b)",0.333,0.005,"Исходы ММ, МД, ДМ, ДД; ДД исключён, из трёх оставшихся подходит один: 1/3. (Если «старший — мальчик», ответ 1/2.)");
+
+N("math","Монти Холл: вероятность выиграть машину, если всегда менять выбор? (десятичная дробь или a/b)",0.667,0.005,"Ведущий знает, где машина, и не открывает её. Исходный выбор верен с вероятностью 1/3, значит при смене выигрыш 2/3.");
+
+N("math","n человек разобрали шляпы случайно. Сколько в среднем человек получит свою шляпу?",1,0,"Линейность матожидания: n индикаторов, каждый равен 1 с вероятностью 1/n. E = n·(1/n) = 1 при любом n.");
+
+N("math","Парадокс дней рождения: при каком минимальном числе людей вероятность совпадения дней рождения превышает 50%?",23,0,"P(все разные) = ∏(365 − i)/365 при i = 0..22 ≈ 0.493. Число пар C(23, 2) = 253 растёт квадратично. Эта же идея объясняет коллизии хешей.");
+
+N("math","Конверсия баннера 2%, показали 100 раз. Вероятность хотя бы одного клика? (десятичная дробь)",0.867,0.01,"1 − 0.98¹⁰⁰ ≈ 1 − 0.133 = 0.867. Приближение Пуассона: 1 − e⁻² ≈ 0.865. Типичная ошибка — сложить вероятности.");
+
+N("math","E[max(X, Y)] для независимых X, Y ~ U(0, 1)? (десятичная дробь или a/b)",0.667,0.005,"P(max ≤ t) = t², плотность 2t, E = ∫ t·2t dt = 2/3. Поэтому E[min] = 1/3 (max + min = X + Y).");
+
+N("math","Var(X) = 4. Чему равна Var(3X + 5)?",36,0,"Var(aX + b) = a²Var(X) = 9·4 = 36. Сдвиг не меняет дисперсию.");
+
+N("math","Энтропия честной монеты в битах?",1,0,"H = −Σ p log₂ p = −2·(½ · log₂ ½) = 1 бит. Для честного 8-гранного кубика было бы 3 бита.");
+
+N("math","A/B-тест конверсии (базовая ≈ 10%, дисперсия σ² = 0.09). Хотим обнаружить рост на δ = 0.01 при α = 0.05 и мощности 80%. Оцените размер КАЖДОЙ группы по «правилу 16»: n ≈ 16σ²/δ².",14400,600,"16·0.09/0.0001 = 14 400. Точная формула с z-значениями даёт около 14 100. Правило 16 удобно оценивать в уме.");
+
+O("math","Выведите решение линейной регрессии методом наименьших квадратов. Когда оно не существует или нестабильно и что с этим делать?",
+"L(w) = ‖Xw − y‖² = wᵀXᵀXw − 2yᵀXw + yᵀy. Градиент: 2XᵀXw − 2Xᵀy. Приравниваем к нулю и получаем нормальное уравнение XᵀXw = Xᵀy, откуда w* = (XᵀX)⁻¹Xᵀy. Функция выпукла (гессиан 2XᵀX положительно полуопределён), поэтому стационарная точка — глобальный минимум. Если столбцы X линейно зависимы (мультиколлинеарность), XᵀX вырождена или плохо обусловлена. Решения: L2-регуляризация (XᵀX + λI всегда обратима при λ > 0), удаление или объединение признаков, PCA, использование `lstsq`/SVD вместо явного обращения.",
+[["Градиент 2XᵀXw − 2Xᵀy","градиент","2x"],["Нормальное уравнение XᵀXw = Xᵀy","нормальн","xᵀxw","xtxw"],["Выпуклость → глобальный минимум","выпукл","глобальн"],["Мультиколлинеарность → вырожденность","коллинеар","вырожд","обусловл"],["Ridge: λI","ridge","λi","регуляр"]],
+"На интервью хорошо звучит добавление: «на практике я бы использовал `np.linalg.solve` или `lstsq`, а не `inv`».");
+
+O("math","Как вы объясните p-value нетехническому менеджеру и чего оно НЕ означает?",
+"p-value — это вероятность увидеть такой же или более сильный результат, как в эксперименте, если на самом деле никакого эффекта нет (H₀ верна). Маленькое p-value означает, что «случайно» такой результат получился бы редко, поэтому мы отвергаем «эффекта нет». Оно НЕ означает вероятность того, что гипотеза верна; НЕ говорит, насколько эффект велик или важен для бизнеса (при огромной выборке значим даже ничтожный эффект); большое p-value не доказывает отсутствие эффекта (возможно, не хватило мощности).",
+[["Определение через H₀ и «не менее экстремальный»","h₀","h0","нет эффекта","экстремальн"],["Не вероятность гипотезы","не вероятност","не означает"],["Не размер эффекта","размер","важн","практическ"],["Мощность / выборка","мощност","выборк"]],
+"Добавьте доверительный интервал: он показывает и значимость, и размер эффекта.");
+
+O("math","Вы запустили A/B-тест на 15 метриках, одна из них показала p = 0.03, остальные не значимы. Что вы скажете команде?",
+"Скорее всего, это ложноположительный результат из-за множественных сравнений: при 15 метриках и α = 0.05 ожидается около 0.75 случайных «значимых». Нужно определить главную метрику заранее; для остальных применять поправки (Бонферрони, Холм, Бенджамини–Хохберг: с p = 0.03 при 15 сравнениях значимость пропадает). Проверить SRM и корректность сплита, динамику эффекта по дням, размер эффекта и доверительный интервал. При необходимости провести повторный эксперимент, подтверждающий гипотезу.",
+[["Множественные сравнения","множествен","15 метрик","сравнен"],["Поправка","бонферрони","холм","бенджамини","поправк"],["Главная метрика заранее","главн","заранее"],["SRM / проверка сплита","srm","сплит"],["Повторный эксперимент / размер эффекта","повтор","интервал","размер эффекта"]],
+"Фраза «сначала проверю дизайн эксперимента, потом метрику» показывает зрелость.");
+
+O("math","Объясните, как работает PCA, как выбрать число компонент и в каких случаях PCA не подходит.",
+"Центрируем данные (и стандартизируем при разных шкалах), считаем ковариационную матрицу или SVD центрированной матрицы X = UΣVᵀ. Главные компоненты — столбцы V (собственные векторы XᵀX) в порядке убывания собственных значений; доля объяснённой дисперсии k-й компоненты λₖ/Σλ. Число компонент выбирают по накопленной объяснённой дисперсии (например, 90–95%), по «локтю» или по качеству downstream-модели. Не подходит: нелинейная структура (нужны t-SNE/UMAP/автоэнкодеры), когда важны признаки с малой дисперсией (PCA не учитывает таргет), когда нужна интерпретируемость исходных признаков.",
+[["Центрирование / стандартизация","центрир","стандартиз"],["SVD / собственные векторы","svd","собственн"],["Объяснённая дисперсия","дисперси"],["Нелинейность → t-SNE/UMAP","нелиней","t-sne","umap"],["Без учителя / таргет не учитывается","таргет","без учителя"]],
+"Связь с SVD и теоремой Эккарта–Янга: PCA даёт лучшее приближение ранга k по норме Фробениуса.");
+
+// ===== Классическое машинное обучение и метрики (глава 4) =====
+C("ml","Ошибка на обучающей выборке высокая и почти равна ошибке на валидации. Что это и что делать?",["Высокий bias (недообучение): усложнить модель, добавить признаки, ослабить регуляризацию","Высокий variance (переобучение): добавить регуляризацию","Утечка данных","Это нормально, ничего делать не нужно"],0,"Высокий variance виден по разрыву: train низкая, val высокая. Если же обе плохие и близки — модель слишком проста или признаки неинформативны.");
+
+C("ml","Разложение ошибки на тесте для MSE:",["Bias² + Variance + неустранимый шум σ²","Bias + Variance","Variance − Bias²","Bias² · Variance"],0,"Bias — смещение среднего предсказания относительно истины, Variance — разброс предсказаний при смене обучающей выборки, σ² — шум в данных.");
+
+C("ml","Бэггинг снижает в первую очередь...",["variance","bias","шум в данных","размерность"],0,"Усреднение независимых моделей уменьшает разброс; bias почти не меняется. Бустинг, наоборот, снижает прежде всего bias.");
+
+C("ml","Зачем случайный лес на каждом разбиении выбирает случайное подмножество признаков?",["Чтобы декоррелировать деревья: дисперсия ансамбля = ρσ² + (1 − ρ)σ²/B, а при большом B остаётся ρσ²","Чтобы ускорить обучение","Чтобы уменьшить bias","Чтобы деревья были мельче"],0,"Сильный признак иначе попал бы в корень каждого дерева, и деревья были бы почти одинаковыми.");
+
+N("ml","Какая примерно доля объектов НЕ попадает в бутстрап-выборку (OOB)? Ответ в долях, округлите до сотых.",0.37,0.01,"(1 − 1/n)ⁿ → 1/e ≈ 0.368. По этим «внешним» объектам считают OOB-оценку качества без отдельной валидации.");
+
+C("ml","Почему L1-регуляризация зануляет веса, а L2 — нет?",["Производная |w| по модулю равна λ даже около нуля и тянет вес к нулю с постоянной силой; у w² производная 2λw исчезает у нуля","L1 использует больше памяти","L2 не умеет уменьшать веса","Это зависит только от learning rate"],0,"Геометрически: линии уровня потерь чаще всего касаются «углов» ромба L1 на осях, где одна из координат равна нулю.");
+
+C("ml","Какие модели требуют масштабирования признаков?",["kNN, SVM, k-means, PCA, линейные модели с регуляризацией, нейросети","Деревья решений, случайный лес, градиентный бустинг","Только нейросети","Никакие"],0,"Деревья инвариантны к монотонным преобразованиям признаков: разбиение `x ≤ t` не зависит от масштаба. Статистики для масштабирования считаются только на трейне.");
+
+C("ml","Почему для логистической регрессии не используют MSE?",["С сигмоидой MSE невыпукла и градиент затухает при уверенных ошибках; log-loss следует из правдоподобия Бернулли и даёт градиент p − y","MSE нельзя дифференцировать","MSE не работает для бинарных меток","На самом деле используют именно MSE"],0,"В градиенте MSE по z остаётся множитель σ'(z), а в log-loss он сокращается.");
+
+C("ml","В логистической регрессии `exp(wⱼ)` интерпретируется как...",["во сколько раз меняются шансы (odds) при росте признака на единицу","вероятность класса 1","вклад признака в accuracy","корреляцию признака с таргетом"],0,"Линейная часть — это логарифм шансов: log(p/(1 − p)) = wᵀx + b.");
+
+C("ml","Что происходит с весами логистической регрессии без регуляризации на линейно разделимых данных?",["Растут до бесконечности (правдоподобие можно увеличивать, делая сигмоиду круче)","Сходятся к нулю","Всё нормально, веса конечны","Алгоритм выдаёт ошибку деления на ноль"],0,"Регуляризация (L2) решает проблему: штраф не даёт весам расти.");
+
+C("ml","Большое значение параметра C в soft-margin SVM означает...",["меньше ошибок на трейне и более узкий зазор (риск переобучения)","более широкий зазор и сильную регуляризацию","отсутствие опорных векторов","линейное ядро"],0,"Функция потерь: ½‖w‖² + C·Σ hinge. Большое C сильнее штрафует ошибки.");
+
+C("ml","Что такое kernel trick?",["В двойственной задаче данные входят только через скалярные произведения, и их заменяют на ядро K(x, x') без явного перехода в пространство признаков","Умножение признаков на ядро свёртки","Метод удаления выбросов","Способ ускорить градиентный спуск"],0,"RBF-ядро соответствует бесконечномерному пространству. Цена: обучение с ядром от O(n²) до O(n³).");
+
+C("ml","Что такое «проклятие размерности» для kNN?",["В высокой размерности расстояния до ближайшего и дальнего соседа становятся почти одинаковыми","Алгоритм перестаёт быть детерминированным","Нужно слишком много памяти для весов","kNN нельзя применять к числовым данным"],0,"Помогают понижение размерности, отбор признаков, обучаемые эмбеддинги.");
+
+N("ml","В узле дерева 10 объектов: 6 класса A и 4 класса B. Чему равен индекс Джини узла?",0.48,0.005,"G = 1 − 0.6² − 0.4² = 1 − 0.36 − 0.16 = 0.48.");
+
+N("ml","Разбиение узла (6 A, 4 B) даёт левый узел (5 A, 0 B) и правый (1 A, 4 B). Каков прирост по Джини (ΔG = G_родителя − взвешенный G детей)?",0.32,0.005,"G(L) = 0; G(R) = 1 − 0.2² − 0.8² = 0.32; взвешенное среднее после разбиения 0.5·0 + 0.5·0.32 = 0.16. Прирост 0.48 − 0.16 = 0.32.");
+
+C("ml","Почему деревья решений не умеют экстраполировать?",["Предсказание в листе — константа (среднее по обучающим объектам листа), за пределами данных получаем значение крайнего листа","Из-за ограничения глубины","Деревья работают только с категориальными признаками","Они используют только классификацию"],0,"Если таргет растёт со временем, бустинг на деревьях предскажет «плато». Решения: вычесть тренд линейной моделью, предсказывать приросты, линейные листья.");
+
+C("ml","На что обучается каждое следующее дерево в градиентном бустинге?",["На псевдоостатки: отрицательный градиент функции потерь по текущим предсказаниям","На случайную подвыборку исходных меток","На ошибки только последнего дерева, без учёта ансамбля","На исходные метки с другими весами"],0,"Для MSE это обычные остатки y − F, для log-loss — y − p. Это градиентный спуск в пространстве функций.");
+
+C("ml","Что даёт уменьшение learning rate в бустинге при увеличении числа деревьев?",["Обычно лучшее качество (shrinkage — регуляризация), но обучение и инференс дольше","Всегда худшее качество","Уменьшает bias до нуля","Ничего"],0,"Практика: lr 0.01–0.1 и число деревьев через early stopping по валидации.");
+
+C("ml","Зачем в CatBoost ordered boosting?",["Остатки для объекта считаются моделью, не видевшей этот объект в перестановке: борьба с prediction shift (утечка таргета)","Для ускорения обучения","Для работы с текстом","Чтобы деревья были несимметричными"],0,"Тот же принцип в ordered target statistics для категориальных признаков: среднее таргета считается только по предшествующим объектам.");
+
+C("ml","Чем LightGBM отличается от XGBoost в росте деревьев?",["LightGBM растит дерево по листьям (leaf-wise): быстрее, но легче переобучить; XGBoost по умолчанию — по уровням","LightGBM использует только неглубокие деревья","Они одинаковы","LightGBM не поддерживает регрессию"],0,"Дополнительно в LightGBM: гистограммы, GOSS (сэмплирование по градиенту), EFB (склейка разреженных признаков).");
+
+C("ml","В датасете 1% позитивов. Модель «всегда негатив» имеет accuracy 99%. Что смотреть вместо accuracy?",["PR-AUC, precision/recall при рабочем пороге, F1","Только accuracy на валидации","MSE","R²"],0,"При сильном дисбалансе ROC-AUC тоже может выглядеть оптимистично: FPR делится на огромное число негативов.");
+
+N("ml","TP = 30, FP = 10, FN = 20. Чему равен F1? (округлите до сотых)",0.67,0.01,"Precision = 30/40 = 0.75; Recall = 30/50 = 0.6; F1 = 2·0.75·0.6/(0.75 + 0.6) = 0.667.");
+
+C("ml","Как интерпретируется ROC-AUC?",["Вероятность того, что случайный позитивный объект получит скор выше случайного негативного","Доля правильных ответов при пороге 0.5","Среднее precision по порогам","Доля позитивных объектов в топ-k"],0,"AUC = 0.5 — случайный порядок, 1 — идеальный. Он инвариантен к монотонным преобразованиям скоров и не отражает калибровку.");
+
+C("ml","ROC-AUC модели равен 0.3. Что это значит?",["Модель ранжирует «наоборот»: инвертировав скоры, получим AUC 0.7","Модель слабая, но порядок верный","Ошибка в расчёте: AUC не может быть меньше 0.5","Это эквивалентно accuracy 30%"],0,"AUC < 0.5 — признак перепутанных меток или знака скора. Для 1 − AUC достаточно инвертировать предсказания.");
+
+N("ml","Чему равен коэффициент Gini, если ROC-AUC = 0.85?",0.7,0.001,"Gini = 2·AUC − 1 = 0.7. Так метрику называют в банковском скоринге.");
+
+C("ml","Какое предсказание оптимально для MAE, а какое для MSE?",["MAE — медиана, MSE — среднее (условное матожидание)","MAE — среднее, MSE — медиана","Для обеих — мода","Для обеих — среднее"],0,"Поэтому MAE устойчива к выбросам, а MSE сильно штрафует большие ошибки. Квантильная функция потерь даёт оптимальный τ-квантиль.");
+
+C("ml","В чём главный недостаток MAPE?",["Не определена при y = 0 и поощряет занижение прогнозов","Нечувствительна к масштабу","Слишком устойчива к выбросам","Не может быть отрицательной"],0,"Альтернативы: WAPE = Σ|y − ŷ|/Σ|y|, SMAPE, MAE.");
+
+C("ml","Какая схема валидации нужна для данных во времени?",["TimeSeriesSplit / окно: обучение на прошлом, проверка на будущем","Обычный K-Fold с перемешиванием","Leave-one-out","Stratified K-Fold"],0,"Случайное разбиение даёт утечку из будущего и завышенную метрику. Иногда делают зазор (gap) между train и val.");
+
+C("ml","Какая схема валидации нужна, если у каждого пользователя несколько записей?",["GroupKFold по пользователям","Обычный K-Fold","Stratified K-Fold по таргету без групп","Leave-one-out"],0,"Иначе одни и те же пользователи окажутся и в train, и в val: модель «запомнит» пользователей.");
+
+C("ml","Масштабирование (StandardScaler) обучили на всём датасете, а потом разбили на train/test. Что не так?",["Утечка: статистики теста попали в обучение. Нужен Pipeline или fit только на train","Ничего, это стандартная практика","Нужно было использовать MinMaxScaler","Нужно было масштабировать только тест"],0,"То же касается импутации, отбора признаков, PCA, target encoding. В кросс-валидации используйте `Pipeline`.");
+
+C("ml","Как корректно делать target encoding категориального признака?",["Out-of-fold: статистика для объекта считается по другим фолдам, со сглаживанием к глобальному среднему","Среднее таргета по всей выборке для каждой категории","Случайные числа для каждой категории","Только one-hot"],0,"Иначе объект «видит» собственную метку (утечка), особенно у редких категорий.");
+
+C("ml","Что верно про ресэмплинг (SMOTE, undersampling) при дисбалансе?",["Выполняется только на train внутри кросс-валидации; вероятности после него нужно перекалибровать","Выполняется на всём датасете до разбиения","Всегда улучшает качество бустинга","Не меняет калибровку вероятностей"],0,"Если изменить долю классов при обучении, предсказанные вероятности смещаются, их нужно пересчитать или откалибровать на отложенной выборке.");
+
+C("ml","Какие модели обычно плохо откалиброваны «из коробки»?",["Наивный Байес, SVM, случайный лес, бустинг с балансировкой классов, глубокие сети","Логистическая регрессия","Линейная регрессия","kNN с k = 1"],0,"Логистическая регрессия оптимизирует log-loss и обычно хорошо калибрована. Калибровка: Platt, isotonic, temperature scaling.");
+
+C("ml","Когда isotonic regression для калибровки лучше Platt scaling?",["Когда данных достаточно много и искажение не сигмоидальное; при малых данных isotonic переобучается","Всегда","Когда данных очень мало","Когда нужно калибровать регрессию"],0,"Platt scaling — логистическая регрессия поверх скора, всего 2 параметра.");
+
+C("ml","Чем permutation importance лучше MDI (impurity-based importance) деревьев?",["MDI считается на трейне и завышает важность непрерывных/высококардинальных признаков, permutation importance считается на валидации","MDI всегда точнее","Permutation importance не зависит от модели и не требует данных","Они совпадают"],0,"Минус permutation: при коррелированных признаках важность «делится» между двойниками и занижается.");
+
+C("ml","Что даёт SHAP?",["Вклад каждого признака в конкретное предсказание на основе значений Шепли; можно агрегировать до глобальной важности","Только глобальную важность признаков","Причинно-следственные эффекты","Калибровку вероятностей"],0,"TreeSHAP считает точные значения для деревьев за полиномиальное время. Важность ≠ причинность.");
+
+C("ml","Что верно про k-means?",["Находит локальный минимум inertia, чувствителен к инициализации, масштабу и выбросам; предполагает выпуклые «сферические» кластеры","Всегда находит глобальный оптимум","Сам определяет число кластеров","Работает с любой формой кластеров"],0,"Используют k-means++ и несколько запусков (`n_init`). Для кластеров произвольной формы и шума — DBSCAN.");
+
+C("ml","Что верно про t-SNE?",["Для визуализации: сохраняет локальные соседства, расстояния между кластерами и их размеры на картинке ничего не значат","Подходит как предобработка для моделей так же, как PCA","Детерминирован и не зависит от параметров","Сохраняет глобальные расстояния"],0,"UMAP быстрее и лучше сохраняет глобальную структуру, его можно применять к новым точкам.");
+
+C("ml","Для чего при стекинге нужны out-of-fold предсказания базовых моделей?",["Чтобы мета-модель обучалась на предсказаниях, сделанных не на тех объектах, на которых базовая модель училась (иначе утечка)","Чтобы ускорить обучение","Чтобы уменьшить число базовых моделей","Для балансировки классов"],0,"Блендинг — упрощённая версия с отдельной отложенной выборкой.");
+
+C("ml","ROC-AUC (Gini) модели вырос, а прибыль упала. Что вероятнее всего объясняет это?",["Офлайн-метрика не соответствует бизнес-цели (порог, сегменты, калибровка, стоимость ошибок) либо есть утечка или сдвиг данных","Эффект случайности: AUC не связан с прибылью никогда","Ошибка в расчёте accuracy","Слишком большая выборка"],0,"Нужно смотреть метрику на рабочем пороге, по сегментам, в деньгах и проверять калибровку и дрейф.");
+
+C("ml","На валидации качество отличное, а в проде плохое. Что проверить в первую очередь?",["Утечку, расхождение распределений (дрейф), training-serving skew и корректность схемы валидации","Только размер модели","Только версию Python","Ничего, это нормально"],0,"Часто причина — признаки в проде считаются иначе, чем при обучении, или валидация была случайной, а не по времени.");
+
+C("ml","Как лучше всего обработать пропуски в признаке, если сам факт пропуска может быть информативным?",["Импутировать и добавить бинарный индикатор «пропущено»","Всегда удалить строки","Заполнить нулями без индикатора","Игнорировать пропуски"],0,"Статистики импутации считаются только на train. Бустинги (XGBoost, LightGBM, CatBoost) умеют работать с NaN напрямую.");
+
+C("ml","Какая функция потерь подходит, если прогноз времени доставки нужно «выполнять» в 90% случаев (опоздание хуже раннего приезда)?",["Квантильная (pinball) с τ = 0.9","MSE","MAE","Accuracy"],0,"Квантильная потеря асимметрична: недооценка штрафуется сильнее переоценки. Дополнительно: прогноз в логарифмической шкале из-за скошенности.");
+
+C("ml","Что такое NDCG@k?",["Дисконтированная сумма релевантностей с логарифмическим штрафом за позицию, нормированная на идеальный порядок","Доля релевантных документов среди первых k","Среднее обратных рангов первого релевантного","Площадь под ROC-кривой для топ-k"],0,"DCG@k = Σ (2^rel − 1)/log₂(i + 1). Значение NDCG лежит в [0, 1], 1 — идеальное ранжирование.");
+
+C("ml","Чем MRR отличается от NDCG?",["MRR учитывает только позицию первого релевантного документа, а NDCG — все релевантные с градацией","MRR работает только с бинарной классификацией","NDCG не учитывает порядок","Они одинаковы"],0,"MRR = среднее 1/rank первого релевантного. Подходит для задач, где нужен один правильный ответ (QA, навигационный поиск).");
+
+C("ml","Что верно про Naive Bayes?",["Предполагает условную независимость признаков при известном классе; вероятности плохо калиброваны; для нулевых частот нужно сглаживание Лапласа","Не требует предположений","Работает только с числами","Всегда лучше бустинга"],0,"Несмотря на «наивность», хорошо работает на текстах и малых данных, так как для классификации важен лишь argmax.");
+
+C("ml","Чем дискриминативная модель отличается от генеративной?",["Дискриминативная моделирует P(y|x), генеративная — совместное P(x, y) и умеет генерировать данные","Дискриминативная всегда нелинейна","Генеративная работает только с изображениями","Разницы нет"],0,"Дискриминативные (логрег, SVM, бустинг) обычно точнее при достаточном объёме данных; генеративные (наивный Байес, GMM, VAE, LLM) лучше на малых данных.");
+
+C("ml","Для задачи «предсказать отток, бюджет удерживающей кампании ограничен» лучше всего подходит...",["precision@k / lift@k и PR-AUC (важна верхушка списка), в идеале — ожидаемая экономия или uplift","accuracy","MSE","Только ROC-AUC"],0,"Сильнее вероятности оттока — предсказание эффекта воздействия (uplift-моделирование).");
+
+C("ml","Test-выборка используется для...",["Финальной оценки качества один раз","Подбора гиперпараметров","Обучения","Выбора порога"],0,"Если многократно смотреть на тест и менять модель, он превращается в валидацию и оценка становится оптимистичной.");
+
+C("ml","Что такое early stopping в бустинге и зачем он нужен?",["Остановка добавления деревьев, когда метрика на валидации перестала улучшаться; защита от переобучения","Остановка обучения при достижении нуля на трейне","Уменьшение learning rate","Остановка работы кросс-валидации"],0,"Число деревьев — гиперпараметр, подбираемый по валидации.");
+
+C("ml","Дано: баннер показали 100 раз, было 3 клика. Как оценить CTR устойчивее, чем 3%?",["Байесовское сглаживание Beta-распределением (добавить априорные «показы/клики»)","Взять 0","Не оценивать","Использовать медиану"],0,"Beta(α, β) сопряжено с Bernoulli: CTR = (клики + α)/(показы + α + β). При малом числе показов оценка тянется к среднему.");
+
+I("ml","Какая метрика классификации показывает долю найденных позитивов среди всех реальных позитивов? (одно слово)",["recall","полнота","tpr","sensitivity","чувствительность"],"Recall = TP/(TP + FN). Важна, когда дороги пропуски (фрод, болезни).");
+
+I("ml","Как называется ошибка, когда мы пропускаем реальный эффект (не отвергаем неверную H₀)? (номер или «II рода»)",["II рода","2 рода","второго рода","ii","2","ошибка ii рода","ошибка 2 рода"],"Ошибка II рода — FN, вероятность β; мощность = 1 − β. Ошибка I рода — FP, вероятность α.");
+
+I("ml","Какой метод кластеризации умеет находить шум и кластеры произвольной формы? (название)",["DBSCAN","db-scan"],"DBSCAN использует плотность в радиусе eps; минусы — подбор eps и разная плотность кластеров.");
+
+O("ml","Объясните компромисс bias-variance и как он проявляется на кривых обучения.",
+"Ожидаемая ошибка = Bias² + Variance + σ². Bias — систематическая ошибка из-за слишком простой модели; Variance — чувствительность к конкретной обучающей выборке из-за слишком гибкой модели. На кривых обучения: высокий bias — train и val ошибки высокие и близки; высокий variance — train низкая, val высокая, между ними разрыв. При росте сложности bias падает, variance растёт; оптимум — минимум суммы. Лечение bias: усложнить модель, добавить признаки, меньше регуляризации. Лечение variance: больше данных, регуляризация, бэггинг, dropout, early stopping, упрощение. В глубоких сетях возможен «двойной спуск».",
+[["Bias² + Variance + шум","bias","шум"],["Недообучение: обе ошибки высокие","недообуч","обе"],["Переобучение: разрыв train/val","переобуч","разрыв"],["Лечение: данные, регуляризация, бэггинг","регуляриз","бэггинг","данных"],["Усложнение / признаки","усложн","признак"]],
+"Нарисуйте U-образный график ошибки на тесте и отметьте оптимум: интервьюеры это любят.");
+
+O("ml","Сравните бэггинг и бустинг: идея, что снижают, чувствительность к шуму и переобучению.",
+"Бэггинг: независимые модели на бутстрап-выборках, усреднение; снижает variance; базовые модели — глубокие деревья; хорошо параллелится; число деревьев не приводит к переобучению (случайный лес). Бустинг: модели строятся последовательно, каждая исправляет ошибки ансамбля (в градиентном бустинге — аппроксимирует антиградиент функции потерь); снижает bias; базовые модели неглубокие; чувствительнее к шуму и выбросам, переобучается при большом числе деревьев, нужен early stopping и shrinkage. Современные реализации: XGBoost, LightGBM, CatBoost.",
+[["Бэггинг: независимо, variance","независим","variance","бутстрап"],["Бустинг: последовательно, bias","последовательн","bias"],["Градиент / остатки","градиент","остатк"],["Переобучение бустинга / early stopping","early","переобуч"],["Параллелизм бэггинга","параллел"]],
+"Формула дисперсии ансамбля ρσ² + (1 − ρ)σ²/B объясняет, зачем нужна декорреляция.");
+
+O("ml","Что такое утечка данных (data leakage)? Приведите 4 типа с примерами и способами предотвращения.",
+"Утечка — использование при обучении информации, недоступной в момент реального предсказания: метрики завышены, в проде модель хуже. Типы: 1) утечка таргета — признак, вычисленный после события (сумма возврата в задаче «вернут ли товар»); 2) утечка из будущего — случайное разбиение временного ряда, агрегаты за период, включающий будущее; 3) утечка при предобработке — scaler, импутация, PCA, отбор признаков обучены на всех данных до разбиения (решение: Pipeline); 4) target encoding без out-of-fold; 5) дубликаты и группы между train и test (GroupKFold). Диагностика: подозрительно высокая метрика и важность одного признака.",
+[["Утечка таргета","таргет","после событ"],["Утечка из будущего / разбиение по времени","будущ","времен"],["Предобработка до разбиения / Pipeline","pipeline","предобработ","scaler"],["Target encoding out-of-fold","out-of-fold","target encoding","oof"],["Группы и дубликаты","групп","дубликат","groupkfold"]],
+"Универсальный вопрос для каждого признака: «будет ли это значение известно в момент предсказания?»");
+
+O("ml","Как бороться с сильным дисбалансом классов (1% позитивов)? Какую метрику выбрать?",
+"Метрика: не accuracy, а PR-AUC, F1, recall при ограничении на precision, бизнес-стоимость; ROC-AUC при дисбалансе может быть оптимистичен. Методы: веса классов (`class_weight`, `scale_pos_weight`), ресэмплинг (undersampling большинства, oversampling, SMOTE) только на train внутри CV, focal loss, подбор порога вместо 0.5, ансамбли и сбор дополнительных данных. После ресэмплинга вероятности смещаются, их нужно перекалибровать. Всегда стратифицированное разбиение.",
+[["PR-AUC, F1, recall, precision","pr-auc","f1","recall","precision"],["Веса классов","вес","class_weight"],["Ресэмплинг / SMOTE только на train","ресэмпл","smote","undersampl","oversampl"],["Порог","порог"],["Калибровка / стратификация","калибров","стратиф"]],
+"Спросите, что дороже: пропуск или ложная тревога. От этого зависит, куда двигать порог.");
+
+O("ml","Модель хорошо работает офлайн, но в A/B-тесте эффекта нет. Почему может быть так? Что проверите?",
+"Причины: офлайн-метрика не соответствует бизнес-цели; selection bias офлайн-данных (логи старой модели) и position bias; утечка в офлайн-валидации; training-serving skew (разный расчёт признаков); дрейф данных между периодами; улучшена не та часть системы (узкое место — генерация кандидатов); выросла latency; эффекты новизны; недостаточная мощность теста; сломан сплит (SRM). Проверки: сравнить распределения признаков и предсказаний в проде и офлайн, пересчитать офлайн-метрику на залогированных онлайн-признаках, посмотреть сегменты, проверить мощность и SRM.",
+[["Офлайн-метрика ≠ бизнес-цель","офлайн","бизнес"],["Смещения данных (selection, position)","смещени","selection","position"],["Training-serving skew / дрейф","skew","дрейф","расхожден"],["Мощность теста / SRM","мощност","srm"],["Узкое место в другой части системы","кандидат","узкое","latency"]],
+"Хороший ответ структурирован по уровням: данные → модель → метрика → эксперимент.");
+
+// ===== Deep Learning, трансформеры, LLM (глава 5) =====
+C("dl","Зачем в нейросети нужны нелинейные функции активации?",["Без них композиция линейных слоёв остаётся линейным преобразованием: W₂(W₁x) = (W₂W₁)x","Чтобы ускорить вычисления","Чтобы уменьшить число параметров","Чтобы избежать переобучения"],0,"Нелинейность позволяет сети приближать сложные функции. Теорема об универсальной аппроксимации ничего не говорит о числе нейронов и о том, найдёт ли SGD такие веса.");
+
+C("dl","Во сколько раз примерно обратный проход (backward) дороже прямого (forward)?",["≈ в 2 раза","≈ в 10 раз","Столько же","В 100 раз"],0,"Для каждого слоя нужно посчитать градиент и по весам, и по входу. Обучение ≈ 3× стоимости инференса. Память уходит и на активации, сохранённые для backward.");
+
+C("dl","Для линейного слоя Y = XWᵀ + b при известном G = ∂L/∂Y градиент по весам равен...",["Gᵀ X","G X","X Gᵀ","Σ G"],0,"∂L/∂W = GᵀX (размер d_out × d_in), ∂L/∂b = Σ_batch G, ∂L/∂X = G W. Эти формулы нужно уметь выводить.");
+
+C("dl","Почему сигмоида приводит к затуханию градиентов в глубоких сетях?",["Её производная не превышает 0.25 и почти нулевая в зоне насыщения, поэтому произведение множества таких множителей стремится к нулю","Сигмоида слишком дорогая в вычислении","Она не дифференцируема","Её выход симметричен относительно нуля"],0,"Поэтому используют ReLU/GELU, residual connections, нормализацию, правильную инициализацию.");
+
+C("dl","Что такое «мёртвые нейроны» ReLU?",["Нейроны, у которых вход всегда отрицателен: градиент равен нулю, и они перестают обучаться","Нейроны с нулевыми весами","Нейроны, которых отключил dropout","Нейроны последнего слоя"],0,"Лечат Leaky ReLU, GELU, меньшим learning rate и правильной инициализацией.");
+
+C("dl","He-инициализация для ReLU-сети имеет дисперсию весов...",["2 / fan_in","2 / (fan_in + fan_out)","1 / fan_out","Всегда 1"],0,"Xavier: 2/(fan_in + fan_out) — для tanh/sigmoid. Идея обоих: дисперсия активаций и градиентов не должна меняться от слоя к слою.");
+
+C("dl","Почему нельзя инициализировать все веса слоя нулями?",["Все нейроны получат одинаковые градиенты и останутся одинаковыми (проблема симметрии)","Градиент станет бесконечным","Сеть не сможет посчитать forward","Обучение пойдёт слишком быстро"],0,"Смещения (bias) нулями инициализировать можно.");
+
+C("dl","Почему residual connection y = x + F(x) помогает обучать глубокие сети?",["Якобиан равен I + ∂F/∂x, и градиент проходит по тождественной ветке без затухания","Она уменьшает число параметров","Она заменяет активации","Она делает функцию потерь выпуклой"],0,"Блоку достаточно выучить «поправку» к тождественному отображению. Это позволило обучать сети в сотни слоёв (ResNet).");
+
+C("dl","Чем AdamW отличается от Adam с L2-регуляризацией?",["Weight decay применяется отдельно от адаптивного шага, а не через градиент: параметры с большими градиентами не регуляризуются слабее","AdamW использует другой β₂","AdamW не использует моменты","Они полностью идентичны"],0,"Для SGD обе схемы эквивалентны, для Adam — нет. AdamW — стандарт для трансформеров.");
+
+C("dl","Зачем нужен warmup learning rate при обучении трансформеров?",["В начале веса случайны, а статистики Adam ненадёжны: большой шаг может «сломать» модель, поэтому lr плавно растёт от нуля","Чтобы ускорить сходимость к минимуму","Для регуляризации","Warmup не нужен"],0,"Типичный рецепт: линейный warmup 1–5% шагов и косинусное затухание.");
+
+C("dl","Чем bf16 удобнее fp16 при обучении?",["Тот же диапазон экспоненты, что у fp32: loss scaling обычно не нужен","Точнее мантисса","Занимает меньше памяти","bf16 нельзя использовать на GPU"],0,"У fp16 узкий диапазон: малые градиенты обнуляются, поэтому нужен loss scaling. Мастер-копия весов хранится в fp32.");
+
+C("dl","Что такое gradient accumulation?",["Суммирование градиентов нескольких микробатчей перед одним шагом оптимизатора: имитирует большой батч при ограниченной памяти","Накопление градиента по эпохам","Усреднение весов по эпохам","Метод удаления выбросов"],0,"Не забывайте делить лосс на число шагов накопления.");
+
+C("dl","Как работает inverted dropout в PyTorch?",["На обучении оставшиеся активации умножаются на 1/(1 − p), на инференсе dropout выключен","На инференсе умножают на p","На обучении и инференсе поведение одинаково","Обнуляются веса, а не активации"],0,"Тогда матожидание выхода не меняется между режимами. Переключение: `model.train()` / `model.eval()`.");
+
+C("dl","Почему в трансформерах используют LayerNorm, а не BatchNorm?",["LayerNorm не зависит от размера батча и других объектов, одинаково работает на обучении и инференсе, подходит для последовательностей переменной длины","LayerNorm быстрее","BatchNorm не поддерживает GPU","BatchNorm нельзя комбинировать с attention"],0,"BatchNorm опирается на статистики батча, а при генерации по одному токену они бессмысленны. RMSNorm — упрощённый LayerNorm без вычитания среднего (LLaMA и др.).");
+
+C("dl","Чем Pre-LN трансформер отличается от Post-LN?",["Pre-LN нормализует вход подблока (x + F(LN(x))): градиент по residual-пути идёт без искажений, обучение глубоких моделей стабильнее","Post-LN использует больше параметров","Pre-LN не использует residual","Они идентичны"],0,"Современные LLM используют Pre-LN (или его варианты).");
+
+N("dl","Conv2d(in=3, out=64, kernel=3, stride=2, padding=1) применяется к изображению 224×224. Какая высота выходной карты?",112,0,"H_out = ⌊(224 + 2·1 − 3)/2⌋ + 1 = ⌊223/2⌋ + 1 = 111 + 1 = 112.");
+
+N("dl","Сколько параметров (с bias) у Conv2d(in=3, out=64, kernel=3)?",1792,0,"C_out·(C_in·K·K + 1) = 64·(27 + 1) = 1792. У полносвязного слоя на 3×224×224 → 64 их было бы около 9.6 млн.");
+
+C("dl","Какое рецептивное поле у двух подряд идущих свёрток 3×3 (stride 1)?",["5×5","6×6","3×3","9×9"],0,"Три слоя 3×3 дают 7×7. При этом параметров меньше, чем у одного 7×7, а нелинейностей больше (идея VGG).");
+
+C("dl","Для чего нужна свёртка 1×1?",["Смешивает каналы без пространственного контекста: дёшево меняет число каналов (bottleneck в ResNet)","Увеличивает рецептивное поле","Заменяет pooling","Нормализует активации"],0,"Также 1×1 после depthwise-свёртки образует depthwise separable convolution (MobileNet).");
+
+C("dl","Как работает Non-Maximum Suppression (NMS) в детекции?",["Берём рамку с максимальным скором, удаляем все рамки с IoU выше порога, повторяем","Объединяет все перекрывающиеся рамки в одну усреднением","Удаляет рамки с низким скором","Делает рамки квадратными"],0,"Сложность O(n²) в худшем случае. Варианты: Soft-NMS, NMS по классам, батчевый NMS на GPU.");
+
+C("dl","Почему LSTM лучше обычной RNN запоминает длинные зависимости?",["Состояние ячейки обновляется аддитивно через гейты: cₜ = fₜ⊙cₜ₋₁ + iₜ⊙c̃ₜ, что создаёт «магистраль» для градиента","В LSTM больше параметров","LSTM использует ReLU","LSTM не имеет рекуррентной связи"],0,"GRU — упрощённый вариант с двумя гейтами.");
+
+C("dl","Главные причины, по которым трансформеры вытеснили RNN:",["Параллельные вычисления по всей последовательности и прямая связь между любыми токенами через attention","Меньше параметров","Линейная сложность по длине","Не нуждаются в данных"],0,"Цена — квадратичная сложность по длине. Современные state-space модели (Mamba) возвращают рекуррентность с линейной сложностью.");
+
+C("dl","Зачем в scaled dot-product attention делят на √d_k?",["Если q и k независимы с единичной дисперсией, дисперсия qᵀk равна d_k; без деления softmax вырождается в почти one-hot с нулевыми градиентами","Чтобы ускорить вычисления","Чтобы нормировать вектор значений","Для регуляризации"],0,"Деление возвращает дисперсию логитов к 1 и сохраняет «мягкость» распределения внимания.");
+
+C("dl","Сложность self-attention по длине последовательности n:",["O(n²·d) по времени и O(n²) по памяти на матрицу внимания","O(n·d)","O(n log n)","O(n³)"],0,"Это главное ограничение длинного контекста. FlashAttention убирает хранение матрицы n×n (память O(n)), оставаясь точным.");
+
+C("dl","Приблизительное число параметров в одном блоке трансформера (d — размерность модели, без смещений и норм)?",["≈ 12·d² (4d² на attention и 8d² на FFN)","≈ d","≈ 2·d²","≈ d³"],0,"Attention: матрицы Q, K, V, O — 4d². FFN с расширением в 4 раза: 2·d·4d = 8d². Для GPT-2 small (d=768, 12 слоёв): ≈ 85M в блоках + ≈ 38M эмбеддинги.");
+
+C("dl","Зачем трансформеру позиционные кодировки?",["Attention инвариантен к перестановке токенов, поэтому порядок нужно сообщить явно","Для уменьшения размера словаря","Чтобы избежать переобучения","Для ускорения softmax"],0,"RoPE поворачивает q и k так, что qᵀk зависит только от относительного сдвига. Также есть синусоидальные, обучаемые и ALiBi.");
+
+C("dl","Как BERT отличается от GPT?",["BERT — encoder-only с двунаправленным контекстом и MLM, GPT — decoder-only с каузальной маской и предсказанием следующего токена","BERT генерирует текст, GPT — нет","BERT обучен только на переводе","Они идентичны"],0,"BERT: понимание (классификация, NER, эмбеддинги). GPT: генерация. T5, BART — encoder-decoder.");
+
+C("dl","Что такое KV-cache?",["Сохранение ключей и значений уже обработанных токенов при авторегрессионной генерации, чтобы не пересчитывать их заново","Кеш весов модели","Кеш токенизатора","Кеш градиентов"],0,"Каждый новый токен требует O(n) вместо пересчёта всего контекста. Кеш занимает много памяти GPU; уменьшают его MQA/GQA и квантизация.");
+
+C("dl","FlashAttention — это...",["Точный attention, вычисляемый блоками в быстрой SRAM без материализации матрицы n×n в HBM","Приближённый attention с отбрасыванием токенов","Линейный attention","Квантизация attention"],0,"Ускорение достигается сокращением обращений к памяти, а не аппроксимацией.");
+
+C("dl","Что такое GQA (Grouped-Query Attention)?",["Группы голов запросов разделяют общие K и V: кеш KV уменьшается в разы при небольшой потере качества","Attention по группам токенов","Метод квантизации","Способ обучения с подкреплением"],0,"MQA — крайний случай: все головы используют одни K и V.");
+
+C("dl","Как работает BPE-токенизация?",["Итеративно сливает самую частую пару соседних токенов в новый токен, пока не набран словарь нужного размера","Разбивает текст на слова по пробелам","Использует правила морфологии языка","Кодирует каждый символ отдельным токеном"],0,"Нет проблемы out-of-vocabulary. Объясняет странности LLM: проблемы с подсчётом букв и арифметикой, «дороговизну» русского текста.");
+
+C("dl","Этапы создания LLM-ассистента в правильном порядке:",["Предобучение → SFT (instruction tuning) → выравнивание по предпочтениям (RLHF/DPO)","SFT → предобучение → RLHF","RLHF → SFT → предобучение","Только предобучение"],0,"Предобучение даёт знания, SFT — следование инструкциям, RLHF/DPO — предпочтения людей (полезность, безопасность).");
+
+C("dl","Чем DPO отличается от RLHF с PPO?",["DPO оптимизирует политику напрямую на парах предпочтений, без отдельной reward model и RL-цикла","DPO не использует предпочтения","DPO обучает только reward model","DPO работает только для изображений"],0,"В RLHF: reward model (Брэдли–Терри) → PPO с KL-штрафом от SFT-модели. В DPO лосс использует отношение вероятностей политики и опорной модели.");
+
+C("dl","Зачем в RLHF/PPO добавляют KL-штраф относительно исходной модели?",["Чтобы модель не «взломала» reward model и не деградировала по языку, уходя далеко от SFT-политики","Для ускорения обучения","Для уменьшения размера модели","Для балансировки классов"],0,"Без штрафа политика находит ответы с высокой наградой, но нечитаемые или бессмысленные.");
+
+C("dl","LoRA обучает...",["Низкоранговую добавку ΔW = BA к замороженным весам W₀","Все веса модели с малым learning rate","Только эмбеддинги","Только bias"],0,"B инициализируют нулями, поэтому старт совпадает с исходной моделью. После обучения BA можно влить в W₀: инференс не замедляется.");
+
+N("dl","Сколько обучаемых параметров у LoRA-адаптера ранга r = 8 для слоя 4096×4096 (A: r×4096, B: 4096×r)?",65536,0,"r·(d_in + d_out) = 8·(4096 + 4096) = 65 536 — против 16.8 млн у исходной матрицы (≈ 0.4%).");
+
+C("dl","Чем top-p (nucleus) сэмплинг отличается от top-k?",["Берётся минимальный набор токенов с суммарной вероятностью ≥ p: размер набора адаптивный, а не фиксированный","Top-p фиксирует число токенов","Top-p использует температуру 0","Они идентичны"],0,"Температура T < 1 делает распределение острее, T > 1 — плоше. Greedy ≈ T → 0.");
+
+C("dl","Какие этапы входят в RAG-систему?",["Индексация чанков в векторную БД → поиск (часто гибридный с BM25) → реранжирование → генерация с опорой на найденный контекст","Только генерация","Дообучение LLM на каждый запрос","Квантизация модели"],0,"Оценка: качество поиска (Recall@k, MRR) и качество ответа (faithfulness, точность), часто с LLM-as-a-judge.");
+
+C("dl","Что показывает perplexity языковой модели?",["exp(среднее отрицательное лог-правдоподобие на токен): «эффективное число вариантов», из которых модель выбирает","Точность классификации","Скорость генерации","Число параметров"],0,"Сравнима только при одинаковом токенизаторе. Чем ниже, тем лучше.");
+
+C("dl","Чем MoE (Mixture of Experts) отличается от плотной модели?",["Для каждого токена роутер активирует лишь 1–2 «эксперта» FFN: параметров много, а вычислений на токен мало","MoE использует меньше параметров","MoE — это метод регуляризации","MoE работает только в CV"],0,"Примеры: Mixtral, DeepSeek-MoE. Сложности: балансировка нагрузки экспертов и память.");
+
+C("dl","Согласно работе Chinchilla, при фиксированном бюджете вычислений оптимальное число токенов обучения на один параметр примерно...",["20","1","1000","0.1"],0,"Современные модели часто обучают на заметно большем числе токенов, чтобы получить более дешёвый инференс.");
+
+C("dl","Что делает contrastive-лосс InfoNCE (CLIP, SimCLR)?",["Притягивает представления позитивных пар и отталкивает негативы, используя softmax по сходству с температурой","Предсказывает следующий токен","Минимизирует MSE реконструкции","Максимизирует accuracy"],0,"L = −log[exp(sim(q, k₊)/τ) / Σⱼ exp(sim(q, kⱼ)/τ)]. Так обучают two-tower модели для поиска и рекомендаций.");
+
+C("dl","Что делает `tensor.detach()` в PyTorch?",["Возвращает тензор, разделяющий память, но отрезанный от графа вычислений: градиент через него не течёт","Копирует тензор на CPU","Обнуляет градиент","Удаляет тензор из памяти"],0,"`torch.no_grad()` вообще не строит граф внутри контекста. `requires_grad_(False)` замораживает параметры.");
+
+C("dl","Лосс в обучении стал NaN. Что проверить?",["Слишком большой lr (warmup, clipping), численно нестабильные операции (log(0), exp), переполнение fp16, NaN во входных данных","Только размер батча","Ничего, это временно","Только версию PyTorch"],0,"Помогают `torch.autograd.set_detect_anomaly(True)` и логирование нормы градиентов.");
+
+C("dl","Модель не обучается: лосс не падает. Какой первый диагностический шаг?",["Попробовать переобучиться на одном маленьком батче: если не получается, ошибка в коде или данных","Сразу увеличить модель","Уменьшить обучающую выборку до нуля","Добавить dropout"],0,"Типичные баги: softmax перед CrossEntropy, забытый `zero_grad`, неверные метки, перепутанные оси, замороженные веса.");
+
+C("dl","Какое из средств НЕ является способом борьбы с переобучением нейросети?",["Увеличение числа эпох без early stopping","Dropout","Аугментации данных","Weight decay"],0,"Больше эпох без контроля валидации усиливает переобучение. Остальное — регуляризация.");
+
+C("dl","Что такое label smoothing?",["Замена one-hot цели на [ε/K, 1 − ε + ε/K, ε/K]: модель становится менее самоуверенной, калибровка улучшается","Сглаживание изображений","Сглаживание градиентов","Удаление неверных меток"],0,"Дополнительно действует как регуляризатор.");
+
+C("dl","Как лучше всего дообучить предобученную CNN, если данных мало?",["Заморозить ранние слои и обучить только верхние/голову с малым lr","Обучить с нуля","Обучить только первый слой","Использовать огромный lr"],0,"Ранние слои содержат универсальные признаки (границы, текстуры). При большом объёме данных можно разморозить всё с маленьким lr.");
+
+C("dl","Что такое двухбашенная (two-tower) модель в рекомендациях и поиске?",["Две сети кодируют пользователя/запрос и объект в общее пространство; релевантность — скалярное произведение, а эмбеддинги объектов считаются заранее","Две нейросети подряд","Модель из двух классификаторов","Модель с двумя функциями потерь"],0,"Кандидатов ищут через ANN-индекс (HNSW, FAISS). Минус: нет взаимодействия признаков до скалярного произведения, поэтому за ней идёт тяжёлое ранжирование.");
+
+I("dl","Как называется метод, который обнуляет часть активаций при обучении и умножает остальные на 1/(1 − p)? (одно слово)",["dropout","дропаут"],"Работает как неявный ансамбль подсетей и уменьшает коадаптацию нейронов.");
+
+I("dl","Какое сокращение у метрики для распознавания речи: расстояние Левенштейна по словам, делённое на длину эталона?",["WER"],"CER — то же по символам.");
+
+I("dl","Как называется тип attention в декодере encoder-decoder модели, где Q берётся из декодера, а K и V из энкодера?",["cross-attention","cross attention","кросс-внимание","кросс-attention"],"Self-attention: Q, K, V из одной последовательности.");
+
+O("dl","Объясните механизм self-attention и multi-head attention. Зачем делить на √d_k и что такое каузальная маска?",
+"Каждый токен проецируется в query, key и value. Вес внимания токена i к токену j — softmax по j от qᵢ·kⱼ/√d_k. Выход i — взвешенная сумма value всех токенов: токен собирает информацию из всей последовательности с весами, зависящими от содержимого. Деление на √d_k возвращает дисперсию логитов к 1 и не даёт softmax насыщаться (иначе градиенты близки к нулю). Multi-head: h голов размерности d/h со своими проекциями, выходы конкатенируются и проецируются W_O; разные головы учат разные типы связей. Каузальная маска в декодере заменяет логиты «будущих» токенов на −∞ до softmax. Сложность O(n²·d).",
+[["Q, K, V","query","key","value"],["softmax(QKᵀ/√d)·V","softmax"],["Зачем √d: дисперсия / насыщение","√d","дисперси","насыщ","градиент"],["Multi-head: разные подпространства","multi","голов","head"],["Каузальная маска / O(n²)","маск","−∞","-inf","n²"]],
+"Нарисуйте матрицу внимания: строки — queries, столбцы — keys, нижний треугольник — каузальная маска.");
+
+O("dl","Как работает backpropagation? Почему он эффективен и что нужно хранить в памяти?",
+"Backprop — применение правила цепочки к вычислительному графу от выхода к входу. Прямой проход считает и сохраняет активации; обратный проход начинает с ∂L/∂L = 1 и для каждого узла умножает входящий градиент на локальную производную, суммируя вклады от разных путей. Эффективность: градиенты по всем параметрам считаются за стоимость порядка одного-двух forward (а не отдельно по каждому параметру). В памяти нужно хранить активации для backward; уменьшить расход можно через gradient checkpointing (пересчёт части активаций), смешанную точность и меньший батч. Для линейного слоя: dW = GᵀX, db = ΣG, dX = GW.",
+[["Правило цепочки","цепочк","chain"],["Прямой проход, сохранение активаций","актива","forward","прямой"],["Обратный проход, суммирование путей","обратн","backward","сумм"],["Эффективность ≈ 2× forward","эффектив","дешев","≈","2"],["Checkpointing / память","checkpoint","памят"]],
+"Если просят вывести градиент слоя, выпишите размерности: это защищает от ошибок с транспонированием.");
+
+O("dl","Расскажите, как обучают и выравнивают LLM-ассистента: от предобучения до RLHF/DPO.",
+"1) Предобучение: предсказание следующего токена на триллионах токенов (интернет, код, книги); модель получает знания, но не следует инструкциям. 2) SFT (instruction tuning): дообучение на парах «инструкция → хороший ответ». 3) Выравнивание по предпочтениям: RLHF — собираем сравнения «A лучше B», обучаем reward model (Брэдли–Терри), оптимизируем политику PPO с KL-штрафом от SFT-модели; DPO — оптимизация политики напрямую на парах предпочтений без reward model и RL-цикла; RLVR/GRPO — награда за проверяемую правильность (математика, код). Эффективное дообучение — LoRA/QLoRA.",
+[["Предобучение: next token","предобуч","next token","следующ"],["SFT / instruction tuning","sft","инструкц"],["RLHF: reward model, PPO","rlhf","reward","ppo"],["KL-штраф","kl"],["DPO / LoRA","dpo","lora"]],
+"Объясните, зачем KL-штраф: чтобы политика не уходила далеко от SFT-модели и не «взламывала» reward model.");
+
+O("dl","Спроектируйте RAG-систему для вопросов по внутренней базе знаний. Как оценить её качество и какие риски?",
+"Индексация: чанки с перекрытием, эмбеддинги, векторный индекс (HNSW/FAISS), метаданные. Поиск: запрос кодируется той же моделью, top-k; гибридный поиск (BM25 + векторный); реранкер (cross-encoder) на top-50. Генерация: LLM отвечает по найденному контексту, цитирует источники, говорит «не знаю», если контекста недостаточно. Оценка: поиск отдельно (Recall@k, MRR), ответ отдельно (точность, faithfulness, доля галлюцинаций), LLM-as-a-judge, откалиброванный на человеческой разметке, A/B. Риски: галлюцинации, prompt injection, утечка персональных данных, устаревание базы, стоимость и latency.",
+[["Чанки, эмбеддинги, векторный индекс","чанк","эмбеддинг","индекс","faiss","hnsw"],["Гибридный поиск + реранкер","гибрид","bm25","реранк","rerank"],["Цитирование источников / «не знаю»","цитир","источник","не знаю"],["Метрики: Recall@k, faithfulness","recall","faithful","mrr","judge"],["Риски: галлюцинации, injection, PII","галлюцин","injection","персональн"]],
+"Начните ответ с уточнения: объём базы, требования к latency и допустимая цена ошибки.");
+
+// ===== ML-кодинг, лайв-кодинг, SQL (главы 6–7) =====
+C("code","Как реализовать численно устойчивый softmax?",["Вычесть максимум из логитов перед exp: результат не меняется, но исчезает overflow","Применить exp и разделить на сумму без изменений","Сначала взять log от логитов","Умножить логиты на 0.001"],0,"softmax(z) = softmax(z − max z). Для кросс-энтропии используют log-sum-exp: log Σ exp(zᵢ) = m + log Σ exp(zᵢ − m).");
+
+C("code","В реализации логистической регрессии `log(p)` может дать −inf. Как защититься?",["Ограничить вероятности: `np.clip(p, eps, 1 - eps)` или считать лосс через логиты (BCEWithLogits)","Добавить 1 к вероятностям","Игнорировать, так не бывает","Использовать float16"],0,"Устойчивая сигмоида также считается раздельно для z ≥ 0 и z < 0, чтобы exp не переполнялся.");
+
+C("code","Как проверить правильность ручной реализации backward (градиента)?",["Численный градиент центральной разностью (f(x + ε) − f(x − ε))/(2ε) на маленьком примере в float64","Сравнить с нулём","Запустить обучение и посмотреть на лосс","Посчитать градиент один раз и сохранить"],0,"Ошибка метода O(ε²). Стоимость — O(число параметров) прогонов forward, поэтому проверяют на малых размерах.");
+
+C("code","Чем k-means++ лучше случайной инициализации центров?",["Каждый новый центр выбирается с вероятностью, пропорциональной квадрату расстояния до ближайшего выбранного: центры получаются разнесёнными","Гарантирует глобальный оптимум","Не требует итераций","Автоматически выбирает k"],0,"Даёт лучшие и более стабильные результаты и ускоряет сходимость. Алгоритм всё равно находит локальный оптимум, поэтому нужны несколько запусков.");
+
+C("code","Для kNN нужно найти k ближайших среди n объектов. Что эффективнее полной сортировки?",["`np.argpartition`: O(n) вместо O(n log n)","`np.sort` по всем расстояниям","Цикл с поиском минимума k раз","`np.unique`"],0,"Для больших баз используют приближённый поиск: HNSW, FAISS, ScaNN.");
+
+C("code","Как посчитать ROC-AUC за O(n log n) без построения кривой?",["Через ранги скоров (статистика Манна–Уитни): AUC = (Σранги_позитивов − n₊(n₊+1)/2)/(n₊·n₋), для равных скоров — средние ранги","Перебрать все пары объектов","Использовать accuracy при разных порогах","Взять среднее precision и recall"],0,"Перебор всех пар (позитив, негатив) — O(n²), хорошая «первая версия» на интервью. Пары с равными скорами вносят 0.5.");
+
+C("code","Что вернёт функция precision, если модель не предсказала ни одного позитива (TP + FP = 0)?",["Деление на ноль: нужно явно обработать случай (обычно вернуть 0 или NaN) и обсудить его","0.5","1.0 автоматически","Ошибки не будет, NumPy вернёт число"],0,"Граничные случаи в метриках — любимый вопрос: один класс в выборке (ROC-AUC не определён), равные скоры, пустой вход.");
+
+C("code","Как эффективно искать лучший порог разбиения числового признака в дереве решений?",["Один раз отсортировать объекты по признаку и пройти слева направо, обновляя счётчики классов: O(n log n) на признак","Перебрать все пары значений и пересчитать Джини с нуля","Использовать случайный порог","Бинарный поиск по значению признака"],0,"Нельзя резать между равными значениями. Общая сложность обучения O(d·n log n) на уровень дерева.");
+
+C("code","Как изменится код градиентного бустинга при смене MSE на MAE?",["Остатками станут sign(y − pred) вместо y − pred (антиградиент MAE)","Ничего не изменится","Нужно заменить деревья на линейные модели","Нужно удалить learning rate"],0,"Для log-loss остатки y − sigmoid(pred). Меняется только строка с псевдоостатками.");
+
+C("code","Что делает BatchNorm на инференсе?",["Использует накопленные скользящие средние среднего и дисперсии, а не статистики текущего батча","Использует статистики текущего батча","Выключается полностью","Нормализует по признакам внутри объекта"],0,"Поэтому критично переключать `model.eval()`. Скользящая дисперсия накапливается как несмещённая (n/(n−1)).");
+
+C("code","В цикле обучения с early stopping написано `best_state = model.state_dict()`. В чём баг?",["Словарь ссылается на живые тензоры и «лучшие» веса будут перезаписаны дальнейшим обучением: нужен `copy.deepcopy`","Нет бага","state_dict нельзя сохранять","Нужно использовать model.parameters()"],0,"Правильно: `best_state = copy.deepcopy(model.state_dict())` и в конце `model.load_state_dict(best_state)`.");
+
+C("code","Как реализовать взвешенный случайный выбор индекса с вероятностями w[i]/Σw при многих вызовах?",["Префиксные суммы один раз + бинпоиск (bisect) по r ~ U[0, total): O(log n) на вызов","Каждый раз сортировать веса","Перебирать веса линейно с отдельным random для каждого","Использовать heapq"],0,"Для O(1) на вызов есть alias method (Уокера).");
+
+C("code","Почему формула `E[x²] − E[x]²` для дисперсии потока может дать неверный результат?",["Катастрофическая потеря точности при больших значениях и малой дисперсии (может получиться даже отрицательное число); безопаснее алгоритм Уэлфорда","Она всегда верна","Работает только для целых","Формула неверна математически"],0,"Уэлфорд обновляет среднее и сумму квадратов отклонений инкрементально: `delta = x − mean; mean += delta/n; M2 += delta·(x − mean)`.");
+
+C("code","Как реализовать rate limiter «не более N запросов за окно T секунд» для пользователя?",["deque времён запросов: выбрасываем старше T, если длина < N — разрешаем и добавляем","Глобальный счётчик без привязки ко времени","Сортировать все запросы при каждом вызове","Хранить только последний запрос"],0,"Альтернатива — token bucket: O(1) памяти на пользователя и допускает короткие всплески. В распределённой системе состояние хранят в Redis.");
+
+C("code","Как с помощью pandas посчитать сессии (пауза > 30 минут = новая сессия)?",["Отсортировать, `diff()` внутри группы, флаг «пауза > 30 мин» и `cumsum()` флагов даёт id сессии","Сгруппировать по дате","Использовать `drop_duplicates`","Циклом по строкам с iterrows"],0,"Приём `cumsum` по булевому флагу «новая группа» решает множество задач.");
+
+N("code","Значения [100, 90, 90, 80]. Чему равен DENSE_RANK() для значения 80 при сортировке по убыванию?",3,0,"RANK даёт 1, 2, 2, 4 (с пропуском), DENSE_RANK — 1, 2, 2, 3 (без пропусков), ROW_NUMBER — 1, 2, 3, 4.");
+
+C("code","Почему нельзя фильтровать по результату оконной функции прямо в WHERE?",["Оконные функции вычисляются после WHERE: нужен подзапрос или CTE и фильтр во внешнем запросе","Это возможно, просто медленно","WHERE не поддерживает числа","Оконные функции работают только в HAVING"],0,"Порядок выполнения: FROM/JOIN → WHERE → GROUP BY → HAVING → оконные функции → SELECT → DISTINCT → ORDER BY → LIMIT.");
+
+C("code","Чем `COUNT(col)` отличается от `COUNT(*)`?",["COUNT(col) не считает NULL, COUNT(*) считает все строки","Ничем","COUNT(*) не считает NULL","COUNT(col) считает только уникальные значения"],0,"`COUNT(DISTINCT col)` — число уникальных не-NULL значений.");
+
+C("code","Почему `NOT IN (подзапрос)` опасен?",["Если в подзапросе есть NULL, результат пуст (сравнение с NULL — UNKNOWN); безопаснее NOT EXISTS","Он медленнее всех других операторов","Он не поддерживает числа","Он меняет порядок строк"],0,"Эта ловушка встречается в реальных отчётах и на собеседованиях.");
+
+C("code","Условие на правую таблицу вынесено в WHERE при LEFT JOIN. Что произойдёт?",["LEFT JOIN превратится в INNER JOIN (строки с NULL справа отфильтруются): условие нужно перенести в ON","Запрос стал быстрее без последствий","Появятся дубликаты","Ошибка синтаксиса"],0,"Условия, которые должны сохранить левые строки без пары, пишут в `ON`.");
+
+C("code","Идея «gaps and islands» для поиска серий дат подряд:",["Разность «дата − номер строки (ROW_NUMBER)» одинакова у подряд идущих дат: по ней группируют","Сортировка по дате и LAG","Использовать DISTINCT","Подзапрос с MAX(date)"],0,"Затем `GROUP BY user_id, grp_key HAVING COUNT(*) >= 3` даёт пользователей с серией не менее трёх дней.");
+
+C("code","Что такое «training-serving skew» и как избежать его в коде признаков?",["Расхождение вычисления признаков при обучении и в проде; решение: общий код/feature store и логирование признаков в момент инференса","Разница в версиях Python","Разница в learning rate","Неравномерность батчей"],0,"Также мониторинг распределений признаков в проде и интеграционные тесты.");
+
+C("code","Для LRU-кеша с O(1) на `get` и `put` вручную нужно:",["Словарь «ключ → узел» и двусвязный список с фиктивными головой и хвостом","Отсортированный список","Куча по времени доступа","Два словаря"],0,"Фиктивные узлы убирают проверки на None. При вытеснении нужно хранить ключ в узле, чтобы удалить его из словаря.");
+
+C("code","Что нужно проверить в «ML-коде коллеги»: `df.fillna(df.mean())` до `train_test_split`, `StandardScaler().fit_transform` на всех данных, подбор C по test?",["Утечки данных и использование теста для подбора гиперпараметров","Только стиль кода","Только скорость","Ничего, так принято"],0,"Исправление: разбиение по времени/группам, `Pipeline`, подбор на train (CV), тест — один раз; метрики PR-AUC при дисбалансе.");
+
+I("code","Какую форму имеет результат `A[:, None, :] - B[None, :, :]`, если A имеет форму (n, d), а B — (m, d)? (через запятую)",["(n, m, d)","n,m,d"],"Результат (n, m, d). Возведя в квадрат и просуммировав по последней оси, получаем матрицу попарных расстояний (n, m). Для больших матриц экономнее ‖a‖² − 2a·b + ‖b‖².");
+
+I("code","Какая оконная функция SQL нумерует строки в окне подряд (1, 2, 3, 4), без пропусков и одинаковых номеров? (название)",["ROW_NUMBER()","row_number"],"RANK() даёт пропуски после ничьих (1, 2, 2, 4), DENSE_RANK() — без пропусков (1, 2, 2, 3), ROW_NUMBER() — всегда уникальные номера.");
+
+O("code","Реализуйте (опишите) логистическую регрессию с нуля на NumPy: модель, лосс, градиент, шаг обновления, на что обратить внимание.",
+"Модель: p = σ(Xw + b). Лосс — log-loss (бинарная кросс-энтропия) из MLE для Бернулли. Градиент: ∂L/∂w = Xᵀ(p − y)/n, ∂L/∂b = mean(p − y). Шаг: w ← w − η·∇. Реализация: инициализация нулями (для линейной модели допустимо), цикл по эпохам/батчам, векторизованные операции без циклов по объектам. Внимание: численно устойчивая сигмоида (раздельно для z ≥ 0 и z < 0), clip(p, eps, 1 − eps) перед log, масштабирование признаков, L2-регуляризация (на линейно разделимых данных веса иначе растут), проверка на sklearn и численный градиент, предсказание по порогу, который можно подбирать.",
+[["σ(Xw + b)","сигмоид","σ","sigmoid"],["log-loss","log-loss","кросс-энтропи","logloss"],["Градиент Xᵀ(p − y)","xᵀ","p − y","p-y"],["Устойчивость: clip / сигмоида","clip","устойчив","eps"],["Регуляризация / масштабирование / проверка","регуляриз","масштаб","sklearn","численн"]],
+"Если просят MLP или softmax-регрессию: градиент по логитам — (softmax − onehot)/n, остальное — chain rule.");
+
+O("code","Как вы будете ревьюировать чужой код обучения ML-модели? Что проверите в первую очередь?",
+"Утечки: предобработка (scaler, импутация, PCA, отбор признаков) до разбиения, признаки из будущего, target encoding без out-of-fold, дубликаты и группы между train и test. Схема валидации: время, группы, стратификация; тест используется один раз. Метрика под задачу и дисбаланс (PR-AUC, recall/precision, а не accuracy); сравнение с baseline. Воспроизводимость: seed, версии. Для нейросетей: `model.eval()`, `no_grad`, `zero_grad`, логиты в лосс, устройства. Обработка пропусков и категорий, `max_iter`/сходимость, нет ли ID и дат в признаках.",
+[["Утечки данных","утечк"],["Схема валидации","валидац","время","групп"],["Метрика и дисбаланс","метрик","pr-auc","дисбаланс"],["Baseline / воспроизводимость","baseline","seed","воспроизвод"],["PyTorch: eval, no_grad, zero_grad","eval","no_grad","zero_grad"]],
+"Рассуждайте вслух по чек-листу: данные → разбиение → признаки → метрика → код обучения → воспроизводимость.");
+
+O("code","Напишите SQL (опишите логику): Retention по недельным когортам для таблицы events(user_id, event_date).",
+"1) CTE first_seen: для каждого пользователя неделя первого события `DATE_TRUNC('week', MIN(event_date))` — это когорта. 2) CTE activity: `DISTINCT` пары (user, cohort_week, week_number), где week_number — разность недель события и когорты, делённая на 7; DISTINCT, чтобы сколько бы событий ни было в неделе, пользователь считался один раз. 3) Агрегация по (cohort_week, week_number): число активных пользователей. 4) Retention = активные / размер когорты (активные на неделе 0) через оконную функцию `MAX(COUNT(DISTINCT user_id)) OVER (PARTITION BY cohort_week)`. Проверить: на неделе 0 retention = 1.",
+[["Когорта = неделя первого события","first_seen","min","когорт"],["DATE_TRUNC / номер недели","date_trunc","week_number","недел"],["DISTINCT пользователь","distinct"],["Деление на размер когорты","размер когорт","over","partition"]],
+"Практика: всегда проговорите, что считается «активностью» и в какой зоне времени.");
+
+// ===== ML System Design, проекты, поведенческое интервью (главы 8–9) =====
+C("sd","С чего нужно начинать ответ на ML System Design?",["С уточнения цели, метрик и ограничений (масштаб, latency, свежесть)","С выбора самой новой модели","С описания архитектуры сети","С оценки стоимости GPU"],0,"Постановка размыта намеренно. Сначала бизнес-цель → ML-задача → метрики, затем данные, признаки, baseline, модель, оценка, прод и мониторинг.");
+
+C("sd","Зачем рекомендательные системы используют многостадийную архитектуру (candidate generation → ranking → re-ranking)?",["Объектов миллионы, ответ нужен за десятки мс: быстрые модели отбирают сотни кандидатов, тяжёлая модель ранжирует только их","Чтобы снизить bias","Потому что одна модель не может обучаться","Чтобы увеличить число параметров"],0,"Генерация кандидатов: ANN по эмбеддингам, коллаборативка, популярное. Ранжирование: бустинг/DNN с сотнями признаков. Re-ranking: разнообразие и бизнес-правила.");
+
+C("sd","Что такое position bias в кликовых данных и как с ним бороться?",["Верхние позиции кликают чаще независимо от релевантности; помогают признак позиции, inverse propensity weighting, рандомизация позиций","Склонность модели к ранним токенам","Ошибка при сортировке","Разный размер групп в A/B-тесте"],0,"Также учитывайте selection bias (данные только о показанном) и popularity bias.");
+
+C("sd","Что такое training-serving skew и как с ним бороться?",["Расхождение признаков при обучении и в проде; единый код (feature store), логирование признаков при инференсе, мониторинг распределений","Разница скорости обучения и инференса","Рассинхронизация версий CUDA","Разница размеров train и test"],0,"Тот же код признаков для офлайна и онлайна — главная защита.");
+
+C("sd","Что такое point-in-time корректность при сборке обучающей выборки?",["Признаки берутся по состоянию на момент события, а не на текущий момент: иначе в них попадёт информация из будущего","Выбор времени обучения","Привязка модели к дате релиза","Балансировка выборки по времени"],0,"«Число покупок за 30 дней» должно считаться на дату события. Это одна из самых частых утечек в рекомендациях и скоринге.");
+
+C("sd","Как решать холодный старт нового пользователя?",["Популярное и контекст, онбординг, быстрое обновление по первым действиям сессии","Не показывать рекомендации","Использовать только историю покупок","Предсказывать среднее по всем"],0,"Новый объект: контентные признаки и эмбеддинги вместо коллаборативных, квота показов (exploration), бандиты.");
+
+C("sd","Зачем рекомендациям exploration?",["Без показа менее уверенных вариантов система не узнаёт о новых и недооценённых объектах и попадает в петлю обратной связи","Для увеличения latency","Для балансировки классов","Для снижения нагрузки"],0,"Методы: ε-greedy, UCB, Thompson sampling (сэмплирование CTR из Beta), квота для новых объектов.");
+
+C("sd","Чем data drift отличается от concept drift?",["Data drift — изменение распределения входов P(x); concept drift — изменение зависимости P(y | x)","Они синонимы","Data drift — это ошибки данных, concept drift — ошибки модели","Data drift бывает только в CV"],0,"Data drift измеряют PSI, KL, KS-тестом. Concept drift заметен по падению качества на новых размеченных данных (мошенники меняют схемы).");
+
+C("sd","Почему interleaving чувствительнее обычного A/B-теста для ранжирования?",["Выдачи двух моделей перемешиваются в одном списке, и каждый пользователь сравнивает обе: меньше дисперсия","Он требует больше трафика","Не требует кликов","Он измеряет только latency"],0,"Часто используют interleaving для быстрого отбора, а A/B для финального решения по бизнес-метрикам.");
+
+C("sd","Антифрод в реальном времени: какая особенность задачи самая важная?",["Сильный дисбаланс, отложенные метки, адаптивный противник и жёсткая latency; цена ошибок асимметрична","Много данных с равными классами","Отсутствие необходимости в правилах","Метки всегда мгновенны"],0,"Решение — не бинарное: три зоны (пропустить, доп. проверка, заблокировать), пороги по стоимости ошибок и нагрузке на операторов.");
+
+C("sd","Какая схема поиска чаще всего даёт лучшее качество в RAG/поиске?",["Гибрид: BM25 + векторный поиск с последующим реранкером (cross-encoder) на топ-N","Только векторный поиск по полному корпусу","Только BM25","Случайный выбор документов"],0,"Cross-encoder точнее, но дорог, поэтому применяется к небольшому числу кандидатов.");
+
+C("sd","Как в LLM-ассистенте поддержки снизить галлюцинации?",["RAG с цитированием источников, ответы только по найденному контексту, «не знаю» и передача оператору, проверки безопасности","Увеличить температуру","Убрать контекст","Отвечать как можно длиннее"],0,"Оценка: Recall@k ретривера, faithfulness ответов, LLM-as-a-judge, откалиброванный на людях.");
+
+C("sd","Как правильно подойти к выбору лоссов ранжирования?",["Pointwise (клик/нет), pairwise (кликнутый выше некликнутого), listwise (оптимизация метрики списка, LambdaMART)","Только MSE","Только accuracy","Всегда pairwise"],0,"Pointwise проще и даёт калиброванные вероятности; listwise лучше соответствует NDCG.");
+
+C("sd","Минимальная длительность A/B-теста в рекомендациях обычно:",["Не менее полной недели (недельная сезонность) и до достижения нужной выборки","Один час","Пока p-value не станет < 0.05","Один день"],0,"Остановка по первому значимому p-value — подглядывание. Дополнительно смотрим guardrail-метрики и динамику эффекта.");
+
+C("sd","Что такое shadow-деплой новой модели?",["Модель получает реальный трафик и логирует предсказания, но пользователям не показывается","Обучение модели на «теневых» данных","Откат на предыдущую версию","A/B-тест на 50% трафика"],0,"Канареечный релиз — выкатка на малую долю трафика с мониторингом. Оба снижают риск.");
+
+C("sd","Что означает STAR в поведенческом интервью?",["Situation, Task, Action, Result","Skills, Team, Attitude, Responsibility","Start, Test, Analyze, Report","Strategy, Tactics, Action, Review"],0,"Говорите «я», а не «мы»: интервьюер оценивает ваш вклад. Результат желательно в цифрах и с выводом.");
+
+C("sd","Метрика на валидации подозрительно близка к идеальной. Что скажете?",["Первым делом искать утечку данных (признаки из будущего, ID, дубликаты, предобработка до разбиения)","Это отличный результат, можно выкатывать","Нужно увеличить модель","Нужно уменьшить выборку"],0,"Типичная история на хакатонах: топ-1 важность — ID оператора, закреплённого за типом обращений.");
+
+C("sd","Как лучше рассказывать о своём проекте на собеседовании?",["Контекст → постановка → метрика → данные → baseline → решение → результат в цифрах → неудачи → что дальше, с чётким разделением личного вклада","Перечислить все использованные библиотеки","Пересказать документацию","Рассказывать только про успехи, без неудач"],0,"Готовьте 2–3 проекта так, чтобы выдерживать 15–20 минут вопросов. Не приукрашивайте: преувеличение раскрывается уточнениями.");
+
+C("sd","Какой пункт обязателен для двух проектов в резюме ML-стажёра?",["Результат в цифрах относительно baseline и личный вклад","Перечень всех пройденных курсов","Список всех изученных алгоритмов","Описание личных качеств в 10 пунктах"],0,"Пример формулировки: «Разработал модель ранжирования на CatBoost, NDCG@10 +7% к baseline».");
+
+I("sd","Как называется хранилище признаков, обеспечивающее одинаковые признаки в офлайне и онлайне? (два слова, английское название)",["Feature Store","featurestore"],"Офлайн-слой — для обучения (point-in-time join), онлайн-слой — для низколатентного инференса.");
+
+I("sd","Как называется индекс для приближённого поиска ближайших соседей на графе (аббревиатура из четырёх букв)?",["HNSW"],"Hierarchical Navigable Small World. Альтернативы: IVF, FAISS, ScaNN.");
+
+O("sd","Спроектируйте блок «Похожие товары» для маркетплейса (сотни миллионов товаров, десятки тысяч запросов в секунду).",
+"Уточнить: цель (рост конверсии и GMV), смысл «похожих» (замены), метрики (CTR, конверсия в покупку, GMV на показ; guardrails: latency < 50 мс, товары в наличии). Данные: co-view, co-purchase, каталог, тексты и изображения; позитивы — пары из одной сессии и категории, негативы — трудные из той же категории. Кандидаты: ANN по контентным эмбеддингам (текст + изображения, решает холодный старт) и коллаборативные (item2vec), фильтры по категории, цене и наличию. Ранжирование: бустинг по паре (товар, кандидат) с признаками близости, цены, рейтинга, популярности; позже — персонализация. Оценка: Recall@k/NDCG@k офлайн, A/B на конверсию и GMV. Прод: предвычисление и кеш для популярных товаров, онлайн ANN для хвоста, ежедневное обновление индекса, мониторинг CTR и дрейфа.",
+[["Уточнение цели и метрик","цел","метрик","gmv","ctr"],["Данные: co-view / co-purchase","co-view","co-purchase","сесси"],["Кандидаты: эмбеддинги, ANN","эмбеддинг","ann","hnsw","кандидат"],["Ранжирование: бустинг, признаки","ранжир","бустинг","признак"],["Прод: кеш, latency, мониторинг","кеш","latency","мониторинг"]],
+"Назовите цифры: сколько товаров, QPS и бюджет latency: они определяют, что предвычислять офлайн.");
+
+O("sd","Спроектируйте систему антифрода для платежей в реальном времени.",
+"Особенности: сильный дисбаланс (доли процента), отложенные и неполные метки (chargeback через недели), адаптивный противник (concept drift), latency десятки миллисекунд, асимметричная цена ошибок. Метрики: recall фрода при ограничении на долю ложных блокировок, PR-AUC, предотвращённый ущерб в деньгах. Признаки: сумма, MCC, канал; отклонение от привычного поведения клиента; скоростные признаки (число транзакций за 5 минут/час); графовые связи (устройство ↔ карты). Модель: правила как baseline и fallback + градиентный бустинг в реальном времени; графовые/последовательные модели для сложных схем; детекция аномалий. Решение — в три зоны (пропустить / доп. проверка / блокировать). Валидация строго по времени, учёт задержки меток, частое переобучение, мониторинг дрейфа.",
+[["Дисбаланс и отложенные метки","дисбаланс","отложен","метк"],["Скоростные и графовые признаки","скорост","граф"],["Бустинг + правила","бустинг","правил"],["Три зоны решения / стоимость ошибок","зон","порог","стоимост"],["Валидация по времени / переобучение / дрейф","времен","переобуч","дрейф"]],
+"Если спросят про метки: часть трафика можно пропускать без вмешательства модели, чтобы получать непредвзятые метки.");
+
+O("sd","Расскажите о самой сложной ошибке или неудаче в вашем проекте по схеме STAR.",
+"Ситуация и задача: контекст проекта и ваша ответственность. Действие: что именно вы обнаружили и сделали (например, заметили подозрительно высокую метрику, нашли утечку через ID оператора, перестроили валидацию по времени, убрали недоступные в проде признаки). Результат: метрика на валидации упала (честная оценка), но в закрытой проверке результат оказался лучше, чем у конкурентов; вывод для практики: подозрительно хорошая метрика — первый повод искать утечку, валидация должна имитировать реальный сценарий. Важно: честно признать ошибку, говорить «я», показать рефлексию и конкретные изменения в подходе.",
+[["Ситуация и задача","ситуаци","задач"],["Ваши действия («я»)","я ","сделал"],["Результат в цифрах","результат","цифр","метрик"],["Вывод / что изменили","вывод","научил","изменил"],["Честность","ошибк","признал"]],
+"Выберите историю, где ошибка реальная, но вы исправили её сами и можете сформулировать вывод.");
+
+// ===== Шпаргалка =====
+CHEAT.push(
+{t:"Алгоритм решения задачи на интервью (7 шагов)",kind:"list",items:[
+"Перескажите условие и уточните ограничения: размер входа, диапазон, повторы, пустой вход, что вернуть при отсутствии ответа.",
+"Разберите 1–2 примера руками, включая неочевидный.",
+"Озвучьте наивное решение и его сложность.",
+"Найдите узкое место: какую работу повторяем? Хеш-таблица, сортировка, два указателя, префиксы, куча, бинпоиск.",
+"Согласуйте подход с интервьюером до написания кода («O(n) по времени, O(n) по памяти, начинаю?»).",
+"Пишите чисто: понятные имена, вспомогательные функции, стандартная библиотека.",
+"Протестируйте вручную на примере и граничных случаях, назовите итоговую сложность."]},
+
+{t:"Какая сложность допустима при данном n",kind:"table",head:["Ограничение","Допустимо","Типичные алгоритмы"],rows:[
+["n ≤ 10–12","O(n!), O(n·2ⁿ)","перебор перестановок, backtracking"],
+["n ≤ 20–25","O(2ⁿ)","перебор подмножеств, DP по маскам"],
+["n ≤ 500","O(n³)","Флойд, DP на отрезках"],
+["n ≤ 5·10³","O(n²)","двойной цикл, DP по двум строкам"],
+["n ≤ 10⁵–10⁶","O(n log n)","сортировка, куча, бинпоиск"],
+["n ≤ 10⁷–10⁸","O(n)","один проход, два указателя, хеш"],
+["n > 10⁹","O(log n), O(1)","бинпоиск по ответу, формула"]]},
+
+{t:"Сложность операций в Python",kind:"table",head:["Операция","Сложность","Комментарий"],rows:[
+["list: a[i], append, pop()","O(1)","append — амортизированно"],
+["list: insert(0, x), pop(0), x in a, remove","O(n)","для очереди — deque"],
+["list: срез a[i:j], copy","O(k)","срез создаёт копию"],
+["sort(), sorted()","O(n log n)","Timsort, стабильная"],
+["dict/set: поиск, вставка, удаление","O(1) в среднем","хеш-таблица; худший O(n)"],
+["deque: append/popleft","O(1)","индекс в середину — O(n)"],
+["heapq: heappush/heappop","O(log n)","heapify — O(n); min-куча"],
+["bisect_left","O(log n)","insort — O(n)"],
+["строки: s + t","O(n + m)","в цикле — O(n²), используйте join"]]},
+
+{t:"Как распознать паттерн по условию",kind:"table",head:["Сигнал в условии","Приём"],rows:[
+["пара/тройка с суммой, «встречался ли»","хеш-таблица; два указателя на отсортированном"],
+["непрерывный подмассив/подстрока, самый длинный/короткий","скользящее окно (элементы ≥ 0) или префиксы + хеш"],
+["сумма на отрезке, число подмассивов с суммой k","префиксные суммы (+ словарь частот)"],
+["отсортированный массив, «минимальное x, при котором…»","бинарный поиск (по индексу или по ответу)"],
+["ближайший больший/меньший элемент","монотонный стек"],
+["k наибольших, медиана потока, слияние k списков","куча"],
+["пересекающиеся отрезки, расписание","сортировка + sweep line"],
+["кратчайший путь в сетке/графе","BFS (без весов), Дейкстра (веса ≥ 0)"],
+["зависимости, порядок, цикл","топологическая сортировка"],
+["сколько способов / минимум / можно ли","динамическое программирование"],
+["все комбинации, перестановки","backtracking"],
+["связность, объединение групп","Union-Find / DFS"]]},
+
+{t:"Ловушки Python (быстрый повтор)",kind:"list",items:[
+"Изменяемый аргумент по умолчанию вычисляется один раз при `def`: `acc=None`, внутри `acc = []`.",
+"`[[0]*3]*3` — три ссылки на один список; правильно `[[0]*3 for _ in range(3)]`.",
+"`is` сравнивает идентичность, `==` — значения; `is` только для `None`/синглтонов.",
+"Замыкание читает переменную при вызове (позднее связывание): `lambda i=i: i`.",
+"`a += b` у списка меняет на месте, `a = a + b` создаёт новый объект.",
+"Присваивание внутри функции делает имя локальным: UnboundLocalError; `global`/`nonlocal`.",
+"Генератор и `map` одноразовые: второй проход пуст.",
+"`__eq__` без `__hash__` делает объект нехешируемым.",
+"`1 == 1.0 == True` — один ключ в dict/set.",
+"Не меняйте коллекцию во время итерации по ней.",
+"`round` — банковское округление; `//` округляет вниз; `0.1 + 0.2 != 0.3`.",
+"GIL: потоки не ускоряют CPU-bound чистый Python; multiprocessing / NumPy / free-threaded 3.13+.",
+"NumPy: срез — view, fancy indexing — копия; `uint8` переполняется молча; `keepdims=True` для нормировки по оси.",
+"pandas: `df.loc[mask, col] = v`; `count` не считает NaN, `size` считает; merge по неуникальному ключу размножает строки.",
+"PyTorch: `zero_grad`, `model.eval()` + `no_grad`, логиты в CrossEntropyLoss, `loss.item()`, `copy.deepcopy(state_dict)`."]},
+
+{t:"Метрики: формулы",kind:"table",head:["Метрика","Формула / смысл"],rows:[
+["Precision","TP / (TP + FP)"],
+["Recall (TPR)","TP / (TP + FN)"],
+["F1","2PR / (P + R)"],
+["FPR","FP / (FP + TN)"],
+["ROC-AUC","P(скор позитива > скор негатива); Gini = 2·AUC − 1"],
+["PR-AUC / Average Precision","среднее precision в позициях позитивов; лучше при дисбалансе"],
+["Log-loss","−mean[y·log p + (1 − y)·log(1 − p)]"],
+["MSE / MAE","оптимальный прогноз: среднее / медиана"],
+["Квантильная (pinball)","max(τ(y − ŷ), (τ − 1)(y − ŷ)); оптимум — τ-квантиль"],
+["MAPE","mean(|y − ŷ| / |y|); не определена при y = 0, занижает прогноз"],
+["DCG@k / NDCG@k","Σ (2^rel − 1)/log₂(i + 1); NDCG = DCG / IDCG"],
+["MRR","среднее 1/rank первого релевантного"],
+["WER / CER","расстояние Левенштейна по словам / символам, делённое на длину эталона"]]},
+
+{t:"Формулы, которые нужно помнить",kind:"table",head:["Тема","Формула"],rows:[
+["Сигмоида","σ(z) = 1/(1 + e⁻ᶻ), σ' = σ(1 − σ) ≤ 0.25"],
+["Softmax","exp(zᵢ − max z) / Σⱼ exp(zⱼ − max z)"],
+["Градиент логрега","∇L = Xᵀ(σ(Xw) − y)/n"],
+["Градиент CE по логитам","softmax(z) − onehot(y)"],
+["МНК / Ridge","w = (XᵀX)⁻¹Xᵀy;  (XᵀX + λI)⁻¹Xᵀy"],
+["Bias-variance","E[(y − f̂)²] = Bias² + Var + σ²"],
+["Дисперсия ансамбля","ρσ² + (1 − ρ)σ²/B"],
+["Джини / энтропия","1 − Σp²  /  −Σp·log p"],
+["Байес","P(H|D) = P(D|H)·P(H)/P(D)"],
+["KL-дивергенция","Σp·log(p/q) = H(p, q) − H(p) ≥ 0"],
+["Размер выборки A/B","n ≈ 2(z₁₋α/₂ + z₁₋β)²σ²/δ² ≈ 16σ²/δ²"],
+["Attention","softmax(QKᵀ/√d_k)·V; сложность O(n²d)"],
+["Adam","m = β₁m + (1−β₁)g;  v = β₂v + (1−β₂)g²;  w −= η·m̂/(√v̂ + ε)"],
+["Свёртка","H_out = ⌊(H + 2P − K)/S⌋ + 1;  параметры C_out·(C_in·K² + 1)"],
+["Блок трансформера","≈ 12·d² параметров (4d² attention + 8d² FFN)"],
+["LoRA","W = W₀ + (α/r)·BA, r ≪ d"],
+["Инициализация","He: Var = 2/fan_in;  Xavier: 2/(fan_in + fan_out)"],
+["Perplexity","exp(среднее NLL на токен)"]]},
+
+{t:"Bias-variance и борьба с переобучением",kind:"list",items:[
+"Высокий bias: train и val ошибки высоки и близки → усложнить модель, добавить признаки, ослабить регуляризацию.",
+"Высокий variance: train низкая, val высокая → больше данных, регуляризация, бэггинг, dropout, early stopping, аугментации, упрощение.",
+"Бэггинг снижает variance (параллельно, глубокие деревья); бустинг снижает bias (последовательно, неглубокие деревья, нужен early stopping).",
+"L1 → разреженность (лапласовское prior), L2 → малые веса (гауссовское prior); признаки нужно масштабировать.",
+"Масштабирование нужно: kNN, SVM, k-means, PCA, линейные модели, нейросети. Не нужно: деревья и бустинг."]},
+
+{t:"Утечки данных: чек-лист",kind:"list",items:[
+"Признак известен в момент предсказания? Нет → утечка таргета/будущего.",
+"Scaler, импутация, PCA, отбор признаков — только внутри Pipeline и только на train.",
+"Для данных во времени — разбиение по времени (TimeSeriesSplit); для пользователей — GroupKFold.",
+"Target encoding — out-of-fold и со сглаживанием.",
+"Дубликаты и почти-дубликаты между train и test.",
+"Подозрительно высокая метрика или один доминирующий признак — повод искать утечку.",
+"Тест — один раз. Гиперпараметры подбираются на валидации."]},
+
+{t:"A/B-тесты: чек-лист",kind:"list",items:[
+"p-value = P(такие или более экстремальные данные | H₀). Это не P(H₀) и не размер эффекта.",
+"Ошибка I рода (α) — ложное срабатывание; II рода (β) — пропуск эффекта; мощность = 1 − β.",
+"Размер выборки ∝ σ²/δ²: эффект вдвое меньше → выборка в 4 раза больше.",
+"Подглядывание раздувает ошибку I рода: фиксируйте длительность или используйте последовательные тесты.",
+"Множественные сравнения: Бонферрони, Холм, Бенджамини–Хохберг.",
+"SRM (перекос долей групп) проверяется χ²; при SRM результат использовать нельзя.",
+"CUPED уменьшает дисперсию в 1/(1 − ρ²) раз; бутстрап — для медианы, AUC и других метрик.",
+"Минимум полная неделя; смотрите guardrail-метрики и динамику эффекта (новизна)."]},
+
+{t:"Трансформеры и LLM: главное",kind:"list",items:[
+"Attention инвариантен к перестановкам → нужны позиционные кодировки (RoPE — относительный сдвиг).",
+"Деление на √d_k возвращает дисперсию логитов к 1, softmax не насыщается.",
+"BERT — encoder-only (MLM), GPT — decoder-only (next token), T5 — encoder-decoder.",
+"KV-cache ускоряет генерацию, но съедает память; GQA/MQA уменьшают кеш; FlashAttention — точный, память O(n).",
+"Pre-LN стабильнее Post-LN; LayerNorm/RMSNorm вместо BatchNorm.",
+"Пайплайн LLM: предобучение → SFT → RLHF (reward model + PPO + KL) или DPO.",
+"LoRA: ΔW = BA с малым рангом, B = 0 на старте, можно влить в W₀; QLoRA — база в 4 бита.",
+"Декодирование: greedy, beam, temperature, top-k, top-p.",
+"RAG: чанки → эмбеддинги → гибридный поиск → реранкер → генерация с цитированием."]},
+
+{t:"ML System Design: каркас ответа",kind:"list",items:[
+"1. Задача и метрики: бизнес-цель → ML-задача; онлайн, офлайн, guardrail; ограничения (QPS, latency, свежесть).",
+"2. Данные: источники, таргет, негативы, смещения (position, selection), отложенные метки.",
+"3. Признаки: пользователь, объект, контекст, взаимодействия; feature store; point-in-time.",
+"4. Модель: baseline → бустинг/DNN; многостадийность (кандидаты → ранжирование → re-ranking); лосс.",
+"5. Оценка: валидация по времени, A/B (минимум неделя), interleaving, guardrails.",
+"6. Прод: batch/online/streaming, кеш, latency; мониторинг дрейфа; переобучение; shadow/canary; fallback.",
+"Холодный старт: популярное, контент, эмбеддинги, exploration (бандиты)."]}
+);
+
+// ===== Приложение =====
+(function () {
+  var TOPICS = [
+    { id: 'algo', name: 'Алгоритмы и структуры данных', short: 'Алгоритмы', ch: 'Глава 1', icon: '🧮', desc: 'Хеш-таблицы, два указателя, окно, бинпоиск, кучи, графы, DP.' },
+    { id: 'py', name: 'Python: тонкости языка', short: 'Python', ch: 'Глава 2', icon: '🐍', desc: 'Модель данных, замыкания, генераторы, MRO, GIL, NumPy, pandas, PyTorch.' },
+    { id: 'math', name: 'Математика и статистика', short: 'Математика', ch: 'Глава 3', icon: '📐', desc: 'Линейная алгебра, вероятности, MLE/MAP, A/B-тесты.' },
+    { id: 'ml', name: 'Классический ML и метрики', short: 'Classic ML', ch: 'Глава 4', icon: '🌲', desc: 'Bias-variance, бустинг, метрики, утечки, калибровка.' },
+    { id: 'dl', name: 'Deep Learning, Transformers, LLM', short: 'Deep Learning', ch: 'Глава 5', icon: '🧠', desc: 'Backprop, нормализации, CNN, attention, LoRA, RLHF, RAG.' },
+    { id: 'code', name: 'ML-кодинг, лайв-кодинг, SQL', short: 'Кодинг', ch: 'Главы 6–7', icon: '⌨️', desc: 'Реализации с нуля, потоковые алгоритмы, SQL.' },
+    { id: 'sd', name: 'ML System Design и проекты', short: 'System Design', ch: 'Главы 8–9', icon: '🏗️', desc: 'Рекомендации, антифрод, поиск, RAG, STAR.' }
+  ];
+  var TOPIC = {};
+  TOPICS.forEach(function (t) { TOPIC[t.id] = t; });
+  var KIND = { c: 'Выбор ответа', n: 'Число', i: 'Короткий ответ', o: 'Развёрнутый ответ' };
+  var EXAM_N = 25, EXAM_MIN = 30;
+
+  var app = document.getElementById('app');
+
+  // ---------- утилиты ----------
+  function h(tag, attrs) {
+    var el = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        var v = attrs[k];
+        if (v === false || v == null) return;
+        if (k === 'class') el.className = v;
+        else if (k === 'on') Object.keys(v).forEach(function (ev) { el.addEventListener(ev, v[ev]); });
+        else if (k === 'style') el.style.cssText = v;
+        else if (v === true) el.setAttribute(k, '');
+        else el.setAttribute(k, v);
+      });
+    }
+    for (var i = 2; i < arguments.length; i++) add(el, arguments[i]);
+    return el;
+  }
+  function add(el, c) {
+    if (c == null || c === false) return;
+    if (Array.isArray(c)) { c.forEach(function (x) { add(el, x); }); return; }
+    el.appendChild(c.nodeType ? c : document.createTextNode(String(c)));
+  }
+  function shuffle(a) {
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function hid(q) {
+    var s = q.t + '|' + q.q + '|' + (q.code || ''), x = 5381;
+    for (var i = 0; i < s.length; i++) x = ((x << 5) + x + s.charCodeAt(i)) | 0;
+    return (x >>> 0).toString(36);
+  }
+  function plural(n, a, b, c) {
+    var m = Math.abs(n) % 100, d = m % 10;
+    if (m > 10 && m < 20) return c;
+    if (d > 1 && d < 5) return b;
+    if (d === 1) return a;
+    return c;
+  }
+  function ask(text, okLabel, onOk) {
+    var back = h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true' });
+    function close() { if (back.parentNode) back.parentNode.removeChild(back); }
+    back.appendChild(h('div', { class: 'modal-box' },
+      h('p', { style: 'font-weight:600;margin-bottom:14px' }, text),
+      h('div', { class: 'actions' },
+        h('button', { class: 'btn', on: { click: close } }, 'Отмена'),
+        h('button', { class: 'btn primary', on: { click: function () { close(); onOk(); } } }, okLabel))));
+    back.addEventListener('click', function (e) { if (e.target === back) close(); });
+    document.body.appendChild(back);
+  }
+  var tmr = null;
+  function toast(msg) {
+    var t = h('div', { class: 'toast', role: 'status' }, msg);
+    document.body.appendChild(t);
+    clearTimeout(tmr);
+    tmr = setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2200);
+  }
+
+  // текст с `кодом`
+  function rich(text) {
+    var f = document.createDocumentFragment();
+    String(text).split(/(`[^`]+`)/g).forEach(function (p) {
+      if (!p) return;
+      if (p.length > 1 && p.charAt(0) === '`' && p.charAt(p.length - 1) === '`') f.appendChild(h('code', null, p.slice(1, -1)));
+      else f.appendChild(document.createTextNode(p));
+    });
+    return f;
+  }
+  // подсветка Python
+  var PY_RE = /(#.*$)|("[^"\n]*"|'[^'\n]*')|\b(def|class|return|if|else|elif|for|while|in|not|and|or|is|None|True|False|import|from|as|try|except|finally|raise|with|lambda|yield|pass|break|continue|nonlocal|global)\b|(\b\d+(?:\.\d+)?\b)/gm;
+  function codeBlock(code) {
+    var pre = h('pre', { class: 'code' }), c = h('code'), last = 0, m;
+    PY_RE.lastIndex = 0;
+    while ((m = PY_RE.exec(code))) {
+      if (m.index > last) c.appendChild(document.createTextNode(code.slice(last, m.index)));
+      var cls = m[1] ? 'tk-com' : m[2] ? 'tk-str' : m[3] ? 'tk-kw' : 'tk-num';
+      c.appendChild(h('span', { class: cls }, m[0]));
+      last = PY_RE.lastIndex;
+      if (m[0].length === 0) PY_RE.lastIndex++;
+    }
+    if (last < code.length) c.appendChild(document.createTextNode(code.slice(last)));
+    pre.appendChild(c);
+    return pre;
+  }
+
+  // ---------- состояние и хранилище ----------
+  var KEY = 'mlq_v1', storageOK = true;
+  function loadState() {
+    var s = null;
+    try { var raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) { storageOK = false; }
+    if (!s || typeof s !== 'object') s = {};
+    s.q = s.q || {}; s.f = s.f || {}; s.days = s.days || {}; s.exams = s.exams || [];
+    s.set = s.set || {};
+    s.set.types = s.set.types || { c: 1, n: 1, i: 1, o: 1 };
+    s.set.size = s.set.size || 10;
+    s.theme = s.theme || 'auto';
+    try { localStorage.setItem(KEY + '_t', '1'); localStorage.removeItem(KEY + '_t'); } catch (e) { storageOK = false; }
+    return s;
+  }
+  var S = loadState();
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { storageOK = false; } }
+
+  function applyTheme() {
+    // «auto»: ничего не трогаем, тема берётся из системы (или из выбора, который сделала оболочка просмотра)
+    if (S.theme !== 'auto') document.documentElement.setAttribute('data-theme', S.theme);
+  }
+  function isDark() {
+    var t = S.theme !== 'auto' ? S.theme : document.documentElement.getAttribute('data-theme');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+  applyTheme();
+
+  // ---------- вопросы ----------
+  var byId = {};
+  QS.forEach(function (q) { q.id = hid(q); byId[q.id] = q; });
+
+  function pool(topic, types) {
+    return QS.filter(function (q) { return (!topic || q.t === topic) && (!types || types[q.k]); });
+  }
+  function pick(qs, n) {
+    var scored = qs.map(function (q) {
+      var r = S.q[q.id], w = !r ? 2 : (r.l === 'w' ? 3.5 : 1);
+      return { id: q.id, k: Math.pow(Math.random(), 1 / w) };
+    });
+    scored.sort(function (a, b) { return b.k - a.k; });
+    return scored.slice(0, n).map(function (x) { return x.id; });
+  }
+  function dkey(d) {
+    d = d || new Date();
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+  function streak() {
+    var n = 0, d = new Date();
+    if (!S.days[dkey(d)]) d.setDate(d.getDate() - 1);
+    while (S.days[dkey(d)]) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function stats(tid) {
+    var qs = QS.filter(function (q) { return !tid || q.t === tid; }), ok = 0, wrong = 0;
+    qs.forEach(function (q) { var r = S.q[q.id]; if (r) { if (r.l === 'c') ok++; else wrong++; } });
+    return { total: qs.length, ok: ok, wrong: wrong, left: qs.length - ok - wrong };
+  }
+  function wrongIds(tid) {
+    return QS.filter(function (q) { var r = S.q[q.id]; return (!tid || q.t === tid) && r && r.l === 'w'; }).map(function (q) { return q.id; });
+  }
+  function record(q, ok) {
+    var r = S.q[q.id] || (S.q[q.id] = { c: 0, w: 0, l: null, t: 0 });
+    if (ok) r.c++; else r.w++;
+    r.l = ok ? 'c' : 'w'; r.t = Date.now();
+    var k = dkey(); S.days[k] = (S.days[k] || 0) + 1;
+    save();
+  }
+  function flipToCorrect(q) {
+    var r = S.q[q.id];
+    if (!r) return;
+    if (r.w > 0) r.w--;
+    r.c++; r.l = 'c';
+    save();
+  }
+
+  // ---------- проверка ответов ----------
+  var HOMO = { 'о': 'o', 'а': 'a', 'е': 'e', 'с': 'c', 'р': 'p', 'х': 'x', 'у': 'y', 'в': 'b', 'к': 'k', 'м': 'm', 'н': 'h', 'т': 't' };
+  function norm(s) {
+    return String(s).toLowerCase().replace(/ё/g, 'е').replace(/[·×]/g, '*')
+      .replace(/[\s`'"«» ]/g, '').replace(/[.!]+$/, '')
+      .replace(/[а-я]/g, function (c) { return HOMO[c] || c; });
+  }
+  function parseNum(s) {
+    var raw = String(s).trim(), pct = raw.indexOf('%') >= 0;
+    var t = raw.replace(/,/g, '.').replace(/[\s%≈~]/g, '');
+    var m = t.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/), v;
+    if (m) v = parseFloat(m[1]) / parseFloat(m[2]);
+    else if (/^-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?$/i.test(t)) v = parseFloat(t);
+    else return { v: NaN, pct: pct };
+    return { v: v, pct: pct };
+  }
+  function numOK(q, text) {
+    var p = parseNum(text);
+    if (isNaN(p.v)) return false;
+    var x = p.v;
+    if (p.pct && Math.abs(q.v) <= 1) x = x / 100;
+    return Math.abs(x - q.v) <= (q.tol || 0) + 1e-9;
+  }
+  function textOK(q, text) {
+    var n = norm(text);
+    if (!n) return false;
+    return q.acc.some(function (a) { return norm(a) === n; });
+  }
+  function correctText(q) {
+    if (q.k === 'c') return q.o[q.a];
+    if (q.k === 'n') return String(q.v);
+    if (q.k === 'i') return q.acc[0];
+    return q.ref;
+  }
+
+  // ---------- навигация ----------
+  var session = null, cardSession = null, timerId = null;
+  var route = location.hash || '#/';
+  function go(hash) {
+    route = hash;
+    try { if (location.hash !== hash) location.hash = hash; } catch (e) {}
+    render();
+  }
+  window.addEventListener('hashchange', function () {
+    if (location.hash !== route) { route = location.hash || '#/'; render(); }
+  });
+
+  function parseHash() {
+    var p = (route || '#/').replace(/^#\/?/, '').split('/');
+    return { name: p[0] || 'home', arg: p[1] || '' };
+  }
+
+  function render(keepScroll) {
+    var y = window.scrollY;
+    if (timerId) { clearInterval(timerId); timerId = null; }
+    var r = parseHash(), node;
+    if (r.name === 'topic' && TOPIC[r.arg]) node = viewTopic(TOPIC[r.arg]);
+    else if (r.name === 'mix') node = viewTopic(null);
+    else if (r.name === 'play' && session) node = viewQuiz();
+    else if (r.name === 'result' && session) node = viewResult();
+    else if (r.name === 'cards') node = viewCards(r.arg);
+    else if (r.name === 'cheat') node = viewCheat();
+    else node = viewHome();
+    app.textContent = '';
+    app.appendChild(node);
+    window.scrollTo(0, keepScroll ? y : 0);
+    var f = app.querySelector('[data-focus]');
+    if (f) setTimeout(function () { try { f.focus({ preventScroll: true }); } catch (e) { f.focus(); } }, 0);
+  }
+
+  // ---------- общие блоки ----------
+  function themeBtn() {
+    return h('button', {
+      class: 'btn icon-btn', title: 'Сменить тему', 'aria-label': 'Сменить тему',
+      on: { click: function () { S.theme = isDark() ? 'light' : 'dark'; applyTheme(); save(); render(true); } }
+    }, isDark() ? '☀️' : '🌙');
+  }
+  function backBtn(label, hash) {
+    return h('button', { class: 'btn ghost sm', on: { click: function () { go(hash || '#/'); } } }, '← ' + (label || 'Назад'));
+  }
+  function bar(st) {
+    var t = st.total || 1;
+    return h('div', { class: 'bar', title: 'Верно: ' + st.ok + ', ошибки: ' + st.wrong + ', не решено: ' + st.left },
+      h('i', { class: 'g', style: 'width:' + (st.ok / t * 100) + '%' }),
+      h('i', { class: 'r', style: 'width:' + (st.wrong / t * 100) + '%' }));
+  }
+  function typeChips(onChange) {
+    var box = h('div', { class: 'row' });
+    ['c', 'n', 'i', 'o'].forEach(function (k) {
+      var b = h('button', {
+        class: 'chip' + (S.set.types[k] ? ' on' : ''), 'aria-pressed': S.set.types[k] ? 'true' : 'false',
+        on: {
+          click: function () {
+            var on = Object.keys(S.set.types).filter(function (x) { return S.set.types[x]; });
+            if (S.set.types[k] && on.length === 1) { toast('Нужен хотя бы один тип'); return; }
+            S.set.types[k] = S.set.types[k] ? 0 : 1; save(); onChange();
+          }
+        }
+      }, KIND[k]);
+      box.appendChild(b);
+    });
+    return box;
+  }
+  function sizeChips(onChange) {
+    var box = h('div', { class: 'row' });
+    [10, 20, 0].forEach(function (n) {
+      box.appendChild(h('button', {
+        class: 'chip' + (S.set.size === n ? ' on' : ''), 'aria-pressed': S.set.size === n ? 'true' : 'false',
+        on: { click: function () { S.set.size = n; save(); onChange(); } }
+      }, n ? String(n) : 'Все'));
+    });
+    return box;
+  }
+
+  // ---------- главная ----------
+  function viewHome() {
+    var all = stats(), wr = wrongIds(), today = S.days[dkey()] || 0, sk = streak();
+    var wrap = h('div');
+    wrap.appendChild(h('div', { class: 'hdr' },
+      h('div', { class: 'grow' }, h('h1', null, 'ML Тренажёр'), h('div', { class: 'sub' }, 'Подготовка к собеседованию на ML-стажировку · ' + QS.length + ' ' + plural(QS.length, 'вопрос', 'вопроса', 'вопросов'))),
+      themeBtn()));
+    if (!storageOK) wrap.appendChild(h('div', { class: 'warnbox' }, 'Браузер не разрешает сохранять прогресс в этом режиме просмотра. Откройте файл в обычном браузере (Safari, Chrome), чтобы прогресс сохранялся.'));
+
+    var card = h('div', { class: 'card' },
+      h('div', { class: 'stats' },
+        h('div', { class: 'stat' }, h('b', null, all.ok + '/' + all.total), h('span', null, 'освоено')),
+        h('div', { class: 'stat' }, h('b', null, String(today)), h('span', null, 'ответов сегодня')),
+        h('div', { class: 'stat' }, h('b', null, sk + ' 🔥'), h('span', null, plural(sk, 'день подряд', 'дня подряд', 'дней подряд')))),
+      bar(all),
+      h('div', { class: 'small muted', style: 'margin:8px 0 14px' }, 'Зелёное: последний ответ верный. Красное: была ошибка. «Освоено» считается по последнему ответу.'),
+      h('div', { class: 'actions' },
+        h('button', { class: 'btn primary', on: { click: function () { startMix(); } } }, '▶ Умный микс'),
+        h('button', { class: 'btn', disabled: !wr.length, on: { click: function () { startSession({ mode: 'mistakes', label: 'Повтор ошибок', ids: shuffle(wr) }); } } }, 'Повторить ошибки (' + wr.length + ')'),
+        h('button', { class: 'btn', on: { click: function () { startExam(); } } }, 'Экзамен · ' + EXAM_N + ' / ' + EXAM_MIN + ' мин')));
+    wrap.appendChild(card);
+
+    wrap.appendChild(h('h2', null, 'Темы'));
+    var grid = h('div', { class: 'grid' });
+    TOPICS.forEach(function (t) {
+      var st = stats(t.id);
+      grid.appendChild(h('button', { class: 'tcard t-' + t.id, on: { click: function () { go('#/topic/' + t.id); } } },
+        h('div', { class: 'tt' }, h('span', { class: 'em' }, t.icon), h('span', null, t.name)),
+        h('div', { class: 'meta' }, h('span', null, t.ch), h('span', null, st.ok + ' / ' + st.total)),
+        bar(st)));
+    });
+    wrap.appendChild(grid);
+
+    wrap.appendChild(h('h2', null, 'Ещё'));
+    wrap.appendChild(h('div', { class: 'grid' },
+      h('button', { class: 'tcard', on: { click: function () { go('#/cards/all'); } } }, h('div', { class: 'tt' }, h('span', { class: 'em' }, '🗂️'), h('span', null, 'Карточки')), h('div', { class: 'small muted', style: 'margin-top:6px' }, 'Вопрос на лицевой стороне, ответ и разбор на обороте. Для быстрого повторения.')),
+      h('button', { class: 'tcard', on: { click: function () { go('#/cheat'); } } }, h('div', { class: 'tt' }, h('span', { class: 'em' }, '📄'), h('span', null, 'Шпаргалка')), h('div', { class: 'small muted', style: 'margin-top:6px' }, 'Сложности, формулы, метрики, ловушки Python, чек-листы. С поиском.'))));
+
+    if (S.exams.length) {
+      wrap.appendChild(h('h2', null, 'Последние экзамены'));
+      var c = h('div', { class: 'card' });
+      S.exams.slice(-5).reverse().forEach(function (e) {
+        c.appendChild(h('div', { class: 'row', style: 'justify-content:space-between;padding:4px 0' },
+          h('span', { class: 'muted' }, e.date), h('b', null, e.ok + ' / ' + e.total + ' · ' + Math.round(e.ok / e.total * 100) + '%')));
+      });
+      wrap.appendChild(c);
+    }
+    wrap.appendChild(h('div', { class: 'foot' },
+      h('div', null, 'Вопросы составлены по методичке «Подготовка к собеседованию».'),
+      h('button', {
+        class: 'btn ghost sm', style: 'margin-top:8px',
+        on: { click: function () { ask('Сбросить весь прогресс?', 'Сбросить', function () { S.q = {}; S.f = {}; S.days = {}; S.exams = []; save(); render(); toast('Прогресс сброшен'); }); } }
+      }, 'Сбросить прогресс')));
+    return wrap;
+  }
+
+  // ---------- страница темы / микса ----------
+  function viewTopic(t) {
+    var tid = t ? t.id : null, wrap = h('div', { class: t ? 't-' + t.id : '' });
+    var types = S.set.types;
+    var qs = pool(tid, types), st = stats(tid), wr = wrongIds(tid);
+    wrap.appendChild(h('div', { class: 'topbar' }, backBtn('Главная'), h('div', { class: 'grow' }), themeBtn()));
+    wrap.appendChild(h('div', { class: 'hdr' }, h('div', { class: 'grow' },
+      h('h1', null, t ? t.icon + ' ' + t.name : '🎲 Микс из всех тем'),
+      h('div', { class: 'sub' }, t ? t.ch + ' · ' + t.desc : 'Вопросы из всех глав вперемешку. Чаще попадаются новые и те, где были ошибки.'))));
+    var card = h('div', { class: 'card' },
+      h('div', { class: 'stats' },
+        h('div', { class: 'stat' }, h('b', null, String(st.total)), h('span', null, 'вопросов')),
+        h('div', { class: 'stat' }, h('b', { style: 'color:var(--ok)' }, String(st.ok)), h('span', null, 'верно')),
+        h('div', { class: 'stat' }, h('b', { style: 'color:var(--bad)' }, String(st.wrong)), h('span', null, 'с ошибкой'))),
+      bar(st),
+      h('h3', { style: 'margin:16px 0 8px' }, 'Сколько вопросов'),
+      sizeChips(function () { render(true); }),
+      h('h3', { style: 'margin:16px 0 8px' }, 'Типы вопросов'),
+      typeChips(function () { render(true); }),
+      h('div', { class: 'small muted', style: 'margin:8px 0 16px' }, 'Подходит вопросов: ' + qs.length),
+      h('div', { class: 'actions' },
+        h('button', { class: 'btn primary', disabled: !qs.length, on: { click: function () {
+          var n = S.set.size || qs.length;
+          startSession({ mode: t ? 'topic' : 'mix', label: t ? t.short : 'Микс', ids: pick(qs, n), topic: tid });
+        } } }, '▶ Начать тест'),
+        h('button', { class: 'btn', disabled: !wr.length, on: { click: function () { startSession({ mode: 'mistakes', label: 'Повтор ошибок', ids: shuffle(wr) }); } } }, 'Только ошибки (' + wr.length + ')'),
+        h('button', { class: 'btn', on: { click: function () { go('#/cards/' + (tid || 'all')); } } }, 'Карточки')));
+    wrap.appendChild(card);
+    return wrap;
+  }
+  function startMix() {
+    var qs = pool(null, S.set.types);
+    startSession({ mode: 'mix', label: 'Умный микс', ids: pick(qs, 10) });
+  }
+  function startExam() {
+    var qs = QS.filter(function (q) { return q.k !== 'o'; });
+    startSession({ mode: 'exam', label: 'Экзамен', ids: pick(qs, EXAM_N), minutes: EXAM_MIN });
+  }
+
+  // ---------- сессия теста ----------
+  function startSession(o) {
+    if (!o.ids.length) { toast('Нет подходящих вопросов'); return; }
+    session = { mode: o.mode, label: o.label, ids: o.ids, topic: o.topic || null, i: 0, res: {}, cur: null, exam: o.mode === 'exam', t0: Date.now(), deadline: o.mode === 'exam' ? Date.now() + o.minutes * 60000 : 0 };
+    initCur();
+    go('#/play');
+  }
+  function initCur() {
+    var q = byId[session.ids[session.i]];
+    session.cur = { order: q.k === 'c' ? shuffle(q.o.map(function (_, i) { return i; })) : null, done: false, sel: null, text: '', ok: null, skipped: false, revealed: false, rated: null };
+  }
+  function fmtTime(ms) {
+    var s = Math.max(0, Math.ceil(ms / 1000)), m = Math.floor(s / 60);
+    return ('0' + m).slice(-2) + ':' + ('0' + (s % 60)).slice(-2);
+  }
+  function exitSession() {
+    function leave() { session = null; go('#/'); }
+    if (session.exam) ask('Выйти из экзамена? Результат не будет сохранён.', 'Выйти', leave); else leave();
+  }
+  function submit(q, ok, given) {
+    session.cur.ok = ok; session.cur.done = true;
+    session.res[q.id] = { ok: ok, given: given };
+    record(q, ok);
+  }
+  function next() {
+    if (session.i + 1 >= session.ids.length) return finish();
+    session.i++; initCur(); render();
+  }
+  function finish() {
+    var ok = 0;
+    session.ids.forEach(function (id) { if (session.res[id] && session.res[id].ok) ok++; });
+    session.ok = ok;
+    if (session.exam) {
+      session.ids.forEach(function (id) { if (!session.res[id]) record(byId[id], false); });
+      S.exams.push({ date: new Date().toLocaleDateString('ru-RU') + ' ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }), ok: ok, total: session.ids.length });
+      S.exams = S.exams.slice(-10); save();
+    }
+    go('#/result');
+  }
+
+  function viewQuiz() {
+    var q = byId[session.ids[session.i]], cur = session.cur, exam = session.exam, total = session.ids.length;
+    var t = TOPIC[q.t], wrap = h('div', { class: 't-' + q.t });
+    var timer = exam ? h('div', { class: 'timer', id: 'timer' }, fmtTime(session.deadline - Date.now())) : null;
+    wrap.appendChild(h('div', { class: 'topbar' },
+      h('button', { class: 'btn ghost sm', on: { click: exitSession } }, '← Выйти'),
+      h('div', { class: 'grow' }), timer,
+      h('div', { class: 'count' }, (session.i + 1) + ' / ' + total)));
+    var done = session.i + (cur.done ? 1 : 0);
+    wrap.appendChild(h('div', { class: 'bar', style: 'margin-bottom:14px' }, h('i', { class: 'b', style: 'width:' + (done / total * 100) + '%' })));
+    if (exam) {
+      timerId = setInterval(function () {
+        var left = session.deadline - Date.now(), el = document.getElementById('timer');
+        if (el) { el.textContent = fmtTime(left); el.className = 'timer' + (left < 300000 ? ' low' : ''); }
+        if (left <= 0) { clearInterval(timerId); timerId = null; toast('Время вышло'); finish(); }
+      }, 1000);
+    }
+
+    var card = h('div', { class: 'card' });
+    card.appendChild(h('div', { class: 'q-meta' }, h('span', { class: 'chip t' }, t.icon + ' ' + t.short), h('span', { class: 'chip' }, KIND[q.k]), session.mode === 'mistakes' ? h('span', { class: 'chip' }, 'Повтор') : null));
+    card.appendChild(h('p', { class: 'qtext' }, rich(q.q)));
+    if (q.code) card.appendChild(codeBlock(q.code));
+
+    if (q.k === 'c') card.appendChild(choiceArea(q, cur, exam));
+    else if (q.k === 'o') card.appendChild(openArea(q, cur));
+    else card.appendChild(inputArea(q, cur, exam));
+
+    if (cur.done && !exam) card.appendChild(feedback(q, cur));
+    wrap.appendChild(card);
+    return wrap;
+  }
+
+  function choiceArea(q, cur, exam) {
+    var box = h('div');
+    var opts = h('div', { class: 'opts' });
+    cur.order.forEach(function (oi, pos) {
+      var cls = 'opt';
+      if (!exam && cur.done) cls += oi === q.a ? ' ok' : (oi === cur.sel ? ' bad' : ' dim');
+      else if (exam && cur.sel === oi) cls += ' sel';
+      opts.appendChild(h('button', {
+        class: cls, disabled: !exam && cur.done, 'data-pos': pos,
+        on: { click: function () { pickChoice(q, oi); } }
+      }, h('span', { class: 'key' }, String.fromCharCode(65 + pos)), h('span', { class: 'otxt' }, rich(q.o[oi]))));
+    });
+    box.appendChild(opts);
+    if (exam) box.appendChild(h('div', { class: 'actions' },
+      h('button', { class: 'btn primary', disabled: cur.sel == null, on: { click: function () { submit(q, cur.sel === q.a, q.o[cur.sel]); next(); } } }, session.i + 1 >= session.ids.length ? 'Ответить и завершить' : 'Ответить →'),
+      h('button', { class: 'btn ghost', on: { click: function () { submit(q, false, '— пропущено —'); next(); } } }, 'Пропустить')));
+    return box;
+  }
+  function pickChoice(q, oi) {
+    var cur = session.cur;
+    if (session.exam) { cur.sel = oi; render(true); return; }
+    if (cur.done) return;
+    cur.sel = oi;
+    submit(q, oi === q.a, q.o[oi]);
+    render(true);
+  }
+
+  function inputArea(q, cur, exam) {
+    var box = h('div');
+    var inp = h('input', {
+      type: 'text', class: 'inp', autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false',
+      placeholder: q.k === 'n' ? 'Число (можно 0.25, 1/4 или 25%)' : 'Ваш ответ', value: cur.text, disabled: !exam && cur.done, 'data-focus': !cur.done,
+      'aria-label': 'Ваш ответ',
+      on: { input: function (e) { cur.text = e.target.value; }, keydown: function (e) { if (e.key === 'Enter') { e.preventDefault(); checkInput(q); } } }
+    });
+    box.appendChild(inp);
+    if (!cur.done || exam) box.appendChild(h('div', { class: 'actions' },
+      h('button', { class: 'btn primary', on: { click: function () { checkInput(q); } } }, exam ? (session.i + 1 >= session.ids.length ? 'Ответить и завершить' : 'Ответить →') : 'Проверить'),
+      h('button', { class: 'btn ghost', on: { click: function () { skipInput(q); } } }, exam ? 'Пропустить' : 'Не знаю')));
+    return box;
+  }
+  function checkInput(q) {
+    var cur = session.cur;
+    if (cur.done && !session.exam) return;
+    var text = (cur.text || '').trim();
+    if (!text) { toast('Введите ответ или нажмите «Не знаю»'); return; }
+    var ok = q.k === 'n' ? numOK(q, text) : textOK(q, text);
+    submit(q, ok, text);
+    if (session.exam) next(); else render(true);
+  }
+  function skipInput(q) {
+    var cur = session.cur;
+    if (cur.done && !session.exam) return;
+    cur.skipped = true; cur.text = '';
+    submit(q, false, '— пропущено —');
+    if (session.exam) next(); else render(true);
+  }
+
+  function openArea(q, cur) {
+    var box = h('div');
+    box.appendChild(h('textarea', {
+      class: 'ta', placeholder: 'Напишите ответ своими словами (как на интервью), затем нажмите «Показать эталон»', spellcheck: 'false',
+      disabled: cur.revealed, 'data-focus': !cur.revealed, 'aria-label': 'Ваш ответ',
+      on: { input: function (e) { cur.text = e.target.value; } }
+    }, cur.text));
+    if (!cur.revealed) {
+      box.appendChild(h('div', { class: 'actions' }, h('button', { class: 'btn primary', on: { click: function () { cur.revealed = true; render(true); } } }, 'Показать эталон')));
+      return box;
+    }
+    var low = (cur.text || '').toLowerCase().replace(/ё/g, 'е');
+    box.appendChild(h('div', { class: 'explain' }, h('div', { class: 'ex-t' }, 'Эталонный ответ'), q.ref));
+    box.appendChild(h('div', { class: 'small muted' }, 'Ключевые пункты (отмечаются по совпадению слов в вашем ответе):'));
+    var kw = h('div', { class: 'kw' }), found = 0;
+    q.kw.forEach(function (g) {
+      var hit = g.slice(1).concat(g.length === 1 ? [g[0]] : []).some(function (s) { return low.indexOf(String(s).toLowerCase().replace(/ё/g, 'е')) >= 0; });
+      if (hit) found++;
+      kw.appendChild(h('span', { class: 'chip ' + (hit ? 'hit' : 'miss') }, (hit ? '✓ ' : '○ ') + g[0]));
+    });
+    box.appendChild(kw);
+    if (cur.rated == null) {
+      box.appendChild(h('div', { class: 'small', style: 'margin-bottom:8px' }, 'Совпало пунктов: ' + found + ' из ' + q.kw.length + '. Честно оцените свой ответ:'));
+      box.appendChild(h('div', { class: 'actions' },
+        h('button', { class: 'btn primary', on: { click: function () { cur.rated = true; submit(q, true, cur.text); render(true); } } }, '✓ Ответил(а) верно'),
+        h('button', { class: 'btn', on: { click: function () { cur.rated = false; submit(q, false, cur.text); render(true); } } }, '✗ Нужно повторить')));
+    } else {
+      if (q.e) box.appendChild(h('div', { class: 'explain' }, h('div', { class: 'ex-t' }, 'Совет'), rich(q.e)));
+      box.appendChild(h('div', { class: 'actions' }, h('button', { class: 'btn primary', 'data-focus': true, on: { click: next } }, session.i + 1 >= session.ids.length ? 'Завершить' : 'Дальше →')));
+    }
+    return box;
+  }
+
+  function feedback(q, cur) {
+    var box = h('div');
+    if (q.k !== 'o') {
+      var fb = h('div', { class: 'fb ' + (cur.ok ? 'ok' : 'bad') }, cur.ok ? '✓ Верно' : (cur.skipped ? '✗ Ответ не дан' : '✗ Неверно'));
+      if (!cur.ok) {
+        if (q.k === 'c') { /* верный вариант подсвечен зелёным */ }
+        else fb.appendChild(h('span', { class: 'ans' }, 'Правильный ответ: ' + correctText(q) + (q.k === 'i' && q.acc.length > 1 ? '  (допустимо также: ' + q.acc.slice(1, 4).join(', ') + ')' : '')));
+      }
+      box.appendChild(fb);
+      if (!cur.ok && !cur.skipped && q.k !== 'c') box.appendChild(h('div', { class: 'actions', style: 'margin-bottom:10px' },
+        h('button', { class: 'btn sm', on: { click: function () { cur.ok = true; session.res[q.id].ok = true; flipToCorrect(q); render(true); toast('Засчитано'); } } }, 'Мой ответ тоже верный: засчитать')));
+    }
+    if (q.k !== 'o' && q.e) box.appendChild(h('div', { class: 'explain' }, h('div', { class: 'ex-t' }, 'Разбор'), rich(q.e)));
+    if (q.k !== 'o') box.appendChild(h('div', { class: 'actions' }, h('button', { class: 'btn primary', 'data-focus': q.k === 'c' ? false : true, id: 'nextBtn', on: { click: next } }, session.i + 1 >= session.ids.length ? 'Завершить' : 'Дальше →')));
+    return box;
+  }
+
+  // ---------- результаты ----------
+  function viewResult() {
+    var ids = session.ids, ok = session.ok == null ? 0 : session.ok;
+    var wrap = h('div'), pct = Math.round(ok / ids.length * 100);
+    wrap.appendChild(h('div', { class: 'topbar' }, backBtn('Главная'), h('div', { class: 'grow' }), themeBtn()));
+    var verdict = pct >= 85 ? 'Отлично!' : pct >= 65 ? 'Хороший результат' : pct >= 40 ? 'Есть над чем поработать' : 'Нужно повторить материал';
+    var card = h('div', { class: 'card' },
+      h('div', { class: 'score' }, h('div', { class: 'big', style: 'color:' + (pct >= 65 ? 'var(--ok)' : pct >= 40 ? 'var(--warn)' : 'var(--bad)') }, pct + '%'),
+        h('div', { class: 'lbl' }, session.label + ': ' + ok + ' из ' + ids.length + ' · ' + verdict)));
+    // по темам
+    var by = {};
+    ids.forEach(function (id) { var q = byId[id]; var b = by[q.t] || (by[q.t] = { n: 0, ok: 0 }); b.n++; if (session.res[id] && session.res[id].ok) b.ok++; });
+    var tb = h('table', { class: 'rt' }, h('tr', null, h('th', null, 'Тема'), h('th', null, 'Верно'), h('th', null, '')));
+    TOPICS.filter(function (t) { return by[t.id]; }).forEach(function (t) {
+      var b = by[t.id];
+      tb.appendChild(h('tr', { class: 't-' + t.id }, h('td', null, t.icon + ' ' + t.short), h('td', null, b.ok + ' / ' + b.n),
+        h('td', { style: 'width:35%' }, bar({ total: b.n, ok: b.ok, wrong: b.n - b.ok, left: 0 }))));
+    });
+    if (Object.keys(by).length > 1) { card.appendChild(h('h2', { style: 'margin-top:16px' }, 'По темам')); card.appendChild(tb); }
+    var bad = ids.filter(function (id) { return !(session.res[id] && session.res[id].ok); });
+    card.appendChild(h('div', { class: 'actions', style: 'margin-top:16px' },
+      bad.length ? h('button', { class: 'btn primary', on: { click: function () { startSession({ mode: 'mistakes', label: 'Повтор ошибок', ids: shuffle(bad) }); } } }, 'Повторить ошибки (' + bad.length + ')') : null,
+      h('button', { class: 'btn', on: { click: function () { again(); } } }, 'Новый тест'),
+      h('button', { class: 'btn ghost', on: { click: function () { session = null; go('#/'); } } }, 'На главную')));
+    wrap.appendChild(card);
+
+    if (bad.length) {
+      wrap.appendChild(h('h2', null, 'Разбор ошибок'));
+      bad.forEach(function (id) {
+        var q = byId[id], r = session.res[id];
+        var c = h('div', { class: 'card mistake t-' + q.t },
+          h('div', { class: 'q-meta' }, h('span', { class: 'chip t' }, TOPIC[q.t].icon + ' ' + TOPIC[q.t].short), h('span', { class: 'chip' }, KIND[q.k])),
+          h('p', { class: 'qtext', style: 'font-size:16px' }, rich(q.q)));
+        if (q.code) c.appendChild(codeBlock(q.code));
+        c.appendChild(h('div', { class: 'small', style: 'margin-bottom:6px' }, h('b', null, 'Ваш ответ: '), r ? (r.given || '—') : '— нет ответа —'));
+        c.appendChild(h('div', { class: 'small', style: 'margin-bottom:8px;color:var(--ok)' }, h('b', null, 'Правильный ответ: '), q.k === 'o' ? '(эталон ниже)' : correctText(q)));
+        if (q.k === 'o') c.appendChild(h('div', { class: 'explain' }, h('div', { class: 'ex-t' }, 'Эталон'), q.ref));
+        if (q.e) c.appendChild(h('div', { class: 'explain' }, h('div', { class: 'ex-t' }, q.k === 'o' ? 'Совет' : 'Разбор'), rich(q.e)));
+        wrap.appendChild(c);
+      });
+    }
+    return wrap;
+  }
+  function again() {
+    if (session.exam) return startExam();
+    if (session.mode === 'topic') { var qs = pool(session.topic, S.set.types); return startSession({ mode: 'topic', label: session.label, topic: session.topic, ids: pick(qs, S.set.size || qs.length) }); }
+    startMix();
+  }
+
+  // ---------- карточки ----------
+  function answerText(q) {
+    if (q.k === 'c') return q.o[q.a];
+    if (q.k === 'n') return String(q.v) + (q.tol ? '  (допустимо ±' + q.tol + ')' : '');
+    if (q.k === 'i') return q.acc[0];
+    return q.ref;
+  }
+  function viewCards(arg) {
+    var tid = TOPIC[arg] ? arg : null;
+    if (!cardSession || cardSession.key !== (tid || 'all')) {
+      var qs = pool(tid, null).map(function (q) { return q.id; });
+      var unk = qs.filter(function (id) { return S.f[id] !== 'k'; });
+      var ids = unk.length ? shuffle(unk) : shuffle(qs);
+      cardSession = { key: tid || 'all', queue: ids, total: ids.length, flipped: false, known: 0 };
+    }
+    var cs = cardSession, wrap = h('div', { class: tid ? 't-' + tid : '' });
+    wrap.appendChild(h('div', { class: 'topbar' }, backBtn(tid ? 'К теме' : 'Главная', tid ? '#/topic/' + tid : '#/'), h('div', { class: 'grow' }), themeBtn()));
+    wrap.appendChild(h('div', { class: 'hdr' }, h('div', { class: 'grow' }, h('h1', null, '🗂️ Карточки'), h('div', { class: 'sub' }, (tid ? TOPIC[tid].name : 'Все темы')))));
+    // выбор темы
+    var chips = h('div', { class: 'row', style: 'margin-bottom:12px' });
+    [{ id: null, short: 'Все' }].concat(TOPICS).forEach(function (t) {
+      chips.appendChild(h('button', { class: 'chip' + ((t.id || null) === tid ? ' on' : ''), on: { click: function () { cardSession = null; go('#/cards/' + (t.id || 'all')); } } }, t.short));
+    });
+    wrap.appendChild(chips);
+    if (!cs.queue.length) {
+      wrap.appendChild(h('div', { class: 'card score' }, h('div', { class: 'big' }, '🎉'), h('div', { class: 'lbl' }, 'Колода пройдена: выучено ' + cs.known + ' из ' + cs.total),
+        h('div', { class: 'actions', style: 'margin-top:14px;justify-content:center' },
+          h('button', { class: 'btn primary', on: { click: function () { cardSession = null; render(); } } }, 'Ещё раз'),
+          h('button', { class: 'btn', on: { click: function () { go(tid ? '#/topic/' + tid : '#/'); } } }, 'Назад'))));
+      return wrap;
+    }
+    var q = byId[cs.queue[0]];
+    wrap.appendChild(h('div', { class: 'row small muted', style: 'justify-content:space-between;margin-bottom:8px' }, h('span', null, 'Выучено: ' + cs.known + ' / ' + cs.total), h('span', null, 'В колоде: ' + cs.queue.length)));
+    var card = h('div', { class: 'card flash', role: 'button', tabindex: '0', 'aria-label': 'Перевернуть карточку', on: {
+      click: function (e) { if (e.target.closest && e.target.closest('button')) return; cs.flipped = !cs.flipped; render(true); },
+      keydown: function (e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); cs.flipped = !cs.flipped; render(true); } }
+    } });
+    var face = h('div', { class: 'face' });
+    face.appendChild(h('div', { class: 'q-meta' }, h('span', { class: 'chip t t-' + q.t, style: '--tc:var(--c-' + q.t + ')' }, TOPIC[q.t].icon + ' ' + TOPIC[q.t].short), h('span', { class: 'chip' }, cs.flipped ? 'Ответ' : 'Вопрос')));
+    face.appendChild(h('p', { class: 'qtext', style: 'font-size:' + (cs.flipped ? '15px' : '18px') }, rich(q.q)));
+    if (q.code && !cs.flipped) face.appendChild(codeBlock(q.code));
+    if (cs.flipped) {
+      if (q.code) face.appendChild(codeBlock(q.code));
+      face.appendChild(h('div', { class: 'explain', style: 'background:var(--okbg);border-color:transparent' }, h('div', { class: 'ex-t', style: 'color:var(--ok)' }, 'Ответ'), rich(answerText(q))));
+      if (q.e) face.appendChild(h('div', { class: 'explain' }, h('div', { class: 'ex-t' }, q.k === 'o' ? 'Совет' : 'Разбор'), rich(q.e)));
+    }
+    card.appendChild(face);
+    if (!cs.flipped) card.appendChild(h('div', { class: 'hint' }, 'Нажмите на карточку, чтобы увидеть ответ'));
+    wrap.appendChild(card);
+    var act = h('div', { class: 'actions' });
+    if (!cs.flipped) act.appendChild(h('button', { class: 'btn primary', on: { click: function () { cs.flipped = true; render(true); } } }, 'Показать ответ'));
+    else {
+      act.appendChild(h('button', { class: 'btn', on: { click: function () { var id = cs.queue.shift(); cs.queue.push(id); S.f[id] = 'r'; save(); cs.flipped = false; render(); } } }, '↻ Повторить позже'));
+      act.appendChild(h('button', { class: 'btn primary', on: { click: function () { var id = cs.queue.shift(); S.f[id] = 'k'; cs.known++; save(); cs.flipped = false; render(); } } }, '✓ Знаю'));
+    }
+    wrap.appendChild(act);
+    return wrap;
+  }
+
+  // ---------- шпаргалка ----------
+  function viewCheat() {
+    var wrap = h('div');
+    wrap.appendChild(h('div', { class: 'topbar' }, backBtn('Главная'), h('div', { class: 'grow' }), themeBtn()));
+    wrap.appendChild(h('div', { class: 'hdr' }, h('div', { class: 'grow' }, h('h1', null, '📄 Шпаргалка'), h('div', { class: 'sub' }, 'Всё важное для быстрого повторения перед собеседованием'))));
+    var search = h('input', { type: 'search', class: 'search', placeholder: 'Поиск по шпаргалке…', 'aria-label': 'Поиск по шпаргалке', autocomplete: 'off' });
+    wrap.appendChild(search);
+    var sections = [];
+    CHEAT.forEach(function (sec, idx) {
+      var body = h('div', { class: 'body' }), items = [];
+      if (sec.kind === 'table') {
+        var tb = h('table', { class: 'ct', style: 'min-width:' + (sec.head.length * 165) + 'px' }, h('tr', null, sec.head.map(function (x) { return h('th', null, x); })));
+        sec.rows.forEach(function (r) {
+          var tr = h('tr', null, r.map(function (c) { return h('td', null, rich(c)); }));
+          tb.appendChild(tr); items.push({ el: tr, text: r.join(' ').toLowerCase() });
+        });
+        body.appendChild(h('div', { class: 'tw' }, tb));
+      } else {
+        var ul = h('ul', { class: 'cl' });
+        sec.items.forEach(function (x) { var li = h('li', null, rich(x)); ul.appendChild(li); items.push({ el: li, text: x.toLowerCase() }); });
+        body.appendChild(ul);
+      }
+      var d = h('details', { class: 'sec', open: idx === 0 }, h('summary', null, sec.t), body);
+      wrap.appendChild(d);
+      sections.push({ el: d, title: sec.t.toLowerCase(), items: items, open: idx === 0 });
+    });
+    search.addEventListener('input', function () {
+      var q = search.value.trim().toLowerCase();
+      sections.forEach(function (s) {
+        if (!q) { s.el.classList.remove('hide'); s.items.forEach(function (i) { i.el.classList.remove('hide'); }); s.el.open = s.open; return; }
+        var titleHit = s.title.indexOf(q) >= 0, any = false;
+        s.items.forEach(function (i) { var hit = titleHit || i.text.indexOf(q) >= 0; i.el.classList.toggle('hide', !hit); if (hit) any = true; });
+        s.el.classList.toggle('hide', !any && !titleHit);
+        if (any || titleHit) s.el.open = true;
+      });
+    });
+    return wrap;
+  }
+
+  // ---------- клавиатура ----------
+  document.addEventListener('keydown', function (e) {
+    var r = parseHash();
+    if (r.name !== 'play' || !session || e.metaKey || e.ctrlKey || e.altKey) return;
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    var q = byId[session.ids[session.i]], cur = session.cur;
+    if (q.k === 'c' && /^[1-4]$/.test(e.key)) {
+      var pos = parseInt(e.key, 10) - 1;
+      if (pos < cur.order.length) { e.preventDefault(); pickChoice(q, cur.order[pos]); }
+    } else if (e.key === 'Enter' && cur.done && !session.exam && q.k !== 'o') { e.preventDefault(); next(); }
+  });
+
+  if (!QS.length) app.textContent = 'Банк вопросов пуст.';
+  else render();
+
+  // офлайн-режим: работает только когда страница открыта по https (или localhost); иначе молча пропускается
+  try {
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+      window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+    }
+  } catch (e) {}
+})();
+
+</script>
+</body>
+</html>
